@@ -57,7 +57,7 @@ public class ElecteursController {
     }
 
     @GetMapping("/count")
-    public Long countDepartements() {
+    public Long totalElecteurs() {
         return electeursRepository.countAllBy();
     }
 }
