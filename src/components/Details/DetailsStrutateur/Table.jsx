@@ -6,7 +6,14 @@ import "./Table.css";
 
 export const Table = ({ rows, deleteRow, editRow }) => {
   return (
+
+
     <div className="table-wrapper">
+
+<div className="table-title">
+        <h2>Liste  Nationale Des Strutateurs</h2>
+      </div>
+
       <table className="table">
         <thead>
           <tr>

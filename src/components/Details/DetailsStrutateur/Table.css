@@ -71,3 +71,14 @@
 .delete-btn {
   color: #e10d05;
 }
+
+
+.table-title {
+  margin-top: 2rem;
+  margin-bottom: 4rem; /* Add some space between title and table */
+  text-align: center; /* Center align the title */
+}
+
+.table-title h2 {
+  font-weight: bold; /* Make the title bold */
+}
