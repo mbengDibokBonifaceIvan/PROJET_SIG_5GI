@@ -9,30 +9,34 @@ const Card = () => {
       <ProductCard
       value='300'
       name="Total Candidat"
+      url="/candidats" 
       
     />
       <ProductCard
     
       name="Total Arrondissement"
 value='200'
+url="/arrondissement"
      
        />
       <ProductCard
      
       name="Total Region"
       value='555'
+      url="/region"
       
     />
       <ProductCard
      
       name="Total Departement"
       value='70'
-     
+     url="/departement"
     />
       <ProductCard
        
-      name="Total Bureux De Vote"
+      name="Total Bureaux De Vote"
       value='150'
+      url="/bureauvote"
       
    />
       
@@ -40,24 +44,28 @@ value='200'
       
       name="Total Centre De Vote"
       value='150'
+      url="/centrevote"
 />
       
 <ProductCard
       
       name="Total Electeur"
       value='190'
+      url="/electeur"
 />
 
 <ProductCard
       
       name="Total Structateur"
       value='150'
+      url="/strutateurs"
 />
 
 <ProductCard
       
       name="Total Administrateur"
       value='2000'
+      url="/strutateurs"
 />
     </div>
   )
