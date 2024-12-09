@@ -1,5 +1,6 @@
 "use client"
 import { useState, useEffect } from "react";
+import axios from "axios";
 
 import "./Region.css";
 import { Table } from "../../../Components/Details/DetailsRegion/Table";
@@ -14,12 +15,8 @@ function Region() {
   useEffect(() => {
     const fetchRegions = async () => {
       try {
-        const response = await fetch("http://localhost:8080/regions/all");
-        if (!response.ok) {
-          throw new Error("Erreur lors de la récupération des régions");
-        }
-        const data = await response.json();
-        setRows(data);
+        const response = await axios.get("http://localhost:8080/regions/all");
+        setRows(response.data);
       } catch (error) {
         console.error("Erreur lors de la récupération des régions :", error);
       }
@@ -30,18 +27,13 @@ function Region() {
 
   const handleDeleteRow = (targetIndex) => {
     const regionToDelete = rows[targetIndex];
-    fetch(`http://localhost:8080/regions/deleteRegion/${regionToDelete.id_région}`, {
-      method: 'DELETE',
-    })
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error("Erreur lors de la suppression de la région");
-      }
-      setRows(rows.filter((_, idx) => idx !== targetIndex));
-    })
-    .catch((error) => {
-      console.error("Erreur lors de la suppression de la région :", error);
-    });
+    axios.delete(`http://localhost:8080/regions/deleteRegion/${regionToDelete.id_région}`)
+      .then(() => {
+        setRows(rows.filter((_, idx) => idx !== targetIndex));
+      })
+      .catch((error) => {
+        console.error("Erreur lors de la suppression de la région :", error);
+      });
   };
 
   const handleEditRow = (idx) => {
@@ -51,47 +43,23 @@ function Region() {
 
   const handleSubmit = (newRow) => {
     if (rowToEdit === null) {
-      fetch("http://localhost:8080/regions/addRegion", {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(newRow),
-      })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Erreur lors de l'ajout de la région");
-        }
-        return response.json();
-      })
-      .then((data) => {
-        setRows([...rows, data]);
-        console.log("Succès", newRow);
-      })
-      .catch((error) => {
-        console.error("Erreur lors de l'ajout de la région :", error);
-      });
+      axios.post("http://localhost:8080/regions/addRegion", newRow)
+        .then((response) => {
+          setRows([...rows, response.data]);
+          console.log("Succes",newRow);
+        })
+        .catch((error) => {
+          console.error("Erreur lors de l'ajout de la région :", error);
+        });
     } else {
       const regionToEdit = rows[rowToEdit];
-      fetch(`http://localhost:8080/regions/editRegion/${regionToEdit.id_région}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(newRow),
-      })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Erreur lors de la mise à jour de la région");
-        }
-        return response.json();
-      })
-      .then((data) => {
-        setRows(rows.map((currRow, idx) => (idx !== rowToEdit ? currRow : data)));
-      })
-      .catch((error) => {
-        console.error("Erreur lors de la mise à jour de la région :", error);
-      });
+      axios.put(`http://localhost:8080/regions/editRegion/${regionToEdit.id_région}`, newRow)
+        .then((response) => {
+          setRows(rows.map((currRow, idx) => (idx !== rowToEdit ? currRow : response.data)));
+        })
+        .catch((error) => {
+          console.error("Erreur lors de la mise à jour de la région :", error);
+        });
     }
   };
 
