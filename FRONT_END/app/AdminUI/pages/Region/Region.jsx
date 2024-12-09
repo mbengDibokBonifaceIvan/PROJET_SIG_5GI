@@ -8,21 +8,19 @@ import { Modal } from "../../../Components/Details/DetailsRegion/Modal";
 
 function Region() {
   const [modalOpen, setModalOpen] = useState(false);
+  
   const [rows, setRows] = useState([
     {
       Nom: "Home",
-      // MotDePasse: "1234",
-      // Role: "Strutateur",
+
     },
     {
       Nom: "Home1",
-      // MotDePasse: "1234",
-      // Role: "Strutateur",
+
     },
     {
       Nom: "Home2",
-      // MotDePasse: "1234",
-      // Role: "Strutateur",
+
     },
   ]);
   const [rowToEdit, setRowToEdit] = useState(null);
@@ -56,7 +54,8 @@ function Region() {
         Add
       </button>
       {modalOpen && (
-        <Modal
+       
+       <Modal
           closeModal={() => {
             setModalOpen(false);
             setRowToEdit(null);
@@ -64,6 +63,7 @@ function Region() {
           onSubmit={handleSubmit}
           defaultValue={rowToEdit !== null && rows[rowToEdit]}
         />
+
       )}
     </div>
   );
