@@ -53,10 +53,11 @@ const Histogramme: React.FC = () => {
   );
 
   return (
-    <div className="rounded-lg border shadow-md p-8 dark:text-gray-100">
-      <h2 className="text-2xl font-medium mb-4 ">
-        {pollIcon}{" " }
-        <span className="underline">Histogramme des Votes</span>
+    <div className="rounded-lg border shadow-md p-12 dark:text-gray-100">
+      <h2 className="font-medium mb-4 ">
+        <span className="flex items-center gap-2 font-medium text-blue-500 ">
+          {pollIcon} Histogramme des Votes à {city.name}
+        </span>
       </h2>
       <div className="flex flex-col gap-4">
         {processedCandidates.map((candidateData, i) => (
@@ -71,14 +72,14 @@ const Histogramme: React.FC = () => {
                     backgroundColor: colors[i % colors.length],
                   }}
                 >
-                  <span className="absolute right-2 text-xs text-gray-600">
+                  <span className="absolute right-2 text-xs p-2 text-gray-600">
                     {((candidateData.votes / totalVotes) * 100).toFixed(3)}%
                   </span>
                 </div>
               </div>
-              <div className="ml-2 dark:text-gray-200 text-nowrap">
+              <div className="text-xl text-blue-200 ml-2 dark:text-gray-200 text-nowrap px-5">
                 {candidateData.votes} K
-              </div>
+              </div> 
             </div>
           </div>
         ))}

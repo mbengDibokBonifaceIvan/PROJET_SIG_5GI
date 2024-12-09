@@ -33,9 +33,9 @@ function AirPollution() {
        dark:bg-dark-grey shadow-sm dark:shadow-none col-span-full sm-2:col-span-2 md:col-span-2 xl:col-span-2"
     >
       <Progress value={airQualityIndex} max={100} className="progress" />
-      <h2 className="flex items-center gap-2 font-medium justify-center underline">
+      <h1 className="flex items-center gap-2 font-medium justify-center  text-blue-500">
         SESSION 2024 {flagIcon}
-      </h2>
+      </h1>
       <p className="text-center"> Résultats Des Élections Présidentielle 2024 Au Cameroun</p>
     </div>
   );

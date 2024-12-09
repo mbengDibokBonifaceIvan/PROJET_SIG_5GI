@@ -20,7 +20,7 @@ function Wind() {
       className="pt-6 pb-5 px-4 h-[12rem] border rounded-lg flex 
     flex-col gap-3 dark:bg-dark-grey shadow-sm dark:shadow-none"
     >
-      <h2 className="flex items-center gap-2 font-medium">{wind} ORIENTATION</h2>
+      <h2 className="flex items-center gap-2 font-medium text-blue-500">{wind} ORIENTATION</h2>
 
       <div className="compass relative flex items-center justify-center">
         <div className="image relative">

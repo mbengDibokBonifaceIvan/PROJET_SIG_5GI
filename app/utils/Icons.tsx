@@ -31,10 +31,16 @@ import {
   faChartPie,
   faUserCheck,
   faDownload,
+  faPlus,
+  faTrash,
+  faEdit,
 } from "@fortawesome/free-solid-svg-icons";
 export const voteIcon = <Vote size={20} />;
 export const downloadIcon = <FontAwesomeIcon icon={faDownload} />;
+export const TrashIcon = <FontAwesomeIcon icon={faTrash} />;
+export const PlusIcon = <FontAwesomeIcon icon={faPlus} />;
 export const flagIcon = <FontAwesomeIcon icon={faFlag} />;
+export const EditIcon = <FontAwesomeIcon icon={faEdit} />;
 export const voteYesIcon = <FontAwesomeIcon icon={faVoteYea} />;;
 export const pollHIcon = <FontAwesomeIcon icon={faPollH} />;
 export const chartPieIcon = <FontAwesomeIcon icon={faChartPie} />;

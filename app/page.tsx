@@ -1,27 +1,20 @@
 "use client";
 import Image from "next/image";
 import AirPollution from "./Components/AirPollution/AirPollution";
-import DailyForecast from "./Components/DailyForecast/DailyForecast";
-import FeelsLike from "./Components/FeelsLike/FeelsLike";
-import Humidity from "./Components/Humidity/Humidity";
 import Mapbox from "./Components/Mapbox/Mapbox";
 import Navbar from "./Components/Navbar";
 import Population from "./Components/Population/Population";
-import Pressure from "./Components/Pressure/Pressure";
 import Sunset from "./Components/Sunset/Sunset";
 import Temperature from "./Components/Temperature/Temperature";
-import UvIndex from "./Components/UvIndex/UvIndex";
-import Visibility from "./Components/Visibility/Visibility";
 import Wind from "./Components/Wind/Wind";
 import defaultStates from "./utils/defaultStates";
-import FiveDayForecast from "./Components/FiveDayForecast/FiveDayForecast";
 import { useGlobalContextUpdate } from "./context/globalContext";
 import Histogramme from "./Components/Histogramme/Histogramme";
 import Resultat from "./Components/Results/Resultat";
 import html2canvas from "html2canvas";
 import React, { useRef } from "react";
 import { jsPDF } from "jspdf";
-
+import { calender, downloadIcon, github } from "./utils/Icons";
 
 export default function Home() {
   const { setActiveCityCoords } = useGlobalContextUpdate();
@@ -34,32 +27,40 @@ export default function Home() {
       behavior: "smooth",
     });
   };
-const histogramRef = useRef<HTMLDivElement | null>(null);
-const mapBoxRef = useRef<HTMLDivElement | null>(null);
+  const histogramRef = useRef<HTMLDivElement | null>(null);
+  const mapBoxRef = useRef<HTMLDivElement | null>(null);
 
   function generatePDF() {
-   if (!histogramRef.current || !mapBoxRef.current) {
-    return;
-  }
+    if (!histogramRef.current) {
+      return;
+    }
 
     const pdf = new jsPDF();
 
-    // Capture le contenu du composant Histogramme en tant qu'image
-  html2canvas(histogramRef.current).then((histogramCanvas) => {
-    const histogramImg = histogramCanvas.toDataURL("image/png");
+    // Définir le contenu pour le PDF
+    const title = "Résultats des Élections Présidentielles";
+    const session = "SESSION 2024 Au Cameroun";
+    const description1 =
+      "Histogramme montrant la répartition des votes par Arrondissement.";
 
-    // Capture le contenu de l'élément mapBox en tant qu'image
-    html2canvas(mapBoxRef.current!).then((mapBoxCanvas) => {
-      const mapBoxImg = mapBoxCanvas.toDataURL("image/png");
+    // Ajouter le titre et les informations supplémentaires au PDF
+    pdf.setFontSize(26);
+    pdf.text(title, 15, 20);
+    pdf.setFontSize(17);
+    pdf.text(session, 15, 50);
+    pdf.text(description1, 15, 80);
 
-      // Ajoute les deux images au PDF
-      pdf.addImage(histogramImg, "PNG", 15, 15, 180, 100); // Ajoute l'image de l'histogramme
-          pdf.addImage(mapBoxImg, "PNG", 15, 130, 180, 100); // Ajoute l'image de mapBox sur une nouvelle page
+    // Capturer le contenu du composant Histogramme en tant qu'image
+    html2canvas(histogramRef.current).then((histogramCanvas) => {
+      const histogramImg = histogramCanvas.toDataURL("image/png");
 
-      pdf.save("images.pdf"); // Télécharge le PDF avec le nom "images.pdf" contenant les deux images
+      const imgHeight = (180 * 100) / 180; // Hauteur ajustée pour maintenir le ratio
+
+      // Ajouter les images au PDF
+      pdf.addImage(histogramImg, "PNG", 15, 100, 180, imgHeight); // Ajouter l'image de l'histogramme
+
+      pdf.save("resultats_elections_cameroun.pdf"); // Télécharger le PDF avec le nom "resultats_elections_cameroun.pdf" contenant les images et les informations supplémentaires
     });
-  });
-
   }
   return (
     <main className="mx-[1rem] lg:mx-[2rem] xl:mx-[6rem] 2xl:mx-[8rem] m-auto">
@@ -72,7 +73,7 @@ const mapBoxRef = useRef<HTMLDivElement | null>(null);
             onClick={generatePDF}
             className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring focus:ring-blue-300"
           >
-            Télécharger les informations en PDF
+            {downloadIcon} Télécharger les informations en PDF
           </button>
         </div>
         <div className="flex flex-col w-full">
@@ -89,7 +90,7 @@ const mapBoxRef = useRef<HTMLDivElement | null>(null);
             <div className="h-full lg:col-span-2" ref={histogramRef}>
               <Histogramme />
             </div>
-            <div className="h-full  lg:row-span-2">
+            <div className="h-full lg:row-span-2">
               <Wind />
             </div>
           </div>
@@ -98,8 +99,8 @@ const mapBoxRef = useRef<HTMLDivElement | null>(null);
               <Mapbox />
             </div>
             <div className="states flex flex-col gap-3 flex-1 h-full">
-              <h2 className="flex items-center gap-2 font-medium underline">
-                Résultats Des Élections Dans Quelques Villes
+              <h2 className="flex items-center gap-2 font-medium  text-blue-500">
+                { calender} Résultats Des Élections Dans Quelques Villes
               </h2>
               <div className="flex flex-col gap-4">
                 {defaultStates.map((state, index) => (
@@ -110,7 +111,9 @@ const mapBoxRef = useRef<HTMLDivElement | null>(null);
                       getClickedCityCords(state.lat, state.lon);
                     }}
                   >
-                    <p className="px-6 py-4">{state.name}</p>
+                    <p className="px-6 py-4 text-blue-950 dark:text-blue-100">
+                      {state.name}
+                    </p>
                   </div>
                 ))}
               </div>

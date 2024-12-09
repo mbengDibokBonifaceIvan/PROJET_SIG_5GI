@@ -50,23 +50,20 @@ function Resultat() {
   return (
     <div className="pt-6 pb-5 px-4 flex-1 border rounded-lg flex flex-col justify-between dark:bg-dark-grey shadow-sm dark:shadow-none">
       <div>
-        <h2 className="text-2xl font-medium mb-4 ">
-          {histogramIcon}{" "}
-          <span className="underline">
-            {" "}
-            Résultats des Élections à {city.name}
+        <h2 className=" font-medium mb-4 ">
+          <span className="flex items-center gap-2 font-medium text-blue-500">
+            {histogramIcon} Résultats des Élections à {city.name}
           </span>
         </h2>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 gap-2">
           {processedCandidates.map((candidateData, i) => (
             <div key={i} className="dark:text-white rounded-lg shadow-md p-4 ">
-              <p className="text-lg font-semibold mb-2">
-                {candidateData.candidate}
-              </p>
+              <p className=" text-sm mb-2">{candidateData.candidate}</p>
               <div className="flex items-center justify-between ">
-                <p className="text-sm ">
-                  Total de Voix: {candidateData.votes} K
+                Total de Voix:
+                <p className="text-3xl font-bold text-blue-200 ">
+                  {candidateData.votes} K
                 </p>
               </div>
             </div>

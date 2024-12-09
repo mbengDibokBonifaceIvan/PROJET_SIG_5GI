@@ -27,10 +27,10 @@ function ThemeDropdown() {
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuItem onClick={() => setTheme("light")}>
-          Light
+          Clair
         </DropdownMenuItem>
         <DropdownMenuItem onClick={() => setTheme("dark")}>
-          Dark
+          Sombre
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

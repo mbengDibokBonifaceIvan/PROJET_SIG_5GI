@@ -23,10 +23,14 @@ const { city } = fiveDayForecast;
   return (
     <div className="pt-6 pb-5 px-4 h-[12rem] border rounded-lg flex flex-col gap-5 dark:bg-dark-grey shadow-sm dark:shadow-none">
       <div className="top">
-        <h2 className="flex items-center gap-2 font-medium">
+        <h2 className="flex items-center gap-2 font-medium text-blue-500 ">
           {userCheckIcon} Total De Personnes Éligibles Au Vote
         </h2>
-        <p className="pt-4 text-2xl text-center">{formatNumber(city.population)}</p>
+        <p className="pt-4 text-2xl">
+          <span className="text-4xl font-bold text-blue-200">
+            {formatNumber(city.population)}
+          </span>
+        </p>{" "}
       </div>
 
       <p className="text-sm">

@@ -27,6 +27,6 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     "app/Components/Mapbox/Mapbox.js"
-  ],
+, "app/test/page.jsx", "app/electeur/page.jsx"  ],
   "exclude": ["node_modules"]
 }
