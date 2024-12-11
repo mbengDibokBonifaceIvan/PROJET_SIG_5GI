@@ -61,4 +61,14 @@ public class ResultatsController {
     public int getTotalVoixByCandidat(@PathVariable Long candidatId) {
         return resultatsRepository.getTotalVoixByCandidat(candidatId);
     }
+
+    @GetMapping("/annee/{id}")
+    public int getAnneeElectionById(@PathVariable Long id) {
+        Resultats resultats = resultatsRepository.findById(id).orElse(null);
+        if (resultats != null) {
+            return resultats.getAnnee_election();
+        } else {
+            return -1; // Ou une autre valeur par défaut pour indiquer qu'aucun résultat n'a été trouvé pour l'ID donné
+        }
+    }
 }

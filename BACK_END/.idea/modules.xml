@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/SIG.iml" filepath="$PROJECT_DIR$/.idea/SIG.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/BACK_END.iml" filepath="$PROJECT_DIR$/.idea/BACK_END.iml" />
+      <module fileurl="file://$PROJECT_DIR$/SIG/SIG.iml" filepath="$PROJECT_DIR$/SIG/SIG.iml" />
     </modules>
   </component>
 </project>

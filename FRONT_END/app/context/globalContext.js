@@ -18,6 +18,29 @@ export const GlobalContextProvider = ({ children }) => {
     3.864217556071893, 11.551995201269344,
   ]);
 
+const [coordonnees, setCoordonnees] = useState({
+  latitude: 3.864217556071893,
+  longitude: 11.551995201269344,
+});
+const [bureauDeVote, setBureauDeVote] = useState(null);
+
+useEffect(() => {
+  const fetchData = async () => {
+    try {
+      const response = await axios.get(
+        `http://localhost:8080/bureaux-de-vote/by-coordinates?latitude=${activeCityCoords[0]}&longitude=${activeCityCoords[1]}`
+      );
+      setBureauDeVote(response.data);
+      console.log(response.data);
+    } catch (error) {
+      console.error("Erreur lors de la récupération des résultats:", error);
+    }
+  };
+
+  fetchData();
+}, [coordonnees]);
+  
+
   const [airQuality, setAirQuality] = useState({});
   const [fiveDayForecast, setFiveDayForecast] = useState({});
   const [uvIndex, seUvIndex] = useState({});
@@ -116,11 +139,13 @@ export const GlobalContextProvider = ({ children }) => {
         inputValue,
         handleInput,
         setActiveCityCoords,
+       setCoordonnees,
       }}
     >
       <GlobalContextUpdate.Provider
         value={{
           setActiveCityCoords,
+         setCoordonnees,
         }}
       >
         {children}

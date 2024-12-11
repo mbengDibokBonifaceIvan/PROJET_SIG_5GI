@@ -48,10 +48,7 @@ const { city } = fiveDayForecast;
         </p>{" "}
       </div>
 
-      <p className="text-sm">
-        {voteYesIcon} Nombre Total De Votants:{" "}
-        {formatNumber(totalVote - totalVote)}
-      </p>
+      <p className="text-sm ">Ville de: {city.name}.</p>
     </div>
   );
 }
