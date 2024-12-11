@@ -6,6 +6,7 @@ import { Modal } from "../../../Components/Details/DetailsCentreVote/Modal";
 function CentreVote() {
   const [modalOpen, setModalOpen] = useState(false);
   const [rows, setRows] = useState([]);
+  const [arrondissements, setArrondissements] = useState([]);
   const [rowToEdit, setRowToEdit] = useState(null);
 
   // Fetch des centres de vote
@@ -26,6 +27,18 @@ function CentreVote() {
       }
     };
 
+    const fetchArrondissements = async () => {
+      try {
+        const response = await fetch("http://localhost:8080/arrondissements/all");
+        if (!response.ok) throw new Error("Erreur lors de la récupération des régions");
+        const data = await response.json();
+        setArrondissements(data);
+      } catch (error) {
+        console.error("Erreur :", error);
+      }
+    };
+
+    fetchArrondissements();
     fetchCentres();
   }, []);
 
@@ -49,7 +62,7 @@ function CentreVote() {
     }
   };
 
-  const handleSubmit = (newRow) => {
+  const handleSubmit = async (newRow) => {
     if (rowToEdit === null) {
       // POST : Ajouter un nouveau centre
       fetch("http://localhost:8080/centres-de-vote/addCentreDeVote", {
@@ -64,27 +77,44 @@ function CentreVote() {
         })
         .catch((err) => console.error("Erreur lors de l'ajout :", err));
     } else {
-      // PUT : Modifier un centre existant
-      fetch(
-        `http://localhost:8080/centres-de-vote/editCentreDeVote/${newRow.id_centre_vote}`,
-        {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(newRow),
+      const rowToUpdate = rows[rowToEdit];
+    
+      try { 
+        
+        // Envoi de la requête PUT pour mettre à jour le centre de vote
+        const response = await fetch(
+          `http://localhost:8080/centres-de-vote/editCentreDeVote/${rowToUpdate.id_centre_vote}`,
+          {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(formattedData),
+          }
+        );
+    
+        if (!response.ok) {
+          throw new Error("Erreur lors de la mise à jour du centre de vote.");
         }
-      )
-        .then((res) => res.json())
-        .then((data) => {
-          console.log("Centre modifié :", data);
-          const updatedRows = rows.map((row, idx) =>
-            idx === rowToEdit ? data : row
-          );
-          setRows(updatedRows);
-        })
-        .catch((err) => console.error("Erreur lors de la modification :", err));
+    
+        const updatedCentre = await response.json();
+        console.log("Centre mis à jour :", updatedCentre);
+    
+        // Mettre à jour l'état avec les nouvelles données
+        setRows(
+          rows.map((currRow, idx) =>
+            idx === rowToEdit ? updatedCentre : currRow
+          )
+        );
+      } catch (error) {
+        console.error("Erreur lors de la mise à jour :", error);
+      }
     }
-  };
+      // Réinitialisation et fermeture du modal
+      setModalOpen(false);
+      setRowToEdit(null);
   
+  }
   
 
   const handleEditRow = (row) => {
@@ -106,7 +136,8 @@ function CentreVote() {
             setRowToEdit(null);
           }}
           onSubmit={handleSubmit}
-          defaultValue={rowToEdit}
+          defaultValue={rowToEdit !== null && rows[rowToEdit]}
+          arrondissements={arrondissements}
         />
       )}
     </div>

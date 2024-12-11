@@ -1,42 +1,40 @@
 import React from "react";
-
 import { BsFillTrashFill, BsFillPencilFill } from "react-icons/bs";
-
 import "./Table.css";
 
 export const Table = ({ rows, deleteRow, editRow }) => {
   return (
-
-
     <div className="table-wrapper">
-
-<div className="table-title">
-        <h2>Liste  Nationale Des Strutateurs</h2>
+      {/* Titre */}
+      <div className="table-title">
+        <h2>Liste Nationale des Scrutateurs</h2>
       </div>
 
+      {/* Tableau */}
       <table className="table">
         <thead>
           <tr>
             <th>Nom</th>
-            <th className="expand">MotDePasse</th>
-            <th>Role</th>
+            <th className="expand">Mot de Passe</th>
+            <th>Rôle</th>
             <th>Actions</th>
           </tr>
         </thead>
         <tbody>
           {rows.map((row, idx) => {
-            const statusText =
-              row.Role.charAt(0).toUpperCase() + row.Role.slice(1);
+            const roleText =
+              row.role.charAt(0).toUpperCase() + row.role.slice(1);
 
             return (
               <tr key={idx}>
-                <td>{row.Nom}</td>
-                <td className="expand">{row.MotDePasse}</td>
+                <td>{row.nom_utilisateur}</td> {/* Nom aligné au backend */}
+                <td className="expand">{row.mot_de_passe}</td> {/* Mot de Passe */}
                 <td>
-                  <span className={`label label-${row.Role}`}>
-                    {statusText}
+                  <span className={`label label-${row.role}`}>
+                    {roleText}
                   </span>
                 </td>
+                {/* Actions */}
                 <td className="fit">
                   <span className="actions">
                     <BsFillTrashFill

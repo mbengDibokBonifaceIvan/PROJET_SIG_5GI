@@ -1,8 +1,8 @@
-import React, { useState } from "react";
-
+import React, { useState, useEffect } from "react";
 import "./Modal.css";
 
 export const Modal = ({ closeModal, onSubmit, defaultValue }) => {
+  // État initial du formulaire
   const [formState, setFormState] = useState(
     defaultValue || {
       Nom: "",
@@ -14,37 +14,91 @@ export const Modal = ({ closeModal, onSubmit, defaultValue }) => {
       BureauVote: "",
     }
   );
-  const [errors, setErrors] = useState("");
 
+  const [errors, setErrors] = useState("");
+  const [bureaux, setBureaux] = useState([]); // État pour stocker les bureaux de vote
+
+  // Récupérer les bureaux de vote depuis l'API
+  useEffect(() => {
+    fetch("http://localhost:8080/bureaux-de-vote/all")
+      .then((res) => res.json())
+      .then((data) => {
+        console.log("Bureaux récupérés :", data);
+        setBureaux(data)
+      })
+      .catch((error) =>
+        console.error("Erreur lors de la récupération des bureaux :", error)
+      );
+  }, []);
+
+  useEffect(() => {
+    if (defaultValue) {
+      setFormState({
+        Nom: defaultValue.nom || "",
+        Prenom: defaultValue.prénom || "",
+        Numero: defaultValue.numéro_électeur || "",
+        DateNaissance: defaultValue.date_naissance || "",
+        Inscription: defaultValue.date_inscription || "",
+        Adresse: defaultValue.adresse || "",
+        BureauVote: defaultValue.bureau?.id_bureau_vote || "", // Utiliser l'ID du bureau de vote si disponible
+      });
+    }
+  }, [defaultValue]);
+
+  // Validation du formulaire
   const validateForm = () => {
-    if (formState.Nom &&formState.Prenom && formState.Numero &&formState.DateNaissance && formState.Inscription && formState.Adresse && formState.BureauVote) {
+    if (
+      formState.Nom &&
+      formState.Prenom &&
+      formState.Numero &&
+      formState.DateNaissance &&
+      formState.Inscription &&
+      formState.Adresse &&
+      formState.BureauVote
+    ) {
       setErrors("");
       return true;
     } else {
-      let errorFields = [];
-      for (const [key, value] of Object.entries(formState)) {
-        if (!value) {
-          errorFields.push(key);
-        }
-      }
-      setErrors(errorFields.join(", "));
+      setErrors("Tous les champs sont requis");
       return false;
     }
   };
 
+  // Mettre à jour l'état du formulaire à chaque changement
   const handleChange = (e) => {
     setFormState({ ...formState, [e.target.name]: e.target.value });
   };
 
+  // Soumettre le formulaire
   const handleSubmit = (e) => {
     e.preventDefault();
-
+  
     if (!validateForm()) return;
-
-    onSubmit(formState);
-
+  
+    // Trouver l'ID du bureau de vote correspondant au choix de l'utilisateur
+    const selectedBureauVote = bureaux.find(
+      (bureau) => bureau.id_bureau_vote  === parseInt(formState.BureauVote)
+    );
+  
+    // Formater les données à envoyer au backend
+    const formattedData = {
+      nom: formState.Nom,
+      prénom: formState.Prenom,
+      numéro_électeur: formState.Numero,
+      date_naissance: formState.DateNaissance,
+      date_inscription: formState.Inscription,
+      adresse: formState.Adresse,
+      bureauVote: {
+        id_bureau_vote: selectedBureauVote.id_bureau_vote,
+        nom_bureau: selectedBureauVote.nom_bureau,
+      },
+    };
+  
+    console.log("Données envoyées :", formattedData);
+    onSubmit(formattedData); // Envoi des données formatées
     closeModal();
   };
+  
 
   return (
     <div
@@ -54,46 +108,53 @@ export const Modal = ({ closeModal, onSubmit, defaultValue }) => {
       }}
     >
       <div className="modal">
-        <form>
+        <form onSubmit={handleSubmit}>
           <div className="form-group">
             <label htmlFor="Nom">Nom</label>
             <input name="Nom" onChange={handleChange} value={formState.Nom} />
           </div>
 
           <div className="form-group">
-            <label htmlFor="Prenom">Prenom</label>
-            <input name="Prenom" onChange={handleChange} value={formState.Prenom} />
+            <label htmlFor="Prenom">Prénom</label>
+            <input
+              name="Prenom"
+              onChange={handleChange}
+              value={formState.Prenom}
+            />
           </div>
 
           <div className="form-group">
-            <label htmlFor="Numero">Numero</label>
-            <input name="Numero" onChange={handleChange} value={formState.Numero} />
+            <label htmlFor="Numero">Numéro</label>
+            <input
+              name="Numero"
+              onChange={handleChange}
+              value={formState.Numero}
+            />
           </div>
 
-
           <div className="form-group">
-            <label htmlFor="DateNaissance">DateNaissance</label>
-            <textarea
+            <label htmlFor="DateNaissance">Date de Naissance</label>
+            <input
+              type="date"
               name="DateNaissance"
               onChange={handleChange}
               value={formState.DateNaissance}
             />
           </div>
 
-
           <div className="form-group">
-            <label htmlFor="Inscription">Inscription</label>
-            <textarea
+            <label htmlFor="Inscription">Date d'Inscription</label>
+            <input
+              type="date"
               name="Inscription"
               onChange={handleChange}
               value={formState.Inscription}
             />
           </div>
 
-
           <div className="form-group">
             <label htmlFor="Adresse">Adresse</label>
-            <textarea
+            <input
               name="Adresse"
               onChange={handleChange}
               value={formState.Adresse}
@@ -101,20 +162,26 @@ export const Modal = ({ closeModal, onSubmit, defaultValue }) => {
           </div>
 
           <div className="form-group">
-            <label htmlFor="BureauVote">BureauVote</label>
+            <label htmlFor="BureauVote">Bureau de Vote</label>
             <select
               name="BureauVote"
               onChange={handleChange}
               value={formState.BureauVote}
             >
-              <option value="B1">B1</option>
-              <option value="B2">B2</option>
-               <option value="B3">B3</option> 
+              <option value="">-- Sélectionner un Bureau --</option>
+              {bureaux.map((bureau) => (
+                <option key={bureau.id_bureau_vote} value={bureau.id_bureau_vote}>
+                  {bureau.nom_bureau}
+                </option>
+              ))}
             </select>
           </div>
-          {errors && <div className="error">{`Please include: ${errors}`}</div>}
-          <button type="submit" className="btn" onClick={handleSubmit}>
-            Submit
+
+          {errors && (
+            <div className="error">{`Veuillez remplir les champs : ${errors}`}</div>
+          )}
+          <button type="submit" className="btn">
+            Soumettre
           </button>
         </form>
       </div>

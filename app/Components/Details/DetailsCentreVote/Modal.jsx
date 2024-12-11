@@ -55,18 +55,16 @@ export const Modal = ({ closeModal, onSubmit, defaultValue }) => {
 
     // Trouver l'ID correspondant au nom d'arrondissement sélectionné
     const selectedArrondissement = arrondissements.find(
-      (arr) => arr.nom_arrondissement === formState.nom_arrondissement
+      (arr) => arr.id_arrondissement === parseInt(formState.nom_arrondissement)
     );
-
-    if (!selectedArrondissement) {
-      setErrors("L'arrondissement sélectionné est invalide.");
-      return;
-    }
 
     // Formater les données à envoyer
     const formattedData = {
       nom_centre: formState.nom_centre,
-      arrondissement: { id_arrondissement: selectedArrondissement.id_arrondissement },
+      arrondissement: { 
+        id_arrondissement: selectedArrondissement.id_arrondissement, 
+        nom_arrondissement: selectedArrondissement.nom_arrondissement,
+      },
     };
 
     console.log("Données envoyées :", formattedData);
@@ -100,14 +98,14 @@ export const Modal = ({ closeModal, onSubmit, defaultValue }) => {
             >
               <option value="">Sélectionner...</option>
               {arrondissements.map((arr) => (
-                <option key={arr.id_arrondissement} value={arr.nom_arrondissement}>
+                <option key={arr.id_arrondissement} value={arr.id_arrondissement}>
                   {arr.nom_arrondissement}
                 </option>
               ))}
             </select>
           </div>
           {errors && <div className="error">{errors}</div>}
-          <button type="submit" className="btn">
+          <button type="submit" className="btn" >
             Submit
           </button>
         </form>

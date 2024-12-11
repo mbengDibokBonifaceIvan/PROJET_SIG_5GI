@@ -18,16 +18,11 @@ export const Table = ({ rows, deleteRow, editRow }) => {
           </tr>
         </thead>
         <tbody>
-          {rows.map((row, idx) => {
-            return ( // Ajout du "return"
+          {rows.map((row, idx) => (
+           
               <tr key={idx}>
-                {/* Affichage du nom du centre de vote */}
                 <td>{row.nom_centre}</td>
-
-                {/* Affichage du nom de l'arrondissement associé */}
                 <td>{row.arrondissement?.nom_arrondissement || "Arrondissement inconnu"}</td>
-
-                {/* Actions : Modifier et Supprimer */}
                 <td className="fit">
                   <span className="actions">
                     <BsFillTrashFill
@@ -41,8 +36,7 @@ export const Table = ({ rows, deleteRow, editRow }) => {
                   </span>
                 </td>
               </tr>
-            );
-          })}
+          ))}
         </tbody>
       </table>
     </div>

@@ -1,19 +1,19 @@
 import React, { useState } from "react";
-
 import "./Modal.css";
 
 export const Modal = ({ closeModal, onSubmit, defaultValue }) => {
   const [formState, setFormState] = useState(
     defaultValue || {
-      Nom: "",
-      MotDePasse: "",
-      Role: "Strutateur",
+      nom_utilisateur: "", // Aligné avec le backend
+      mot_de_passe: "",
+      role: "Strutateur",
     }
   );
+
   const [errors, setErrors] = useState("");
 
   const validateForm = () => {
-    if (formState.Nom && formState.MotDePasse && formState.Role) {
+    if (formState.nom_utilisateur && formState.mot_de_passe && formState.role) {
       setErrors("");
       return true;
     } else {
@@ -38,7 +38,6 @@ export const Modal = ({ closeModal, onSubmit, defaultValue }) => {
     if (!validateForm()) return;
 
     onSubmit(formState);
-
     closeModal();
   };
 
@@ -51,33 +50,46 @@ export const Modal = ({ closeModal, onSubmit, defaultValue }) => {
     >
       <div className="modal">
         <form>
+          {/* Champ Nom */}
           <div className="form-group">
-            <label htmlFor="Nom">Nom</label>
-            <input name="Nom" onChange={handleChange} value={formState.Nom} />
-          </div>
-          <div className="form-group">
-            <label htmlFor="MotDePasse">MotDePasse</label>
-            <textarea
-              name="MotDePasse"
+            <label htmlFor="nom_utilisateur">Nom</label>
+            <input
+              name="nom_utilisateur"
               onChange={handleChange}
-              value={formState.MotDePasse}
+              value={formState.nom_utilisateur}
             />
           </div>
+
+          {/* Champ Mot de Passe */}
           <div className="form-group">
-            <label htmlFor="Role">Role</label>
-            <select
-              name="Role"
+            <label htmlFor="mot_de_passe">Mot de Passe</label>
+            <input
+              type="password"
+              name="mot_de_passe"
               onChange={handleChange}
-              value={formState.Role}
+              value={formState.mot_de_passe}
+            />
+          </div>
+
+          {/* Champ Role */}
+          <div className="form-group">
+            <label htmlFor="role">Rôle</label>
+            <select
+              name="role"
+              onChange={handleChange}
+              value={formState.role}
             >
               <option value="Strutateur">Strutateur</option>
               <option value="Administrateur">Administrateur</option>
-              {/* <option value="error">Error</option> */}
             </select>
           </div>
-          {errors && <div className="error">{`Please include: ${errors}`}</div>}
+
+          {/* Affichage des erreurs */}
+          {errors && <div className="error">{`Veuillez remplir : ${errors}`}</div>}
+
+          {/* Bouton de soumission */}
           <button type="submit" className="btn" onClick={handleSubmit}>
-            Submit
+            Soumettre
           </button>
         </form>
       </div>

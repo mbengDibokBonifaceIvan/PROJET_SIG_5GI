@@ -1,20 +1,18 @@
 import React, { useState } from "react";
-
 import "./Modal.css";
 
 export const Modal = ({ closeModal, onSubmit, defaultValue }) => {
   const [formState, setFormState] = useState(
     defaultValue || {
-      Nom: "",
-      PartiPolitique: "",
-      // status: "live",
+      nom_candidat: "", // Correspond au backend
+      parti_politique: "", // Correspond au backend
     }
   );
   const [errors, setErrors] = useState("");
 
+  // Validation du formulaire
   const validateForm = () => {
-    // if (formState.Nom && formState.PartiPolitique && formState.status) {
-      if (formState.Nom && formState.PartiPolitique ) {
+    if (formState.nom_candidat && formState.parti_politique) {
       setErrors("");
       return true;
     } else {
@@ -29,10 +27,12 @@ export const Modal = ({ closeModal, onSubmit, defaultValue }) => {
     }
   };
 
+  // Gestion des changements dans les champs
   const handleChange = (e) => {
     setFormState({ ...formState, [e.target.name]: e.target.value });
   };
 
+  // Soumission du formulaire
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -53,32 +53,24 @@ export const Modal = ({ closeModal, onSubmit, defaultValue }) => {
       <div className="modal">
         <form>
           <div className="form-group">
-            <label htmlFor="Nom">Nom</label>
-            <input name="Nom" onChange={handleChange} value={formState.Nom} />
-          </div>
-          <div className="form-group">
-            <label htmlFor="PartiPolitique">PartiPolitique</label>
-            <textarea
-              name="PartiPolitique"
+            <label htmlFor="nom_candidat">Nom</label>
+            <input
+              name="nom_candidat"
               onChange={handleChange}
-              value={formState.PartiPolitique}
+              value={formState.nom_candidat}
             />
           </div>
-          {/* <div className="form-group">
-            <label htmlFor="status">Status</label>
-            <select
-              name="status"
+          <div className="form-group">
+            <label htmlFor="parti_politique">Parti Politique</label>
+            <textarea
+              name="parti_politique"
               onChange={handleChange}
-              value={formState.status}
-            >
-              <option value="live">Live</option>
-              <option value="draft">Draft</option>
-              <option value="error">Error</option>
-            </select>
-          </div> */}
-          {errors && <div className="error">{`Please include: ${errors}`}</div>}
+              value={formState.parti_politique}
+            />
+          </div>
+          {errors && <div className="error">{`Veuillez remplir : ${errors}`}</div>}
           <button type="submit" className="btn" onClick={handleSubmit}>
-            Submit
+            Valider
           </button>
         </form>
       </div>
