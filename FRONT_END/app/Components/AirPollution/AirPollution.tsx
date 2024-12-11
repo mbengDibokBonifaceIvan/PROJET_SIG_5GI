@@ -58,7 +58,7 @@ function AirPollution() {
       <p
             className={`text-xl md:text-xl md:leading-normal`}
           >
-            <strong>Bienvenue sur ELECEM-RESULTS.COM!</strong> Découvrez les résultats en temps réel.
+            <strong>Bienvenue sur ELECAM-RESULTS.COM!</strong> Découvrez les résultats en temps réel.
           </p>
         <h1 className="flex items-center gap-2 p-1 font-medium justify-center  text-blue-500">
           SESSION 2024 {flagIcon}
