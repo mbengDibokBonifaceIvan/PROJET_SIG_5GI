@@ -3,13 +3,27 @@ import { useGlobalContext } from "@/app/context/globalContext";
 import { voteIcon, voteYesIcon } from "@/app/utils/Icons";
 import { formatNumber, unixToTime } from "@/app/utils/misc";
 import { Skeleton } from "@/components/ui/skeleton";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { userCheckIcon } from '../../utils/Icons';
+import axios from "axios";
 
 function CardElecteur() {
   const { forecast } = useGlobalContext();
-const { fiveDayForecast } = useGlobalContext();
-const { city } = fiveDayForecast;
+  const { fiveDayForecast } = useGlobalContext();
+  const [totalCandidat, setTotalCandidat] = useState(0);
+
+  useEffect(() => {
+    const fetchtotalCandidat = async () => {
+      try {
+        const response = await axios.get('http://localhost:8080/candidats/count');
+        setTotalCandidat(response.data);
+      } catch (error) {
+        console.error('Erreur lors de la récupération des candidats:', error);
+      }
+    }; fetchtotalCandidat();
+  }, []);
+
+  const { city } = fiveDayForecast;
   if (!forecast || !forecast?.sys || !forecast?.sys?.sunset) {
     return <Skeleton className="h-[12rem] w-full" />;
   }
@@ -28,14 +42,14 @@ const { city } = fiveDayForecast;
         </h2>
         <p className="pt-4 text-2xl">
           <span className="text-4xl font-bold text-blue-200">
-            {formatNumber(city.population)}
+            {formatNumber(totalCandidat)}
           </span>
         </p>{" "}
       </div>
 
       <p className="text-sm">
         {voteYesIcon} Nombre Total De Candidat:{" "}
-        {formatNumber(city.population - 200000)}
+        {formatNumber(totalCandidat - totalCandidat)}
       </p>
     </div>
   );
