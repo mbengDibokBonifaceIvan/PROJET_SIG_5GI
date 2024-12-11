@@ -4,10 +4,30 @@ import { flagIcon, thermo } from "@/app/utils/Icons";
 import { airQulaityIndexText } from "@/app/utils/misc";
 import { Progress } from "@/components/ui/progress";
 import { Skeleton } from "@/components/ui/skeleton";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
+import axios from "axios";
 
 function AirPollution() {
+
+   const [annee, setAnnee] = useState(2024);
+
+   useEffect(() => {
+     const fetchAnnee = async () => {
+       try {
+         const response = await axios.get(
+           "http://localhost:8080/resultats/annee/1"
+         );
+         if (!response) {
+           return <Skeleton className="h-[12rem] w-full" />;
+         }
+         setAnnee(response.data);
+       } catch (error) {
+         console.error("Erreur lors de la récupération de l'annee:", error);
+       }
+     };
+     fetchAnnee();
+   }, []);
   // const { airQuality } = useGlobalContext();
 
   // // check if airQuality is available, check if necessary properties are available
@@ -61,9 +81,9 @@ function AirPollution() {
             <strong>Bienvenue sur ELECAM-RESULTS.COM!</strong> Découvrez les résultats en temps réel.
           </p>
         <h1 className="flex items-center gap-2 p-1 font-medium justify-center  text-blue-500">
-          SESSION 2024 {flagIcon}
+          SESSION {annee} {flagIcon}
         </h1>
-        <p className="text-center"> Résultats Des Élections Présidentielle 2024 Au Cameroun</p>
+        <p className="text-center"> Résultats Des Élections Présidentielle {annee} Au Cameroun</p>
     </div>
       </div>
       </div>

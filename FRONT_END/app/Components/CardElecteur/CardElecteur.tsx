@@ -8,14 +8,17 @@ import { userCheckIcon } from '../../utils/Icons';
 import axios from "axios";
 
 function CardElecteur() {
-  const { forecast } = useGlobalContext();
-  const { fiveDayForecast } = useGlobalContext();
+  //const { forecast } = useGlobalContext();
+  //const { fiveDayForecast } = useGlobalContext();
   const [totalCandidat, setTotalCandidat] = useState(0);
 
   useEffect(() => {
     const fetchtotalCandidat = async () => {
       try {
         const response = await axios.get('http://localhost:8080/candidats/count');
+        if (!response) {
+          return <Skeleton className="h-[12rem] w-full" />;
+        }
         setTotalCandidat(response.data);
       } catch (error) {
         console.error('Erreur lors de la récupération des candidats:', error);
@@ -23,6 +26,8 @@ function CardElecteur() {
     }; fetchtotalCandidat();
   }, []);
 
+  {
+    /**
   const { city } = fiveDayForecast;
   if (!forecast || !forecast?.sys || !forecast?.sys?.sunset) {
     return <Skeleton className="h-[12rem] w-full" />;
@@ -34,6 +39,9 @@ function CardElecteur() {
   const sunsetTime = unixToTime(times, timezone);
   const sunrise = unixToTime(forecast?.sys?.sunrise, timezone);
 
+     */
+  }
+  
   return (
     <div className="pt-6 pb-5 px-4 h-[12rem] border rounded-lg flex flex-col gap-5 dark:bg-dark-grey shadow-sm dark:shadow-none">
       <div className="top">
@@ -49,7 +57,7 @@ function CardElecteur() {
 
       <p className="text-sm">
         {voteYesIcon} Nombre Total De Candidat:{" "}
-        {formatNumber(totalCandidat - totalCandidat)}
+        {formatNumber(totalCandidat )}
       </p>
     </div>
   );

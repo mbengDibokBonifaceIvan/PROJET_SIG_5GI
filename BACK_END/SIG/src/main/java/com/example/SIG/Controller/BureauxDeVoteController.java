@@ -1,6 +1,7 @@
 package com.example.SIG.Controller;
 
 import com.example.SIG.Model.Bureaux_De_Vote;
+import com.example.SIG.Model.Coordonnees;
 import com.example.SIG.Repository.BureauxDeVoteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -49,5 +50,20 @@ public class BureauxDeVoteController {
     @GetMapping("/count")
     public Long countAllBureauxDeVote() {
         return bureauxDeVoteRepository.countAllBy();
+    }
+
+    @GetMapping("/{id}/coordinates")
+    public Coordonnees getBureauDeVoteCoordinates(@PathVariable Long id) {
+        Bureaux_De_Vote bureauDeVote = bureauxDeVoteRepository.findById(id).orElse(null);
+        if (bureauDeVote != null) {
+            return bureauDeVote.getCoordonnees();
+        }
+        return null;
+    }
+
+
+    @GetMapping("/by-coordinates")
+    public Bureaux_De_Vote getBureauDeVoteByCoordinates(@RequestParam double latitude, @RequestParam double longitude) {
+        return bureauxDeVoteRepository.findByLatitudeAndLongitude(latitude, longitude);
     }
 }
