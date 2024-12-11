@@ -2,7 +2,12 @@ package com.example.SIG.Model;
 
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
+@Data
 @Entity
 @Table(name = "Utilisateurs")
 public class Utilisateurs {
@@ -11,8 +16,12 @@ public class Utilisateurs {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id_utilisateur;
 
-    private String nom_utilisateur;
-    private String mot_de_passe;
+    @Column(name = "nom_utilisateur") // Make sure this matches the column name in the database
+    private String nomUtilisateur;
+
+    @Getter
+    @Column(name = "mot_de_passe") // Again, ensure this matches the column name in the database
+    private String motDePasse;
     private String role; // scrutateur, administrateur, etc.
 
     @ManyToOne
@@ -23,17 +32,17 @@ public class Utilisateurs {
     public Utilisateurs() {
     }
 
-    public Utilisateurs(Long id_utilisateur, String nom_utilisateur, String mot_de_passe, String role) {
+    public Utilisateurs(Long id_utilisateur, String nomUtilisateur, String motDePasse, String role) {
         this.id_utilisateur = id_utilisateur;
-        this.nom_utilisateur = nom_utilisateur;
-        this.mot_de_passe = mot_de_passe;
+        this.nomUtilisateur = nomUtilisateur;
+        this.motDePasse = motDePasse;
         this.role = role;
     }
 
     public Utilisateurs(Long id_utilisateur, String nom_utilisateur, String mot_de_passe, String role, Bureaux_De_Vote bureauVote) {
         this.id_utilisateur = id_utilisateur;
-        this.nom_utilisateur = nom_utilisateur;
-        this.mot_de_passe = mot_de_passe;
+        this.nomUtilisateur = nomUtilisateur;
+        this.motDePasse = motDePasse;
         this.role = role;
         this.bureauVote = bureauVote;
     }
@@ -48,19 +57,15 @@ public class Utilisateurs {
     }
 
     public String getNom_utilisateur() {
-        return nom_utilisateur;
+        return nomUtilisateur;
     }
 
     public void setNom_utilisateur(String nom_utilisateur) {
-        this.nom_utilisateur = nom_utilisateur;
+        this.nomUtilisateur = nom_utilisateur;
     }
 
-    public String getMot_de_passe() {
-        return mot_de_passe;
-    }
-
-    public void setMot_de_passe(String mot_de_passe) {
-        this.mot_de_passe = mot_de_passe;
+    public void setMotDePasse(String mot_de_passe) {
+        this.motDePasse = mot_de_passe;
     }
 
     public String getRole() {
@@ -77,5 +82,13 @@ public class Utilisateurs {
 
     public void setBureauVote(Bureaux_De_Vote bureauVote) {
         this.bureauVote = bureauVote;
+    }
+
+    public String getNomUtilisateur() {
+        return nomUtilisateur;
+    }
+
+    public String getMotDePasse() {
+        return motDePasse;
     }
 }

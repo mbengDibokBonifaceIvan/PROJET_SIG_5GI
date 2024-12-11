@@ -50,21 +50,29 @@ const Login = () => {
             //     'Content-Type': 'application/json',
             //   }
             // });
-            const res = await fetch(`/utilisateurs/login?username=${encodeURIComponent(name)}&password=${encodeURIComponent(password)}`, {
-              method: 'GET',
-              headers: {
-                  'Content-Type': 'application/json',
-              },
-          });
-            if (res.status === 200) {
-              const userData = await res.json();
-              // Rediriger en fonction du rôle
-              if (userData.role === 'admin') {
+          const res = await fetch(`http://localhost:8080/utilisateurs/verify?name=${encodeURIComponent(name)}&password=${encodeURIComponent(password)}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+
+        // Logger la réponse du backend
+        console.log("Response Status:", res.status);
+
+        if (res.ok) {
+            const userData = await res.json(); // Cela sera maintenant un objet JSON
+            console.log("User Data:", userData); // Logger les données utilisateur
+
+            // Rediriger en fonction du rôle
+            if (userData.role === 'admin') {
                 window.location.href = '/admin';
-              } else if (userData.role === 'scrutateur') {
+            } else if (userData.role === 'scrutateur') {
                 window.location.href = '/scrutateur';
-              }
             } else {
+                console.log("Unknown role:", userData.role);
+            }
+        }else {
               setError(true);
               setPasswordError('Nom ou mot de passe incorrect');
             }
