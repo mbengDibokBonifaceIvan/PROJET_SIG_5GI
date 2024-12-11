@@ -20,6 +20,9 @@ const config = {
       },
     },
     extend: {
+        height: {
+          110: '365px', // ou toute autre valeur que vous souhaitez
+        },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",

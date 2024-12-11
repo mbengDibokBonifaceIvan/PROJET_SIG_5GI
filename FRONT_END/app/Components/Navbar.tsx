@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import React from "react";
-import { downloadIcon, github } from "../utils/Icons";
+import { downloadIcon,lockIcon,  github } from "../utils/Icons";
 import ThemeDropdown from "./ThemeDropdown/ThemeDropdown";
 import SearchDialog from "./SearchDialog/SearchDialog";
 import { useGlobalContext } from "../context/globalContext";
@@ -17,8 +17,14 @@ function Navbar() {
   const router = useRouter();
   const { state } = useGlobalContext();
 
+  const goToLogin = () => {
+    router.push('/login');
+};
+
   return (
     <div className="w-full py-4 flex items-center justify-between">
+
+      <div> <p className="text-2xl">ELECAM-RESULTS.COM</p> </div>
       <div className="left"></div>
       <div className="search-container flex shrink-0 w-full gap-2 sm:w-fit">
         <SearchDialog />
@@ -31,6 +37,12 @@ function Navbar() {
             onClick={generatePDF}
           >
             {downloadIcon} Télécharger PDF
+          </Button>
+          <Button
+            className="source-code-btn flex items-center gap-2"
+            onClick={goToLogin}
+          >
+            {lockIcon} Connexion
           </Button>
         </div>
       </div>

@@ -15,6 +15,8 @@ import html2canvas from "html2canvas";
 import React, { useRef } from "react";
 import { jsPDF } from "jspdf";
 import { calender, downloadIcon, github } from "./utils/Icons";
+import CardElecteur from "./Components/CardElecteur/CardElecteur";
+import RevenueChart from "./Components/revenue-chart";
 
 export default function Home() {
   const { setActiveCityCoords } = useGlobalContextUpdate();
@@ -65,8 +67,13 @@ export default function Home() {
   return (
     <main className="mx-[1rem] lg:mx-[2rem] xl:mx-[6rem] 2xl:mx-[8rem] m-auto">
       <Navbar />
+      <div className="flex flex-col w-full p-4">
+            <div className="h-full w-full">
+              <AirPollution />
+            </div>
+        </div>
       <div className="pb-4 flex flex-col gap-4 md:flex-row">
-        <div className="flex flex-col gap-4 w-full min-w-[18rem] md:w-[35rem]">
+        {/* <div className="flex flex-col gap-4 w-full min-w-[18rem] md:w-[35rem]">
           <Temperature />
           <Resultat />
           <button
@@ -75,24 +82,19 @@ export default function Home() {
           >
             {downloadIcon} Télécharger les informations en PDF
           </button>
-        </div>
+        </div> */}
         <div className="flex flex-col w-full">
           <div className="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
             <div className="h-full">
-              <AirPollution />
-            </div>
-            <div className="h-full">
               <Population />
+            </div>
+            <div className="h-full " >
+              <CardElecteur />
             </div>
             <div className="h-full">
               <Sunset />
             </div>
-            <div className="h-full lg:col-span-2" ref={histogramRef}>
-              <Histogramme />
-            </div>
-            <div className="h-full lg:row-span-2">
-              <Wind />
-            </div>
+
           </div>
           <div className="mapbox-con mt-4 flex gap-4 flex-1">
             <div className="w-2/3 h-full" ref={mapBoxRef}>
@@ -119,6 +121,12 @@ export default function Home() {
               </div>
             </div>
           </div>
+          <div className="h-full p-4 lg:col-span-2" ref={histogramRef}>
+                <Histogramme />
+            </div>
+            <div className="h-full p-4 lg:col-span-2" ref={histogramRef}>
+                <RevenueChart />
+            </div>
         </div>
       </div>
 

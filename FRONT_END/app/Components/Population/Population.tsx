@@ -17,7 +17,7 @@ function Population() {
     <div className="pt-6 pb-5 px-4 h-[12rem] border rounded-lg flex flex-col gap-4 dark:bg-dark-grey shadow-sm dark:shadow-none">
       <div className="top">
         <h2 className="flex items-center gap-2 text-blue-500 font-medium ">
-          {people} Population
+          {people} Nombre d'électeur.
         </h2>
         <p className="pt-4 text-2xl dark:text-gray-200 ">
           <span className="text-4xl font-bold text-blue-200">
@@ -26,7 +26,7 @@ function Population() {
         </p>
       </div>
       <p className="text-sm ">
-        Dernières données démographiques de l'ONU pour {city.name}.
+      Nombre Total D'électeurs enregistré: {city.name}.
       </p>
     </div>
   );

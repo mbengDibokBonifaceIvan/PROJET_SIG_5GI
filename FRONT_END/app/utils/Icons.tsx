@@ -22,6 +22,7 @@ import {
   Vote,
 } from "lucide-react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faLock } from '@fortawesome/free-solid-svg-icons';
 import {
   faPoll,
   faChartBar,
@@ -60,3 +61,4 @@ export const eye = <Eye size={15} />;
 export const people = <UsersRound size={15} />;
 export const calender = <CalendarDays size={15} />;
 export const sun = <SunDim size={15} />;
+export const lockIcon = <FontAwesomeIcon icon={faLock} />;
