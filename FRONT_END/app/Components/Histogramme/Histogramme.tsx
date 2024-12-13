@@ -1,7 +1,10 @@
 import React from "react";
-import { useGlobalContext } from "@/app/context/globalContext";
+import {
+  useGlobalContext,
+  useGlobalContextUpdate,
+} from "@/app/context/globalContext";
 import { Skeleton } from "@/components/ui/skeleton";
-import { pollIcon } from '../../utils/Icons';
+import { pollIcon } from "../../utils/Icons";
 
 const colors = ["#FF6633", "#FFB399", "#FF33FF", "#3366E6", "#00a64f"];
 
@@ -15,37 +18,85 @@ interface ProcessedData {
   votes: number;
 }
 
+interface Region {
+  id_region: number;
+  nom_region: string;
+}
+
+interface Departement {
+  id_departement: number;
+  nom_departement: string;
+  region: Region;
+}
+
+interface Arrondissement {
+  id_arrondissement: number;
+  nom_arrondissement: string;
+  departement: Departement;
+}
+
+interface CentreDeVote {
+  id_centre_vote: number;
+  nom_centre: string;
+  arrondissement: Arrondissement;
+}
+
+interface Coordonnees {
+  latitude: number;
+  longitude: number;
+}
+
+interface Candidat {
+  id_candidat: number;
+  nom_candidat: string;
+  parti_politique: string;
+}
+
+interface BureauDeVote {
+  id_bureau_vote: number;
+  nom_bureau: string;
+  coordonnees: Coordonnees;
+  centreVote: CentreDeVote;
+}
+
+interface Resultats {
+  id_resultat: number;
+  bureauVote: BureauDeVote;
+  candidat: Candidat;
+  nombre_voix: number;
+  date_saisie: Date;
+  annee_election: number;
+}
+
 function processData(
-  candidateData: CandidateData[],
-  candidateNames: string[]
+  votesResults: Resultats[],
+  candidatData: Candidat[]
 ): ProcessedData[] {
-  return candidateData.map((data, index) => {
-    const candidateName = candidateNames[index % candidateNames.length];
-    const totalVotes = data.main.temp_min;
+  return candidatData.map((candidat, index) => {
+    const totalVotes = votesResults
+      .filter((result) => result.candidat.id_candidat === candidat.id_candidat)
+      .reduce((acc, result) => acc + result.nombre_voix, 0);
     return {
-      candidate: candidateName,
+      candidate: candidat.nom_candidat, // Assuming 'nom' is the field for candidate name in Candidats model
       votes: totalVotes,
     };
   });
 }
 
 const Histogramme: React.FC = () => {
-  const { fiveDayForecast } = useGlobalContext();
+  const { fiveDayForecast, bureauDeVote, candidatData, votesResults } =
+    useGlobalContext();
   const { city, list } = fiveDayForecast;
+  const { setActiveCityCoords } = useGlobalContextUpdate();
 
-  if (!fiveDayForecast || !city || !list) {
+  if (!bureauDeVote || !candidatData || !votesResults) {
     return <Skeleton className="h-[12rem] w-full" />;
   }
 
-  const candidateNames = [
-    "Candidat A",
-    "Candidat B",
-    "Candidat C",
-    "Candidat D",
-    "Candidat E",
-  ];
-
-  const processedCandidates = processData(list, candidateNames).slice(0, 5);
+  const processedCandidates = processData(votesResults, candidatData).slice(
+    0,
+    5
+  );
 
   const totalVotes = processedCandidates.reduce(
     (acc, candidate) => acc + candidate.votes,
@@ -79,7 +130,7 @@ const Histogramme: React.FC = () => {
               </div>
               <div className="text-xl text-blue-200 ml-2 dark:text-gray-200 text-nowrap px-5">
                 {candidateData.votes} K
-              </div> 
+              </div>
             </div>
           </div>
         ))}

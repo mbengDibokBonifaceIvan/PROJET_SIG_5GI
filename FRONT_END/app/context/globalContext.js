@@ -18,28 +18,50 @@ export const GlobalContextProvider = ({ children }) => {
     3.864217556071893, 11.551995201269344,
   ]);
 
-const [coordonnees, setCoordonnees] = useState({
-  latitude: 3.864217556071893,
-  longitude: 11.551995201269344,
-});
-const [bureauDeVote, setBureauDeVote] = useState(null);
-
-useEffect(() => {
-  const fetchData = async () => {
+  //Bureau de vote
+  const [bureauDeVote, setBureauDeVote] = useState({});
+  const fetchBureauDeVote = async (lat, lon) => {
     try {
-      const response = await axios.get(
-        `http://localhost:8080/bureaux-de-vote/by-coordinates?latitude=${activeCityCoords[0]}&longitude=${activeCityCoords[1]}`
+      const res = await axios.get(
+        `http://localhost:8080/bureaux-de-vote/by-coordinates?latitude=${lat}&longitude=${lon}`
       );
-      setBureauDeVote(response.data);
-      console.log(response.data);
+      setBureauDeVote(res.data);
     } catch (error) {
-      console.error("Erreur lors de la récupération des résultats:", error);
+      console.log(
+        "Erreur sur la recuperation du bureau de vote: ",
+        error.message
+      );
+    }
+  };
+  //Candidat
+  const [candidatData, setCandidatData] = useState({});
+  const fetchCandidatData = async () => {
+    try {
+      const res = await axios.get("http://localhost:8080/candidats/all");
+      setCandidatData(res.data);
+    } catch (error) {
+      console.log(
+        "Erreur sur la recuperation des candidats: ",
+        error.message
+      );
     }
   };
 
-  fetchData();
-}, [coordonnees]);
-  
+  //Resultats des votes
+
+  const [votesResults, setVotesResults] = useState({});
+  const fetchVotesResults = async () => {
+    try {
+      const res = await axios.get("http://localhost:8080/resultats/all");
+      setVotesResults(res.data);
+    } catch (error) {
+      console.log("Erreur sur la recuperation des resulttats: ", error.message);
+    }
+  };
+
+
+
+
 
   const [airQuality, setAirQuality] = useState({});
   const [fiveDayForecast, setFiveDayForecast] = useState({});
@@ -126,11 +148,17 @@ useEffect(() => {
     fetchAirQuality(activeCityCoords[0], activeCityCoords[1]);
     fetchFiveDayForecast(activeCityCoords[0], activeCityCoords[1]);
     fetchUvIndex(activeCityCoords[0], activeCityCoords[1]);
+    fetchBureauDeVote(activeCityCoords[0], activeCityCoords[1]);
+    fetchCandidatData();
+    fetchVotesResults;
   }, [activeCityCoords]);
 
   return (
     <GlobalContext.Provider
       value={{
+        bureauDeVote,
+        candidatData,
+votesResults,
         forecast,
         airQuality,
         fiveDayForecast,
@@ -139,13 +167,13 @@ useEffect(() => {
         inputValue,
         handleInput,
         setActiveCityCoords,
-       setCoordonnees,
+        // setCoordonnees,
       }}
     >
       <GlobalContextUpdate.Provider
         value={{
           setActiveCityCoords,
-         setCoordonnees,
+          //setCoordonnees,
         }}
       >
         {children}

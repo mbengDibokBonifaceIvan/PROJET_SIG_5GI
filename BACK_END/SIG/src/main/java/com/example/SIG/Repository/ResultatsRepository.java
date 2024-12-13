@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 import com.example.SIG.Model.Resultats;
 
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public interface ResultatsRepository extends JpaRepository<Resultats, Long> {
@@ -18,4 +19,12 @@ public interface ResultatsRepository extends JpaRepository<Resultats, Long> {
 
     @Query("SELECT SUM(r.nombre_voix) FROM Resultats r WHERE r.candidat.id_candidat = :candidatId")
     int getTotalVoixByCandidat(@Param("candidatId") Long candidatId);
+
+
+
+    @Query("SELECT r.candidat.nom_candidat, SUM(r.nombre_voix) FROM Resultats r GROUP BY r.candidat.nom_candidat")
+    List<Object[]> getTotalVoixByCandidatWithNames();
+
+    @Query("SELECT new map(c.nom_candidat as nomCandidat, SUM(r.nombre_voix) as totalVoix) FROM Resultats r JOIN r.candidat c WHERE r.bureauVote.id_bureau_vote = :bureauVoteId GROUP BY c.nom_candidat")
+    List<Map<String, Object>> getTotalVoixByCandidatAndBureauDeVote(Long bureauVoteId);
 }

@@ -8,7 +8,7 @@ import Sunset from "./Components/Sunset/Sunset";
 import Temperature from "./Components/Temperature/Temperature";
 import Wind from "./Components/Wind/Wind";
 import defaultStates from "./utils/defaultStates";
-import { useGlobalContextUpdate } from "./context/globalContext";
+import { useGlobalContext, useGlobalContextUpdate } from "./context/globalContext";
 import Histogramme from "./Components/Histogramme/Histogramme";
 import Resultat from "./Components/Results/Resultat";
 import html2canvas from "html2canvas";
@@ -27,23 +27,6 @@ export default function Home() {
     longitude: 11.551995201269344,
   });
 
-  const [resultats, setResultats] = useState<{ nom_bureau: string }>();
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get(
-          "http://localhost:8080/bureaux-de-vote/by-coordinates?latitude=40.7128&longitude=-74.006"
-        );
-        setResultats(response.data);
-        console.log("Données reçues :", response.data);
-      } catch (error) {
-        console.error("Erreur lors de la récupération des résultats :", error);
-      }
-    };
-
-    fetchData();
-  }, [coordonnees]);
 
   const getClickedCityCords = (lat: number, lon: number) => {
     setActiveCityCoords([lat, lon]);
@@ -53,46 +36,16 @@ export default function Home() {
       behavior: "smooth",
     });
   };
+  
   const histogramRef = useRef<HTMLDivElement | null>(null);
   const mapBoxRef = useRef<HTMLDivElement | null>(null);
 
-  function generatePDF() {
-    if (!histogramRef.current) {
-      return;
-    }
+  const { bureauDeVote, candidatData, votesResults } = useGlobalContext();
+  
 
-    const pdf = new jsPDF();
-
-    // Définir le contenu pour le PDF
-    const title = "Résultats des Élections Présidentielles";
-    const session = "SESSION 2024 Au Cameroun";
-    const description1 =
-      "Histogramme montrant la répartition des votes dans le " +
-      (resultats ? resultats.nom_bureau : "N/A") +
-      ".";
-
-    // Ajouter le titre et les informations supplémentaires au PDF
-    pdf.setFontSize(26);
-    pdf.text(title, 15, 20);
-    pdf.setFontSize(17);
-    pdf.text(session, 15, 50);
-    pdf.text(description1, 15, 80);
-
-    // Capturer le contenu du composant Histogramme en tant qu'image
-    html2canvas(histogramRef.current).then((histogramCanvas) => {
-      const histogramImg = histogramCanvas.toDataURL("image/png");
-
-      const imgHeight = (180 * 100) / 180; 
-
-      // Ajouter les images au PDF
-      pdf.addImage(histogramImg, "PNG", 15, 100, 180, imgHeight); 
-
-      pdf.save("resultats_elections_cameroun.pdf");
-    });
-  }
   const description1 =
     "Histogramme montrant la répartition des votes dans le bureau de vote de " +
-    (resultats ? resultats.nom_bureau : "N/A") +
+    (bureauDeVote ? bureauDeVote.nom_bureau : "N/A") +
     "."; 
 
   return (
