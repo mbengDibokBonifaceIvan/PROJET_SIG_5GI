@@ -46,7 +46,7 @@ interface BureauDeVote {
   centreVote: CentreDeVote;
 }
 
-interface Resultat {
+interface Resultats {
   id_resultat: number;
   bureauVote: BureauDeVote;
   candidat: Candidat;
@@ -62,12 +62,12 @@ interface Resultat {
  });
 
 export default function ResultatChart() {
-  const [resultat, setResultat] = useState<Resultat[]>([]);
+  const [resultat, setResultat] = useState<Resultats[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get<Resultat[]>(
+        const response = await axios.get<Resultats[]>(
           "http://localhost:8080/resultats/all"
         );
         setResultat(response.data);
@@ -107,7 +107,7 @@ if (!filteredResultats || filteredResultats.length === 0) {
             ))}
           </div>
 
-          {filteredResultats.map((candidatVote: Resultat) => (
+          {filteredResultats.map((candidatVote: Resultats) => (
             <div
               key={candidatVote.candidat.nom_candidat}
               className="flex flex-col items-center gap-2"
