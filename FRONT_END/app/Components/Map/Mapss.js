@@ -87,9 +87,21 @@ function FlyToActiveCity({ activeCityCords }) {
 
   return null;
 }
-function getColor(d) {
-  const scale = chroma.scale(["white", "red"]).domain([0, 1000]); // Ajustez la palette et les valeurs
-  return scale(d);
+function getColor(region) {
+  const colorMap = {
+    Adamaoua: "#800026",
+    Centre: "#BD0026",
+    Est: "#E31A1C",
+    Littoral: "#FC4E2A",
+    Nord: "#FD8D3C",
+    "Nord-Ouest": "#FEB24C",
+    Ouest: "#FED976",
+    Sud: "#FFEDA0",
+    "Sud-Ouest": "#41B6C4",
+    "Extrême-Nord": "#225EA8",
+  };
+
+  return colorMap[region] || "#ccc"; // Retourne la couleur associée à la région ou une couleur par défaut
 }
 
 function Mapss() {
@@ -119,7 +131,7 @@ function Mapss() {
       <MapContainer
         style={{ width: "100%", height: "100%" }}
         center={[activeCityCords.lat, activeCityCords.lon]}
-        zoom={6}
+        zoom={8}
         scrollWheelZoom={true}
         className="rounded-lg m-4 w-full h-full"
       >
@@ -137,14 +149,11 @@ function Mapss() {
             },
           }}
         >
-            <Popup>
-              <div>
-                <h3>Hello</h3>
-               
-              </div>
-            </Popup>
-
-  
+          <Popup>
+            <div>
+              <h3>Hello</h3>
+            </div>
+          </Popup>
         </Marker>
         <GeoJSON
           data={statesData}
@@ -152,7 +161,7 @@ function Mapss() {
             fillColor: getColor(feature.properties.NAME_1),
             weight: 2,
             opacity: 1,
-            color: "magenta",
+            color: "white",
             dashArray: "3",
             fillOpacity: 0.7,
           })}
