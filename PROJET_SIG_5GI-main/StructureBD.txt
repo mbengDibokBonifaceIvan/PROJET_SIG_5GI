@@ -1,0 +1,74 @@
+
+
+TABLE:électeurs
+* id_électeur (clé primaire)
+* nom
+* prénom
+* date_naissance
+* adresse (Adresse: Pour déterminer le bureau de vote auquel l'électeur est rattaché. 
+exemple: 12, rue des Écoles, 93100 Montreuil ou mieux ses coordonnees sous forme 
+de tuple(lattitude,longitude) )
+* numéro_électeur
+* bureau_vote_id (clé étrangère vers la table bureaux_vote)
+* date_inscription
+
+
+
+
+
+TABLE:bureaux_vote
+id_bureau_vote (clé primaire)
+nom_bureau
+adresse
+centre_vote_id (clé étrangère vers la table centres_vote)
+
+
+
+TABLE:centres_vote
+id_centre_vote (clé primaire)
+nom_centre
+arrondissement_id (clé étrangère vers la table arrondissements)
+
+
+
+TABLE:arrondissements
+id_arrondissement (clé primaire)
+nom_arrondissement
+département_id (clé étrangère vers la table départements)
+
+
+
+TABLE:départements
+id_département (clé primaire)
+nom_département
+région_id (clé étrangère vers la table régions)
+
+
+
+TABLE:régions
+id_région (clé primaire)
+nom_région
+
+
+TABLE:résultats
+* id_résultat (clé primaire)
+* bureau_vote_id (clé étrangère vers la table bureaux_vote)
+* candidat_id (clé étrangère vers la table candidats)
+* nombre_voix
+* date_saisie
+* annee_election
+
+
+
+TABLE:candidats
+id_candidat (clé primaire)
+nom_candidat
+parti_politique
+
+
+
+TABLE:utilisateurs
+id_utilisateur (clé primaire)
+nom_utilisateur
+mot_de_passe
+role (scrutateur, administrateur, etc.)
