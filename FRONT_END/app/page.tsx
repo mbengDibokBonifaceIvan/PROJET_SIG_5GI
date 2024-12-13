@@ -12,20 +12,42 @@ import { useGlobalContextUpdate } from "./context/globalContext";
 import Histogramme from "./Components/Histogramme/Histogramme";
 import Resultat from "./Components/Results/Resultat";
 import html2canvas from "html2canvas";
-import React, { useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { jsPDF } from "jspdf";
 import { calender, downloadIcon, github } from "./utils/Icons";
 import CardElecteur from "./Components/CardElecteur/CardElecteur";
 import RevenueChart from "./Components/revenue-chart";
 import Mapss from "./Components/Map/Mapss";
-
+import axios from "axios";
 
 export default function Home() {
   const { setActiveCityCoords } = useGlobalContextUpdate();
+  const [coordonnees, setCoordonnees] = useState({
+    latitude: 3.864217556071893,
+    longitude: 11.551995201269344,
+  });
+
+  const [resultats, setResultats] = useState<{ nom_bureau: string }>();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:8080/bureaux-de-vote/by-coordinates?latitude=40.7128&longitude=-74.006"
+        );
+        setResultats(response.data);
+        console.log("Données reçues :", response.data);
+      } catch (error) {
+        console.error("Erreur lors de la récupération des résultats :", error);
+      }
+    };
+
+    fetchData();
+  }, [coordonnees]);
 
   const getClickedCityCords = (lat: number, lon: number) => {
     setActiveCityCoords([lat, lon]);
-
+    setCoordonnees({ latitude: lat, longitude: lon });
     window.scrollTo({
       top: 0,
       behavior: "smooth",
@@ -45,7 +67,9 @@ export default function Home() {
     const title = "Résultats des Élections Présidentielles";
     const session = "SESSION 2024 Au Cameroun";
     const description1 =
-      "Histogramme montrant la répartition des votes par Arrondissement.";
+      "Histogramme montrant la répartition des votes dans le " +
+      (resultats ? resultats.nom_bureau : "N/A") +
+      ".";
 
     // Ajouter le titre et les informations supplémentaires au PDF
     pdf.setFontSize(26);
@@ -58,45 +82,51 @@ export default function Home() {
     html2canvas(histogramRef.current).then((histogramCanvas) => {
       const histogramImg = histogramCanvas.toDataURL("image/png");
 
-      const imgHeight = (180 * 100) / 180; // Hauteur ajustée pour maintenir le ratio
+      const imgHeight = (180 * 100) / 180; 
 
       // Ajouter les images au PDF
-      pdf.addImage(histogramImg, "PNG", 15, 100, 180, imgHeight); // Ajouter l'image de l'histogramme
+      pdf.addImage(histogramImg, "PNG", 15, 100, 180, imgHeight); 
 
-      pdf.save("resultats_elections_cameroun.pdf"); // Télécharger le PDF avec le nom "resultats_elections_cameroun.pdf" contenant les images et les informations supplémentaires
+      pdf.save("resultats_elections_cameroun.pdf");
     });
   }
+  const description1 =
+    "Histogramme montrant la répartition des votes dans le bureau de vote de " +
+    (resultats ? resultats.nom_bureau : "N/A") +
+    "."; 
 
   return (
     <main className="mx-[1rem] lg:mx-[2rem] xl:mx-[6rem] 2xl:mx-[8rem] m-auto">
       <Navbar />
       <div className="flex flex-col w-full p-4">
-            <div className="h-full w-full">
-              <AirPollution />
-            </div>
+        <div className="h-full w-full">
+          <AirPollution />
         </div>
+      </div>
       <div className="pb-4 flex flex-col gap-4 md:flex-row">
-      
         <div className="flex flex-col w-full">
           <div className="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
             <div className="h-full">
               <Population />
             </div>
-            <div className="h-full " >
+            <div className="h-full ">
               <CardElecteur />
             </div>
             <div className="h-full">
               <Sunset />
             </div>
-
           </div>
           <div className="mapbox-con mt-4 flex gap-4 flex-1">
             <div className="w-2/3 h-full" ref={mapBoxRef}>
+              <h1>
+                Résultats des bureaux de vote aux coordonnées :{" "}
+                {coordonnees.latitude}, {coordonnees.longitude}
+              </h1>
               <Mapss />
             </div>
             <div className="states flex flex-col gap-3 flex-1 h-full">
               <h2 className="flex items-center gap-2 font-medium  text-blue-500">
-                { calender} Résultats Des Élections Dans Quelques Villes
+                {calender} Résultats Des Élections Dans Quelques Villes
               </h2>
               <div className="flex flex-col gap-4">
                 {defaultStates.map((state, index) => (
@@ -116,11 +146,12 @@ export default function Home() {
             </div>
           </div>
           <div className="h-full p-4 lg:col-span-2" ref={histogramRef}>
-                <Histogramme />
-            </div>
-            <div className="h-full p-4 lg:col-span-2" ref={histogramRef}>
-                <RevenueChart />
-            </div>
+            <h1>{description1}</h1>
+            <Histogramme />
+          </div>
+          <div className="h-full p-4 lg:col-span-2" ref={histogramRef}>
+            <RevenueChart />
+          </div>
         </div>
       </div>
 
