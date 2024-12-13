@@ -4,6 +4,7 @@ import { generateYAxis } from "./lib/utils";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Resultat from "./Results/Resultat";
+import { useGlobalContext, useGlobalContextUpdate } from "../context/globalContext";
 
 interface Region {
   id_region: number;
@@ -62,6 +63,9 @@ interface Resultats {
  });
 
 export default function ResultatChart() {
+    const { setActiveCityCoords } = useGlobalContextUpdate();
+  
+   const { bureauDeVote, candidatData, votesResults } = useGlobalContext();
   const [resultat, setResultat] = useState<Resultats[]>([]);
 
   useEffect(() => {
