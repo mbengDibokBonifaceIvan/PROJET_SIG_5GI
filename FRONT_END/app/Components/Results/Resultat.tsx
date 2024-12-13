@@ -5,6 +5,9 @@ import {  histogramIcon } from "@/app/utils/Icons";
 import { Progress } from "@/components/ui/progress";
 import { Skeleton } from "@/components/ui/skeleton";
 
+
+
+
 interface CandidateData {
   main: { temp_min: number; temp_max: number };
   dt: number;

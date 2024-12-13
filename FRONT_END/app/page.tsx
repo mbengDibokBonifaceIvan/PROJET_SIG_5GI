@@ -17,6 +17,8 @@ import { jsPDF } from "jspdf";
 import { calender, downloadIcon, github } from "./utils/Icons";
 import CardElecteur from "./Components/CardElecteur/CardElecteur";
 import RevenueChart from "./Components/revenue-chart";
+import Mapss from "./Components/Map/Mapss";
+
 
 export default function Home() {
   const { setActiveCityCoords } = useGlobalContextUpdate();
@@ -90,7 +92,7 @@ export default function Home() {
           </div>
           <div className="mapbox-con mt-4 flex gap-4 flex-1">
             <div className="w-2/3 h-full" ref={mapBoxRef}>
-              <Mapbox />
+              <Mapss />
             </div>
             <div className="states flex flex-col gap-3 flex-1 h-full">
               <h2 className="flex items-center gap-2 font-medium  text-blue-500">
