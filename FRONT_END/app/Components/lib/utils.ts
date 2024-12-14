@@ -54,6 +54,12 @@ export type candidatVote = {
   vote: number;
 };
 
+export type ResultatNational = {
+  idCandidat: number;
+  nomCandidat: string;
+  totalVoix: number;
+};
+
 export const formatDateToLocal = (
   dateStr: string,
   locale: string = "en-US"
@@ -68,13 +74,15 @@ export const formatDateToLocal = (
   return formatter.format(date);
 };
 
-export const generateYAxis = (revenue: Resultat[]) => {
-  // Calculate what labels we need to display on the y-axis
-  // based on highest record and in 1000s
-  const yAxisLabels = [];
-  const highestRecord = Math.max(...revenue.map((month) => month.nombre_voix));
+export const generateYAxis = (resultat: ResultatNational[]) => {
+  if (!resultat.length) {
+    return { yAxisLabels: [], topLabel: 0 }; // Handle empty data case
+  }
+
+  const highestRecord = Math.max(...resultat.map((res) => res.totalVoix));
   const topLabel = Math.ceil(highestRecord / 1000) * 1000;
 
+  const yAxisLabels = [];
   for (let i = topLabel; i >= 0; i -= 1000) {
     yAxisLabels.push(`${i / 1000}k`);
   }
