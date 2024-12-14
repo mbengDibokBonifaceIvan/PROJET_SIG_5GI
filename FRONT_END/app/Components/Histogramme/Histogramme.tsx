@@ -22,16 +22,14 @@ const Histogramme: React.FC = () => {
     return <Skeleton className="h-[12rem] w-full" />;
   }
 
-
-  const [fetchedVotes, setFetchedVotes] = useState<resultat[]>([]); 
-  const [totalVotes, setTotalVotes] = useState(0); 
+  const [fetchedVotes, setFetchedVotes] = useState<resultat[]>([]);
+  const [totalVotes, setTotalVotes] = useState(0);
 
   useEffect(() => {
-  
     const fetchVotesResults = async () => {
       try {
         const bureauId = bureauDeVote.id_bureau_vote;
-        console.log(bureauId)
+        console.log(bureauId);
         const res = await axios.get(
           `http://localhost:8080/resultats/totalVoixByCandidatAndBureauDeVote/${bureauId}`
         );
@@ -40,11 +38,11 @@ const Histogramme: React.FC = () => {
 
         // Calculate total votes (assuming data structure from your API response)
         const total = res.data.reduce(
-          (acc:number, result: resultat) => acc + result.totalVoix,
+          (acc: number, result: resultat) => acc + result.totalVoix,
           0
         );
         setTotalVotes(total);
-      } catch (error:any) {
+      } catch (error: any) {
         console.log(
           "Erreur sur la récupération des résultats: ",
           error.message
@@ -60,7 +58,7 @@ const Histogramme: React.FC = () => {
     fetchedVotes.every(
       (result) => result.nomCandidat && typeof result.totalVoix === "number"
     );
-  
+
   return (
     <div className="rounded-lg border shadow-md p-12 dark:text-gray-100">
       <h2 className="font-medium mb-4 ">

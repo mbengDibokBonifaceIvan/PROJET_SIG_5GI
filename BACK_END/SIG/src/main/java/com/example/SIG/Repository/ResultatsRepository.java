@@ -22,7 +22,7 @@ public interface ResultatsRepository extends JpaRepository<Resultats, Long> {
 
 
 
-    @Query("SELECT r.candidat.nom_candidat, SUM(r.nombre_voix) FROM Resultats r GROUP BY r.candidat.nom_candidat")
+    @Query("SELECT r.candidat.id_candidat, r.candidat.nom_candidat, SUM(r.nombre_voix) AS total_voix FROM Resultats r GROUP BY r.candidat.id_candidat, r.candidat.nom_candidat")
     List<Object[]> getTotalVoixByCandidatWithNames();
 
     @Query("SELECT new map(c.nom_candidat as nomCandidat, SUM(r.nombre_voix) as totalVoix) FROM Resultats r JOIN r.candidat c WHERE r.bureauVote.id_bureau_vote = :bureauVoteId GROUP BY c.nom_candidat")
