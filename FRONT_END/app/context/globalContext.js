@@ -26,6 +26,7 @@ export const GlobalContextProvider = ({ children }) => {
         `http://localhost:8080/bureaux-de-vote/by-coordinates?latitude=${lat}&longitude=${lon}`
       );
       setBureauDeVote(res.data);
+      console.log(res.data);
     } catch (error) {
       console.log(
         "Erreur sur la recuperation du bureau de vote: ",

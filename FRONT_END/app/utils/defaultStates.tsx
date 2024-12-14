@@ -3,9 +3,11 @@ const defaultStates = [
     name: "Yaounde",
     country: "CMR",
     state: "Yaounde",
-    lat: 40.4165,
-    lon: -3.7026,
+
+    lat: 3.864217556071893,
+    lon: 11.551995201269344,
   },
+
   {
     name: "Douala",
     country: "CMR",
@@ -34,6 +36,13 @@ const defaultStates = [
     state: "Kribi",
     lat: 2.9404263852128296,
     lon: 9.909710911804625,
+  },
+  {
+    name: "Madrid",
+    country: "ESP",
+    state: "Madrid",
+    lat: 40.4165,
+    lon: -3.7026,
   },
 ];
 

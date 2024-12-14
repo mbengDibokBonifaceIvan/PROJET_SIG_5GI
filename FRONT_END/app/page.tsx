@@ -40,7 +40,7 @@ export default function Home() {
   const histogramRef = useRef<HTMLDivElement | null>(null);
   const mapBoxRef = useRef<HTMLDivElement | null>(null);
 
-  const { bureauDeVote, candidatData, votesResults } = useGlobalContext();
+  const { bureauDeVote } = useGlobalContext();
   
 
   const description1 =
