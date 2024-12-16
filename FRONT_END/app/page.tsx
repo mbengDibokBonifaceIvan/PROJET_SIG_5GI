@@ -79,7 +79,7 @@ export default function Home() {
   };
   return (
     <main className="mx-[1rem] lg:mx-[2rem] xl:mx-[6rem] 2xl:mx-[8rem] m-auto">
-      <Navbar/>
+      <Navbar />
       <div className="flex flex-col w-full p-4">
         <div className="h-full w-full">
           <AirPollution />
@@ -100,10 +100,12 @@ export default function Home() {
           </div>
           <div className="mapbox-con mt-4 flex gap-4 flex-1">
             <div className="w-2/3 h-full" ref={mapBoxRef}>
-              <h1>
+              {/**
+              *  <h1>
                 Résultats des bureaux de vote aux coordonnées :{" "}
                 {coordonnees.latitude}, {coordonnees.longitude}
               </h1>
+              */}
 
               <Mapss />
             </div>
