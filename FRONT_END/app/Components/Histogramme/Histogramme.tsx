@@ -16,7 +16,7 @@ const Histogramme: React.FC = () => {
   const { fiveDayForecast } = useGlobalContext();
   const { city, list } = fiveDayForecast;
   const { bureauDeVote } = useGlobalContext();
-  console.log(bureauDeVote.id_bureau_vote);
+ // console.log(bureauDeVote.id_bureau_vote);
 
   if (!bureauDeVote || !city || !list) {
     return <Skeleton className="h-[12rem] w-full" />;
@@ -29,11 +29,11 @@ const Histogramme: React.FC = () => {
     const fetchVotesResults = async () => {
       try {
         const bureauId = bureauDeVote.id_bureau_vote;
-        console.log(bureauId);
+       // console.log(bureauId);
         const res = await axios.get(
           `http://localhost:8080/resultats/totalVoixByCandidatAndBureauDeVote/${bureauId}`
         );
-        console.log(res.data);
+       // console.log(res.data);
         setFetchedVotes(res.data);
 
         // Calculate total votes (assuming data structure from your API response)

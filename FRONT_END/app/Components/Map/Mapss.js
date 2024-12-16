@@ -1,71 +1,27 @@
-import React, { useState, useEffect } from "react";
-import { MapContainer, TileLayer, GeoJSON, Marker, Popup, ScaleControl, useMap } from "react-leaflet";
+import React, { useState, useEffect, useRef } from "react";
+import {
+  MapContainer,
+  TileLayer,
+  GeoJSON,
+  Marker,
+  Popup,
+  ScaleControl,
+  useMap,
+  LayersControl,
+} from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import statesData from "../../../gadm41_CMR_3.json";
-import { useGlobalContext } from "@/app/context/globalContext";
-import chroma from "chroma-js";
+import {
+  useGlobalContext,
+  useGlobalContextUpdate,
+} from "@/app/context/globalContext";
 import { Icon } from "leaflet";
-{
-  /**
-  const Region = {
-  id_region: Number,
-  nom_region: "",
-};
 
-const Departement = {
-  id_departement: Number,
-  nom_departement: "",
-  region: Region,
-};
-
-const Arrondissement = {
-  id_arrondissement: Number,
-  nom_arrondissement: "",
-  departement: Departement,
-};
-
-const CentreDeVote = {
-  id_centre_vote: Number,
-  nom_centre: "",
-  arrondissement: Arrondissement,
-};
-
-const Coordonnees = {
-  latitude: Number,
-  longitude: Number,
-};
-
-const Candidat = {
-  id_candidat: Number,
-  nom_candidat: "",
-  parti_politique: "",
-};
-
-const BureauDeVote = {
-  id_bureau_vote: Number,
-  nom_bureau: "",
-  coordonnees: Coordonnees,
-  centreVote: CentreDeVote,
-};
-
-const Resultats = {
-  id_resultat: Number,
-  bureauVote: BureauDeVote,
-  candidat: Candidat,
-  nombre_voix: Number,
-  date_saisie: new Date(),
-  annee_election: Number,
-};
-
-
-   */
-}
 const icon = new Icon({
   iconUrl: "marker.svg",
   iconSize: [25, 41],
   iconAnchor: [12, 41],
 });
-//const [activeEvent, setActiveEvent] = (useState < Resultats) | (null > null);
 
 function FlyToActiveCity({ activeCityCords }) {
   const map = useMap();
@@ -87,6 +43,7 @@ function FlyToActiveCity({ activeCityCords }) {
 
   return null;
 }
+
 function getColor(region) {
   const colorMap = {
     Adamaoua: "#800026",
@@ -104,24 +61,51 @@ function getColor(region) {
   return colorMap[region] || "#ccc"; // Retourne la couleur associée à la région ou une couleur par défaut
 }
 
+function highlightFeature(e) {
+  var layer = e.target;
+
+  layer.setStyle({
+    weight: 5,
+    color: "#666",
+    dashArray: "",
+    fillOpacity: 0.7,
+  });
+
+  layer.bringToFront();
+}
+
 function Mapss() {
   const { forecast } = useGlobalContext();
   const [activeCityCords, setActiveCityCords] = useState(null);
-
+  const geoJsonRef = useRef(null); // Référencer la couche GeoJSON
+  const { bureauDeVote, votesResults } = useGlobalContext();
+  const { BaseLayer } = LayersControl;
   useEffect(() => {
     if (!forecast || !forecast.coord) {
       return;
     }
 
     setActiveCityCords(forecast.coord);
-
-
   }, [forecast]);
+
+  const onEachFeature = (feature, layer) => {
+    layer.on({
+      mouseover: () => {
+        console.log(feature.properties.NAME_1);
+        setHoveredState(feature.properties.NAME_1);
+        highlightFeature({ target: layer });
+      },
+      mouseout: () => {
+        setHoveredState(null);
+        geoJsonRef.current.resetStyle(layer); // Utiliser la référence pour reset le style
+      },
+    });
+  };
 
   if (!activeCityCords) {
     return (
       <div>
-        <h1>Loading...</h1>
+        <h1>Chargement de la carte...</h1>
       </div>
     );
   }
@@ -135,27 +119,62 @@ function Mapss() {
         scrollWheelZoom={true}
         className="rounded-lg m-4 w-full h-full"
       >
-        <TileLayer
-          attribution='&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        />
+        <LayersControl position="topright">
+          <BaseLayer checked name="OpenStreetMap">
+            <TileLayer
+              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> WebGenius 2025'
+            />
+          </BaseLayer>
+          <BaseLayer name="CartoDB">
+            <TileLayer
+              url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png"
+              attribution='&copy; <a href="https://carto.com/">CartoDB</a> WebGenius 2025'
+            />
+          </BaseLayer>
+        </LayersControl>
+
         <Marker
           position={[activeCityCords.lat, activeCityCords.lon]}
           icon={icon}
           eventHandlers={{
             click: () => {
-              //setActiveEvent(event);
               console.log("Hello Ivan");
             },
           }}
         >
           <Popup>
-            <div>
-              <h3>Hello</h3>
+            <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md">
+              <h3 className="text-2xl font-bold text-gray-800 dark:text-white mb-2">
+                Bienvenue au bureau de vote {bureauDeVote.nom_bureau}!
+              </h3>
+              {votesResults.length > 0 ? (
+                <ul className="mt-4">
+                  <p className="text-lg text-gray-600 dark:text-gray-400">
+                    Voici les résultats de cette zone:
+                  </p>
+                  {votesResults.map((resultat, index) => (
+                    <li key={index} className="mb-2">
+                      <p className="text-lg font-semibold text-blue-600 dark:text-blue-400">
+                        Session {resultat.annee_election}
+                      </p>
+                      <p className="text-md text-gray-700 dark:text-gray-300">
+                        {resultat.candidat.nom_candidat}: {resultat.nombre_voix}
+                      </p>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p className="text-md text-red-600 dark:text-red-400 mt-4">
+                  Aucun résultat trouvé pour ce bureau de vote.
+                </p>
+              )}
             </div>
           </Popup>
         </Marker>
+
         <GeoJSON
+          ref={geoJsonRef}
           data={statesData}
           style={(feature) => ({
             fillColor: getColor(feature.properties.NAME_1),
@@ -165,6 +184,7 @@ function Mapss() {
             dashArray: "3",
             fillOpacity: 0.7,
           })}
+          onEachFeature={onEachFeature}
         />
 
         <ScaleControl position="bottomleft" imperial={false} />

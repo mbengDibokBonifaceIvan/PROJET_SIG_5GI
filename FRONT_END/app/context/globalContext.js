@@ -27,6 +27,8 @@ export const GlobalContextProvider = ({ children }) => {
       );
       setBureauDeVote(res.data);
       console.log(res.data);
+      fetchVotesResults(res.data.id_bureau_vote);
+          console.log(res.data.id_bureau_vote);
     } catch (error) {
       console.log(
         "Erreur sur la recuperation du bureau de vote: ",
@@ -41,28 +43,24 @@ export const GlobalContextProvider = ({ children }) => {
       const res = await axios.get("http://localhost:8080/candidats/all");
       setCandidatData(res.data);
     } catch (error) {
-      console.log(
-        "Erreur sur la recuperation des candidats: ",
-        error.message
-      );
+      console.log("Erreur sur la recuperation des candidats: ", error.message);
     }
   };
 
   //Resultats des votes
 
   const [votesResults, setVotesResults] = useState({});
-  const fetchVotesResults = async () => {
+  const fetchVotesResults = async (idBureauVote) => {
     try {
-      const res = await axios.get("http://localhost:8080/resultats/all");
+      const res = await axios.get(
+        `http://localhost:8080/resultats/bureau/${idBureauVote}`
+      );
       setVotesResults(res.data);
+      console.log("Resultats des votes: ", res.data)
     } catch (error) {
       console.log("Erreur sur la recuperation des resulttats: ", error.message);
     }
   };
-
-
-
-
 
   const [airQuality, setAirQuality] = useState({});
   const [fiveDayForecast, setFiveDayForecast] = useState({});
@@ -159,7 +157,7 @@ export const GlobalContextProvider = ({ children }) => {
       value={{
         bureauDeVote,
         candidatData,
-votesResults,
+        votesResults,
         forecast,
         airQuality,
         fiveDayForecast,
