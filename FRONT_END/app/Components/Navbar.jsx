@@ -40,12 +40,20 @@ function Navbar() {
 
     const title = "REPUBLIQUE DU CAMEROUN";
     const motto = "PAIX-TRAVAIL-PATRIE";
-    const resumeInfo = "Résumé des informations électorales";
+    const resumeInfo = "RESUME DES INFORMTIONS ELECTORALES";
     const signatures = "Signatures : ______WEB_GENIUS_5GI________\n";
 
     // Text styles
     pdf.setFont("times");
     pdf.setFontSize(18);
+
+    // Insertion de l'image Armoiries_CMR.png
+    const imgData1 = "/Armoiries_CMR.png";
+    pdf.addImage(imgData1, "PNG", 10, 10, 50, 50);
+
+    // Insertion de l'image LOGO-POLYTECHNIQUE-01-scaled.jpg
+    const imgData2 = "/LOGO-POLYTECHNIQUE-01-scaled.jpg";
+    pdf.addImage(imgData2, "JPG", pdf.internal.pageSize.width - 60, 10, 50, 50);
 
     // Title
     pdf.text(title, 105, 20, { align: "center" });
@@ -56,7 +64,7 @@ function Navbar() {
 
     // Résumé des informations électorales
     pdf.setFontSize(16);
-    pdf.text(resumeInfo, 15, 60);
+    pdf.text(resumeInfo, 105, 70, { align: "center" });
 
     // Table header
     const tableHeaders = [
