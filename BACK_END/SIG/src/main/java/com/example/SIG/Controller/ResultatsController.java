@@ -88,4 +88,8 @@ public class ResultatsController {
     public List<Resultats> getResultatsByBureauVoteId(@PathVariable Long idBureauVote) {
         return resultatsRepository.findAllByBureauVoteId(idBureauVote);
     }
+    @GetMapping("/total-votes/{bureauId}")
+    public Integer getTotalVotesByBureauId(@PathVariable Long bureauId) {
+        return resultatsRepository.getTotalVotesByBureauId(bureauId);
+    }
 }

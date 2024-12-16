@@ -34,4 +34,8 @@ public interface ResultatsRepository extends JpaRepository<Resultats, Long> {
 
     @Query("SELECT r FROM Resultats r WHERE r.bureauVote.id_bureau_vote = :idBureauVote")
     List<Resultats> findAllByBureauVoteId(@Param("idBureauVote") Long idBureauVote);
+
+    @Query("SELECT SUM(r.nombre_voix) FROM Resultats r WHERE r.bureauVote.id_bureau_vote = :bureauId")
+    Integer getTotalVotesByBureauId(@Param("bureauId") Long bureauId);
+
 }
