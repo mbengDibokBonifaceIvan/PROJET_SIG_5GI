@@ -142,7 +142,7 @@ function Mapss() {
           }}
         >
           <Popup>
-            <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md">
+            <div className="bg-white dark:bg-gray-800 dark:text-white p-4 rounded-lg shadow-md">
               <h3 className="text-2xl font-bold text-gray-800 dark:text-white mb-2">
                 Bienvenue au bureau de vote {bureauDeVote.nom_bureau}!
               </h3>

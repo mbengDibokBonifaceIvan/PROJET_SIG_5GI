@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 import AirPollution from "./Components/AirPollution/AirPollution";
-import Navbar from "./Components/Navbar";
+
 import Population from "./Components/Population/Population";
 import Sunset from "./Components/Sunset/Sunset";
 import defaultStates from "./utils/defaultStates";
@@ -15,6 +15,7 @@ import Mapss from "./Components/Map/Mapss";
 import axios from "axios";
 import { lusitana } from "./Components/lib/fonts";
 import ResultatChart from "./Components/revenue-chart";
+import Navbar from "./Components/Navbar";
 interface BureauDeVote {
   nom_bureau: string;
   centreVote: {
@@ -70,10 +71,15 @@ export default function Home() {
     "Histogramme montrant la répartition des votes dans le bureau de vote de " +
     (bureauDeVote ? bureauDeVote.nom_bureau : "N/A") +
     "."; 
+  const itemsPerPage = 9;
+  const [showAll, setShowAll] = useState(false);
 
+  const handleClick = () => {
+    setShowAll(!showAll);
+  };
   return (
     <main className="mx-[1rem] lg:mx-[2rem] xl:mx-[6rem] 2xl:mx-[8rem] m-auto">
-      <Navbar />
+      <Navbar/>
       <div className="flex flex-col w-full p-4">
         <div className="h-full w-full">
           <AirPollution />
@@ -108,7 +114,10 @@ export default function Home() {
                 {calender} Résultats Des Élections Dans Quelques Bureaux De Vote
               </h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-                {BureauDeVote.map((state, index) => (
+                {BureauDeVote.slice(
+                  0,
+                  showAll ? BureauDeVote.length : itemsPerPage
+                ).map((state, index) => (
                   <div
                     key={index}
                     className="border rounded-lg cursor-pointer shadow-sm dark:shadow-none bg-white dark:bg-gray-800"
@@ -136,6 +145,16 @@ export default function Home() {
                     </div>
                   </div>
                 ))}
+                {BureauDeVote.length > itemsPerPage && (
+                  <div
+                    className="border rounded-lg cursor-pointer shadow-sm dark:shadow-none bg-white dark:bg-gray-800"
+                    onClick={handleClick}
+                  >
+                    <div className="p-4 text-center text-blue-500 cursor-pointer">
+                      {showAll ? "Voir moins" : "Voir plus"}
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           </div>

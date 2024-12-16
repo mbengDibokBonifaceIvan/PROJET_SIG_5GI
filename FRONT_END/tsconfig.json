@@ -27,6 +27,6 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     "app/Components/Mapbox/Mapbox.js"
-, "app/test/page.jsx", "app/electeur/page.jsx", "app/Components/Map/Mapss.js", "app/Components/revenue-chart.tsx"  ],
+, "app/test/page.jsx", "app/electeur/page.jsx", "app/Components/Map/Mapss.js", "app/Components/revenue-chart.tsx", "app/Components/Navbar.jsx"  ],
   "exclude": ["node_modules"]
 }
