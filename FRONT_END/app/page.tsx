@@ -10,9 +10,11 @@ import Histogramme from "./Components/Histogramme/Histogramme";
 import React, { useEffect, useRef, useState } from "react";
 import { calender } from "./utils/Icons";
 import CardElecteur from "./Components/CardElecteur/CardElecteur";
-import RevenueChart from "./Components/revenue-chart";
+//import RevenueChart from "./Components/revenue-chart";
 import Mapss from "./Components/Map/Mapss";
 import axios from "axios";
+import { lusitana } from "./Components/lib/fonts";
+import ResultatChart from "./Components/revenue-chart";
 interface BureauDeVote {
   nom_bureau: string;
   centreVote: {
@@ -100,7 +102,9 @@ export default function Home() {
               <Mapss />
             </div>
             <div className="states flex flex-col gap-3 flex-1 h-full">
-              <h2 className="flex items-center gap-2 font-medium  text-blue-500">
+              <h2
+                className={`${lusitana.className} mb-4 text-xl md:text-2xl flex items-center gap-2 font-medium text-nowrap text-blue-500`}
+              >
                 {calender} Résultats Des Élections Dans Quelques Bureaux De Vote
               </h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
@@ -136,11 +140,13 @@ export default function Home() {
             </div>
           </div>
           <div className="h-full p-4 lg:col-span-2" ref={histogramRef}>
-            <h1>{description1}</h1>
+            <h1 className={`${lusitana.className} mb-4 text-xl md:text-2xl`}>
+              {description1}
+            </h1>
             <Histogramme />
           </div>
           <div className="h-full p-4 lg:col-span-2" ref={histogramRef}>
-            <RevenueChart />
+            <ResultatChart />
           </div>
         </div>
       </div>

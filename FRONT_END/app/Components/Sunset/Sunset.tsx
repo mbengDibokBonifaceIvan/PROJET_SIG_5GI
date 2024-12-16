@@ -1,44 +1,41 @@
 "use client";
-import { useGlobalContext, useGlobalContextUpdate } from "@/app/context/globalContext";
+import { useGlobalContext } from "@/app/context/globalContext";
 import { voteIcon, voteYesIcon } from "@/app/utils/Icons";
 import { formatNumber, unixToTime } from "@/app/utils/misc";
 import { Skeleton } from "@/components/ui/skeleton";
 import React, { useEffect, useState } from "react";
-import { userCheckIcon } from '../../utils/Icons';
+import { userCheckIcon } from "../../utils/Icons";
 import axios from "axios";
 
 function Sunset() {
-  const { forecast } = useGlobalContext();
-const { fiveDayForecast } = useGlobalContext();
+  const { forecast, fiveDayForecast, bureauDeVote } = useGlobalContext();
   const [totalVote, setTotalVote] = useState(0);
-  const { setActiveCityCoords } = useGlobalContextUpdate();
-    const [coordonnees, setCoordonnees] = useState({
-      latitude: 3.864217556071893,
-      longitude: 11.551995201269344,
-    });
+  const { city } = fiveDayForecast;
 
-useEffect(() => {
-  const fetchtotalVote = async () => {
-    try {
-      const response = await axios.get('http://localhost:8080/resultats/totalVotes');
-      setTotalVote(response.data);
-    } catch (error) {
-      console.error('Erreur lors de la récupération des votants:', error);
+  useEffect(() => {
+    if (bureauDeVote && forecast && forecast.sys && forecast.sys.sunset) {
+      const fetchtotalVote = async () => {
+        try {
+          const response = await axios.get(
+            `http://localhost:8080/resultats/total-votes/${bureauDeVote.id_bureau_vote}`
+          );
+          //console.log(response.data);
+          setTotalVote(response.data);
+          if (response.data <= 0) {
+            setTotalVote(0);
+          }
+        } catch (error) {
+          console.error("Erreur lors de la récupération des votants:", error);
+        }
+      };
+
+      fetchtotalVote();
     }
-  }; fetchtotalVote();
- },
-  []);
+  }, [bureauDeVote, forecast]);
 
-const { city } = fiveDayForecast;
-  if (!forecast || !forecast?.sys || !forecast?.sys?.sunset) {
+  if (!bureauDeVote || !forecast || !forecast.sys || !forecast.sys.sunset) {
     return <Skeleton className="h-[12rem] w-full" />;
   }
-  
-  const times = forecast?.sys?.sunset;
-  const timezone = forecast?.timezone;
-
-  const sunsetTime = unixToTime(times, timezone);
-  const sunrise = unixToTime(forecast?.sys?.sunrise, timezone);
 
   return (
     <div className="pt-6 pb-5 px-4 h-[12rem] border rounded-lg flex flex-col gap-5 dark:bg-dark-grey shadow-sm dark:shadow-none">
