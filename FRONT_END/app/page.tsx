@@ -1,32 +1,53 @@
 "use client";
 import Image from "next/image";
 import AirPollution from "./Components/AirPollution/AirPollution";
-import Mapbox from "./Components/Mapbox/Mapbox";
 import Navbar from "./Components/Navbar";
 import Population from "./Components/Population/Population";
 import Sunset from "./Components/Sunset/Sunset";
-import Temperature from "./Components/Temperature/Temperature";
-import Wind from "./Components/Wind/Wind";
 import defaultStates from "./utils/defaultStates";
 import { useGlobalContext, useGlobalContextUpdate } from "./context/globalContext";
 import Histogramme from "./Components/Histogramme/Histogramme";
-import Resultat from "./Components/Results/Resultat";
-import html2canvas from "html2canvas";
 import React, { useEffect, useRef, useState } from "react";
-import { jsPDF } from "jspdf";
-import { calender, downloadIcon, github } from "./utils/Icons";
+import { calender } from "./utils/Icons";
 import CardElecteur from "./Components/CardElecteur/CardElecteur";
 import RevenueChart from "./Components/revenue-chart";
 import Mapss from "./Components/Map/Mapss";
 import axios from "axios";
-
+interface BureauDeVote {
+  nom_bureau: string;
+  centreVote: {
+    nom_centre: string;
+  };
+  coordonnees: {
+    latitude: number;
+    longitude: number;
+  };
+}
 export default function Home() {
   const { setActiveCityCoords } = useGlobalContextUpdate();
   const [coordonnees, setCoordonnees] = useState({
     latitude: 3.864217556071893,
     longitude: 11.551995201269344,
   });
+ const [BureauDeVote, setBureauDeVote] = useState<BureauDeVote[]>([]);
 
+ useEffect(() => {
+   const fetchBureauDeVotes = async () => {
+     try {
+       const res = await axios.get("http://localhost:8080/bureaux-de-vote/all");
+       setBureauDeVote(res.data);
+       console.log("BureauDeVotes: " + res.data)
+     } catch (error: any) {
+       console.error(
+         "Erreur sur la récupération des résultats:",
+         error.message
+       );
+      
+     }
+   };
+
+   fetchBureauDeVotes();
+ }, []);
 
   const getClickedCityCords = (lat: number, lon: number) => {
     setActiveCityCoords([lat, lon]);
@@ -75,25 +96,40 @@ export default function Home() {
                 Résultats des bureaux de vote aux coordonnées :{" "}
                 {coordonnees.latitude}, {coordonnees.longitude}
               </h1>
-            
+
               <Mapss />
             </div>
             <div className="states flex flex-col gap-3 flex-1 h-full">
               <h2 className="flex items-center gap-2 font-medium  text-blue-500">
-                {calender} Résultats Des Élections Dans Quelques Villes
+                {calender} Résultats Des Élections Dans Quelques Bureaux De Vote
               </h2>
-              <div className="flex flex-col gap-4">
-                {defaultStates.map((state, index) => (
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                {BureauDeVote.map((state, index) => (
                   <div
                     key={index}
-                    className="border rounded-lg cursor-pointer dark:bg-dark-grey shadow-sm dark:shadow-none"
-                    onClick={() => {
-                      getClickedCityCords(state.lat, state.lon);
-                    }}
+                    className="border rounded-lg cursor-pointer shadow-sm dark:shadow-none bg-white dark:bg-gray-800"
                   >
-                    <p className="px-6 py-4 text-blue-950 dark:text-blue-100">
-                      {state.name}
-                    </p>
+                    <div className="p-4">
+                      <h3 className="text-lg font-semibold text-blue-950 dark:text-blue-100">
+                        {state.nom_bureau}
+                      </h3>
+                      <p className="text-sm text-gray-600 dark:text-gray-400 mt-2">
+                        Centre de vote: {state.centreVote.nom_centre}
+                      </p>
+                      <div className="mt-4">
+                        <button
+                          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                          onClick={() => {
+                            getClickedCityCords(
+                              state.coordonnees.latitude,
+                              state.coordonnees.longitude
+                            );
+                          }}
+                        >
+                          Voir sur la carte
+                        </button>
+                      </div>
+                    </div>
                   </div>
                 ))}
               </div>

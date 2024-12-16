@@ -92,12 +92,10 @@ function Mapss() {
     layer.on({
       mouseover: () => {
         console.log(feature.properties.NAME_1);
-        setHoveredState(feature.properties.NAME_1);
         highlightFeature({ target: layer });
       },
       mouseout: () => {
-        setHoveredState(null);
-        geoJsonRef.current.resetStyle(layer); // Utiliser la référence pour reset le style
+        geoJsonRef.current.resetStyle(layer); 
       },
     });
   };

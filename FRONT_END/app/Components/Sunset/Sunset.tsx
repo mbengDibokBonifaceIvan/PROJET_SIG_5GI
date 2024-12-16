@@ -1,5 +1,5 @@
 "use client";
-import { useGlobalContext } from "@/app/context/globalContext";
+import { useGlobalContext, useGlobalContextUpdate } from "@/app/context/globalContext";
 import { voteIcon, voteYesIcon } from "@/app/utils/Icons";
 import { formatNumber, unixToTime } from "@/app/utils/misc";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -10,7 +10,12 @@ import axios from "axios";
 function Sunset() {
   const { forecast } = useGlobalContext();
 const { fiveDayForecast } = useGlobalContext();
-const [totalVote, setTotalVote] = useState(0);
+  const [totalVote, setTotalVote] = useState(0);
+  const { setActiveCityCoords } = useGlobalContextUpdate();
+    const [coordonnees, setCoordonnees] = useState({
+      latitude: 3.864217556071893,
+      longitude: 11.551995201269344,
+    });
 
 useEffect(() => {
   const fetchtotalVote = async () => {
