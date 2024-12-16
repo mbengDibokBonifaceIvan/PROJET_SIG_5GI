@@ -26,9 +26,9 @@ export const GlobalContextProvider = ({ children }) => {
         `http://localhost:8080/bureaux-de-vote/by-coordinates?latitude=${lat}&longitude=${lon}`
       );
       setBureauDeVote(res.data);
-      console.log(res.data);
+      //  console.log(res.data);
       fetchVotesResults(res.data.id_bureau_vote);
-          console.log(res.data.id_bureau_vote);
+      //   console.log(res.data.id_bureau_vote);
     } catch (error) {
       console.log(
         "Erreur sur la recuperation du bureau de vote: ",
@@ -56,7 +56,7 @@ export const GlobalContextProvider = ({ children }) => {
         `http://localhost:8080/resultats/bureau/${idBureauVote}`
       );
       setVotesResults(res.data);
-      console.log("Resultats des votes: ", res.data)
+      console.log("Resultats des votes: ", res.data);
     } catch (error) {
       console.log("Erreur sur la recuperation des resulttats: ", error.message);
     }
