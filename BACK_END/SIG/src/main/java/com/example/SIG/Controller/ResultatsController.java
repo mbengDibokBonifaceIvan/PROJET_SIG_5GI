@@ -83,4 +83,9 @@ public class ResultatsController {
     public List<Map<String, Object>> getTotalVoixByCandidatAndBureauDeVote(@PathVariable Long bureauVoteId) {
         return resultatsRepository.getTotalVoixByCandidatAndBureauDeVote(bureauVoteId);
     }
+
+    @GetMapping("/bureau/{idBureauVote}")
+    public List<Resultats> getResultatsByBureauVoteId(@PathVariable Long idBureauVote) {
+        return resultatsRepository.findAllByBureauVoteId(idBureauVote);
+    }
 }

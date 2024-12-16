@@ -75,6 +75,7 @@ export default function Home() {
                 Résultats des bureaux de vote aux coordonnées :{" "}
                 {coordonnees.latitude}, {coordonnees.longitude}
               </h1>
+            
               <Mapss />
             </div>
             <div className="states flex flex-col gap-3 flex-1 h-full">
