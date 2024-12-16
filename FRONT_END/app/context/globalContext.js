@@ -172,7 +172,7 @@ export const GlobalContextProvider = ({ children }) => {
       <GlobalContextUpdate.Provider
         value={{
           setActiveCityCoords,
-          //setCoordonnees,
+          setBureauDeVote
         }}
       >
         {children}
