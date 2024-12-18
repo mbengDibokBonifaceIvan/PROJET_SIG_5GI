@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 
 @RestController
@@ -70,5 +71,25 @@ public class ResultatsController {
         } else {
             return -1; // Ou une autre valeur par défaut pour indiquer qu'aucun résultat n'a été trouvé pour l'ID donné
         }
+    }
+
+
+    @GetMapping("/totalVoixByCandidatWithNames")
+    public List<Object[]> getTotalVoixByCandidatWithNames() {
+        return resultatsRepository.getTotalVoixByCandidatWithNames();
+    }
+
+    @GetMapping("/totalVoixByCandidatAndBureauDeVote/{bureauVoteId}")
+    public List<Map<String, Object>> getTotalVoixByCandidatAndBureauDeVote(@PathVariable Long bureauVoteId) {
+        return resultatsRepository.getTotalVoixByCandidatAndBureauDeVote(bureauVoteId);
+    }
+
+    @GetMapping("/bureau/{idBureauVote}")
+    public List<Resultats> getResultatsByBureauVoteId(@PathVariable Long idBureauVote) {
+        return resultatsRepository.findAllByBureauVoteId(idBureauVote);
+    }
+    @GetMapping("/total-votes/{bureauId}")
+    public Integer getTotalVotesByBureauId(@PathVariable Long bureauId) {
+        return resultatsRepository.getTotalVotesByBureauId(bureauId);
     }
 }
