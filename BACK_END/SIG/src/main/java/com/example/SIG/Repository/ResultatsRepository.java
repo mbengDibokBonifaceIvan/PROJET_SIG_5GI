@@ -7,10 +7,7 @@ import org.springframework.stereotype.Repository;
 import com.example.SIG.Model.Resultats;
 
 import java.util.List;
-<<<<<<< HEAD
 import java.util.Map;
-=======
->>>>>>> new_diroil
 
 @Repository
 public interface ResultatsRepository extends JpaRepository<Resultats, Long> {
@@ -22,7 +19,6 @@ public interface ResultatsRepository extends JpaRepository<Resultats, Long> {
 
     @Query("SELECT SUM(r.nombre_voix) FROM Resultats r WHERE r.candidat.id_candidat = :candidatId")
     int getTotalVoixByCandidat(@Param("candidatId") Long candidatId);
-<<<<<<< HEAD
 
 
 
@@ -42,6 +38,4 @@ public interface ResultatsRepository extends JpaRepository<Resultats, Long> {
     @Query("SELECT SUM(r.nombre_voix) FROM Resultats r WHERE r.bureauVote.id_bureau_vote = :bureauId")
     Integer getTotalVotesByBureauId(@Param("bureauId") Long bureauId);
 
-=======
->>>>>>> new_diroil
 }

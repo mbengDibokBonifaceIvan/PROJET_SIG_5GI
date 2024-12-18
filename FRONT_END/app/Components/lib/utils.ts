@@ -42,6 +42,7 @@ export type Resultat= {
   annee_election: number;
 }
 
+
 export const formatCurrency = (amount: number) => {
   return (amount / 100).toLocaleString("en-US", {
     style: "currency",
@@ -74,12 +75,12 @@ export const formatDateToLocal = (
   return formatter.format(date);
 };
 
-export const generateYAxis = (resultat: ResultatNational[]) => {
+export const generateYAxis = (resultat: Resultat[]) => {
   if (!resultat.length) {
     return { yAxisLabels: [], topLabel: 0 }; // Handle empty data case
   }
 
-  const highestRecord = Math.max(...resultat.map((res) => res.totalVoix));
+  const highestRecord = Math.max(...resultat.map((res) => res.nombre_voix));
   const topLabel = Math.ceil(highestRecord / 1000) * 1000;
 
   const yAxisLabels = [];
