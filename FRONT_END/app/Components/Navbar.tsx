@@ -12,6 +12,9 @@ import {
 import axios from "axios";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
+import { lusitana } from "./lib/fonts";
+
+
 
 function Navbar() {
   const [resultats, setResultats] = useState([]);
@@ -37,7 +40,7 @@ const generatePDF = async () => {
   const title = "REPUBLIQUE DU CAMEROUN";
   const motto = "PAIX-TRAVAIL-PATRIE";
   const resumeInfo = "RESUME DES INFORMTIONS ELECTORALES";
-  const signatures = "Signatures : ______WEB_GENIUS_5GI________\n";
+  const signatures = "Signature : ______By WEBGENIUS_5GI\n";
 
   // Text styles
   pdf.setFont("times");
@@ -178,7 +181,9 @@ const generatePDF = async () => {
     <div className="w-full py-4 flex items-center justify-between">
       <div>
         {" "}
-        <p className="text-2xl">ELECAM-RESULTS.COM</p>{" "}
+        <p className={`${lusitana.className} text-2xl`}>
+          ELECAM-RESULTS.COM
+        </p>{" "}
       </div>
       <div className="left"></div>
       <div className="search-container flex shrink-0 w-full gap-2 sm:w-fit">
@@ -188,13 +193,13 @@ const generatePDF = async () => {
           <ThemeDropdown />
 
           <Button
-            className="source-code-btn flex items-center gap-2"
+            className={`${lusitana.className} source-code-btn flex items-center gap-2`}
             onClick={generatePDF}
           >
             {downloadIcon} Télécharger PDF
           </Button>
           <Button
-            className="source-code-btn flex items-center gap-2"
+            className={`${lusitana.className} source-code-btn flex items-center gap-2`}
             onClick={goToLogin}
           >
             {lockIcon} Connexion

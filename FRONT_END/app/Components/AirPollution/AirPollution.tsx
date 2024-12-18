@@ -7,6 +7,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import axios from "axios";
+import { lusitana } from "../lib/fonts";
 
 function AirPollution() {
 
@@ -66,28 +67,33 @@ function AirPollution() {
        dark:bg-dark-grey shadow-sm dark:shadow-none col-span-full sm-2:col-span-2 md:col-span-2 xl:col-span-2"
     >
       <div className="flex ">
-      <Image
-        src="/Armoiries_CMR.png"
-        width={75}
-        height={10}
-        className=""
-        alt="Armoiries du Cameroun"
-      />
-      <div className="p-4"></div>
-      <div  className="flex-col items-center justify-center mx-auto  ">
-      <p
-            className={`text-xl md:text-xl md:leading-normal`}
-          >
-            <strong>Bienvenue sur ELECAM-RESULTS.COM!</strong> Découvrez les résultats en temps réel.
+        <Image
+          src="/Armoiries_CMR.png"
+          width={75}
+          height={10}
+          className=""
+          alt="Armoiries du Cameroun"
+        />
+        <div className="p-4"></div>
+        <div className="flex-col items-center justify-center mx-auto  ">
+          <p className={`${lusitana.className} text-xl md:text-xl md:leading-normal`}>
+            <strong >
+              Bienvenue sur ELECAM-RESULTS.COM!
+            </strong>{" "}
+            Découvrez les résultats en temps réel.
           </p>
-        <h1 className="flex items-center gap-2 p-1 font-medium justify-center  text-blue-500">
-          SESSION {annee} {flagIcon}
-        </h1>
-        <p className="text-center"> Résultats Des Élections Présidentielle {annee} Au Cameroun</p>
+          <h1
+            className={`${lusitana.className} flex items-center gap-2 p-1 font-medium justify-center  text-blue-500`}
+          >
+            SESSION {annee} {flagIcon}
+          </h1>
+          <p className={`${lusitana.className} text-center`}>
+            {" "}
+            Résultats Des Élections Présidentielle {annee} Au Cameroun
+          </p>
+        </div>
+      </div>
     </div>
-      </div>
-      </div>
-
   );
 }
 

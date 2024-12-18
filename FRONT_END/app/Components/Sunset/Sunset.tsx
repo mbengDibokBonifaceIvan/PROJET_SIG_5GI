@@ -6,6 +6,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import React, { useEffect, useState } from "react";
 import { userCheckIcon } from "../../utils/Icons";
 import axios from "axios";
+import { lusitana } from "../lib/fonts";
 
 function Sunset() {
   const { forecast, fiveDayForecast, bureauDeVote } = useGlobalContext();
@@ -38,7 +39,7 @@ function Sunset() {
   }
 
   return (
-    <div className="pt-6 pb-5 px-4 h-[12rem] border rounded-lg flex flex-col gap-5 dark:bg-dark-grey shadow-sm dark:shadow-none">
+    <div className={`${lusitana.className} pt-6 pb-5 px-4 h-[12rem] border rounded-lg flex flex-col gap-5 dark:bg-dark-grey shadow-sm dark:shadow-none`}>
       <div className="top">
         <h2 className="flex items-center gap-2 font-medium text-blue-500 ">
           {userCheckIcon} Total De Personnes ayant Voté
