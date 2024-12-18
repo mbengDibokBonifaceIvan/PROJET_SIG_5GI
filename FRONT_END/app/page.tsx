@@ -16,6 +16,7 @@ import axios from "axios";
 import { lusitana } from "./Components/lib/fonts";
 import ResultatChart from "./Components/revenue-chart";
 import Navbar from "./Components/Navbar";
+
 interface BureauDeVote {
   nom_bureau: string;
   centreVote: {
@@ -79,7 +80,7 @@ export default function Home() {
   };
   return (
     <main className="mx-[1rem] lg:mx-[2rem] xl:mx-[6rem] 2xl:mx-[8rem] m-auto">
-      <Navbar />
+      <Navbar/>
       <div className="flex flex-col w-full p-4">
         <div className="h-full w-full">
           <AirPollution />
