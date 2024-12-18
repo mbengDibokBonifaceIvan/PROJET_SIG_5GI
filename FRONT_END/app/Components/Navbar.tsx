@@ -55,7 +55,7 @@ const generatePDF = async () => {
   pdf.text(title, 105, 20, { align: "center" });
 
   // Motto
-  pdf.setFontSize(14);
+  pdf.setFontSize(15);
   pdf.text(motto, 105, 30, { align: "center" });
 
   // Résumé des informations électorales
