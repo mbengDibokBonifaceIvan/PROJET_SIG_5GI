@@ -13,13 +13,20 @@ public class Bureaux_De_Vote {
 
     private String nom_bureau;
 
+<<<<<<< HEAD
     @Embedded
     private Coordonnees coordonnees;
 
+=======
+    private double latitude;
+
+    private double longitude;
+>>>>>>> new_diroil
     @ManyToOne
     @JoinColumn(name = "centre_vote_id")
     private Centres_De_Vote centreVote;
 
+<<<<<<< HEAD
     public Bureaux_De_Vote() {
     }
 
@@ -27,6 +34,20 @@ public class Bureaux_De_Vote {
         this.id_bureau_vote = id_bureau_vote;
         this.nom_bureau = nom_bureau;
         this.coordonnees = coordonnees;
+=======
+    // @Embedded
+    // private Coordonnees coordonnees;
+
+    public Bureaux_De_Vote() {
+    }
+
+    public Bureaux_De_Vote(Long id_bureau_vote, String nom_bureau ,double latitude, double longitude /*Coordonnees coordonnees*/, Centres_De_Vote centreVote) {
+        this.id_bureau_vote = id_bureau_vote;
+        this.nom_bureau = nom_bureau;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        //this.coordonnees = coordonnees;
+>>>>>>> new_diroil
         this.centreVote = centreVote;
     }
 
@@ -48,6 +69,7 @@ public class Bureaux_De_Vote {
         this.nom_bureau = nom_bureau;
     }
 
+<<<<<<< HEAD
     public Coordonnees getCoordonnees() {
         return coordonnees;
     }
@@ -56,6 +78,32 @@ public class Bureaux_De_Vote {
         this.coordonnees = coordonnees;
     }
 
+=======
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
+    }
+
+    // public Coordonnees getCoordonnees() {
+    //return coordonnees;
+    //}
+
+    //public void setCoordonnees(Coordonnees coordonnees) {
+    //this.coordonnees = coordonnees;
+    //}
+
+>>>>>>> new_diroil
     public Centres_De_Vote getCentreVote() {
         return centreVote;
     }

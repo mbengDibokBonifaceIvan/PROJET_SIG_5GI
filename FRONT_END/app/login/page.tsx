@@ -66,7 +66,7 @@ const Login = () => {
 
             // Rediriger en fonction du rôle
             if (userData.role === 'admin') {
-                window.location.href = '/admin';
+                window.location.href = '/AdminUI';
             } else if (userData.role === 'scrutateur') {
                 window.location.href = '/scrutateur';
             } else {

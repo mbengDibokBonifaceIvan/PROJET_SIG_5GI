@@ -1,0 +1,110 @@
+/* .product_box{
+width:320px;
+overflow:hidden;
+max-height:470px;
+padding:10px;
+background-color: #fff;
+box-shadow:rgba(100,100,111,0.2), 0px 7px 29px 0px;
+} */
+
+
+
+
+
+.product_box {
+    border: 1px solid #ccc; /* Bordure uniforme */
+    border-radius: 8px; /* Coins arrondis */
+    padding: 20px; /* Espacement interne */
+    background: #f9f9f9; /* Couleur de fond */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Ombre légère */
+    margin: 10px; /* Espacement externe entre les cartes */
+    transition: transform 0.2s; /* Transition pour l'effet de survol */
+  }
+  
+  .product_box:hover {
+    transform: scale(1.05); /* Agrandissement au survol */
+  }
+  
+  .description {
+    text-align: center; /* Centrer le texte */
+  }
+  
+  .value {
+    font-size: 16px; /* Taille de police pour la valeur */
+    color: #333; /* Couleur du texte */
+    margin: 10px 0; /* Marge au-dessus et en-dessous */
+  }
+  
+  .btn {
+    padding: 10px 15px; /* Espacement interne du bouton */
+    color: #fff; /* Couleur du texte */
+    background-color: #007bff; /* Couleur de fond du bouton */
+    border: none; /* Pas de bordure */
+    border-radius: 5px; /* Coins arrondis du bouton */
+    cursor: pointer; /* Curseur en forme de main */
+    transition: background-color 0.3s; /* Transition pour le changement de couleur */
+  }
+  
+  .btn:hover {
+    background-color: #0056b3; /* Couleur de fond du bouton au survol */
+  }
+
+
+
+
+/* 
+.description {
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+    justify-content: center; 
+  }
+   */
+  /* .Value {
+   
+    margin: 0; 
+  } */
+
+
+/* .description{
+    margin-top: 10px;
+} 
+
+.Value{
+    margin:8px 0px;
+    font-size: 20px;
+    color:#222;
+    font-weight: bold;
+} */
+
+span{
+    font-size:14px;
+    text-decoration: line-through ;
+    margin-left: 10px;
+    color: #ccc;
+}
+.description .para{
+    font-size:15px;
+    margin-bottom: 10 px;
+}
+
+.description .btn{
+    margin-top: 20px;
+    outline: none;
+    border: 1px solid rgb(123,52,52);
+    padding: 12px 32px;
+    border-radius: 40px;
+    background: none;
+    color: rgb(123,52,52);
+    font-weight: bold;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition:.3s linear;
+
+}
+
+.description.btn:hover{
+    background:rgb(123,52,52);
+    color: #fff;
+}
+

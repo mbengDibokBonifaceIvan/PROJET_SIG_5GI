@@ -8,8 +8,8 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  Paper,
-  Button,
+  Paper,  
+  Button, 
 } from "@mui/material";
 
 const ElecteursPage = () => {
@@ -29,7 +29,7 @@ const ElecteursPage = () => {
     console.log(`Editing electeur with id: ${id}`);
   };
 
-  const handleDelete = (id) => {
+  const handleDelete = ( id) => {
     console.log(`Deleting electeur with id: ${id}`);
   };
 

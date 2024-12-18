@@ -157,3 +157,143 @@ footer:hover .footer-text > img {
     flex: initial;
   }
 }
+<<<<<<< HEAD
+=======
+/* Sidebar *//* Sidebar clair (pour le thème sombre global) */
+
+.sidebar-light {
+  background-color: #f0f0f0; /* Fond clair */
+  color: #333; /* Texte sombre */
+  width: 200px;
+  padding: 20px;
+  transition: background-color 0.5s ease, color 0.5s ease;
+  border-right: 1px solid #ddd;
+}
+
+/* Sidebar sombre (pour le thème clair global) */
+
+.sidebar {
+  background: rgb(35, 84, 173);
+  color: white;
+  height: 100vh;
+  overflow-y: auto;
+}
+
+/* Liens Sidebar en thème clair */
+.sidebar-light .link {
+  color: #333;
+}
+
+.sidebar-light .link:hover {
+  background-color: #e0e0e0;
+  border-right-color: #555;
+}
+
+/* Liens Sidebar en thème sombre */
+.sidebar-dark .link {
+  color: #f0f0f0;
+}
+
+.sidebar-dark .link:hover {
+  background-color: #444;
+  border-right-color: #999;
+}
+
+.top_section {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 15px 10px;
+}
+.logo {
+  font-size: 18px;
+  line-height: 0;
+}
+.bars {
+  width: 30px;
+}
+.hide {
+  display: none;
+}
+
+.search {
+  display: flex;
+  align-items: center;
+  margin: 10px 0;
+  height: 30px;
+  padding: 10px;
+}
+.search input {
+  border: none;
+  margin-left: 10px;
+  border-radius: 5px;
+  background: rgb(238, 238, 238);
+
+  color: white;
+}
+
+.routes {
+  margin-top: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.link {
+  display: flex;
+  gap: 10px;
+  padding: 5px 10px;
+  border-right: 4px solid transparent;
+  transition: 0.2s cubic-bezier(0.6, -0.28, 0.735, 0.045);
+  text-decoration: none;
+}
+
+.light .link {
+  color: #333; /* Texte sombre */
+}
+.light .link:hover {
+  background-color: #e0e0e0;
+  border-right-color: #555; /* Petite bordure à droite pour effet visuel */
+}
+
+/* Style des liens en thème sombre */
+.dark .link {
+  color: #f0f0f0; /* Texte clair */
+}
+
+.dark .link:hover {
+  background-color: #444;
+  border-right-color: #999; /* Petite bordure à droite pour effet visuel */
+}
+
+
+.active {
+  border-right: 4px solid white;
+  background: rgb(140, 143, 157);
+}
+.link_text {
+  white-space: nowrap;
+  font-size: 15px;
+}
+
+.menu {
+  display: flex;
+  color: white;
+
+  padding: 5px 10px;
+  border-right: 4px solid transparent;
+  transition: 0.2s cubic-bezier(0.6, -0.28, 0.735, 0.045);
+  justify-content: space-between;
+}
+.menu_item {
+  display: flex;
+  gap: 10px;
+}
+.menu_container {
+  display: flex;
+  flex-direction: column;
+}
+.menu_container .link {
+  padding-left: 20px;
+  border-bottom: #fff 0.5px solid;
+}
+>>>>>>> new_diroil
