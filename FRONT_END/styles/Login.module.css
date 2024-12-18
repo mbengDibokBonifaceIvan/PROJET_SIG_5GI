@@ -1,0 +1,43 @@
+.loginForm {
+  @apply bg-white justify-around items-center p-4 h-110 shadow-lg border;
+  width: 450px;
+  border-radius: 32px;
+}
+
+.loginField {
+  @apply w-full relative;
+}
+.loginFieldErr {
+  @apply w-full relative;
+  color: red;
+}
+.loginFieldErr > input {
+  border: 1px solid red;
+}
+.loginField > span,
+.loginFieldErr > span {
+  position: absolute;
+  top: -8px;
+  left: 10px;
+  background: white;
+}
+.eye {
+  position: absolute;
+  right: 15px;
+  top: 12px;
+  width: 10px;
+  height: 10px;
+}
+.allez {
+  color: blue;
+  position: relative;
+  margin-left: 15px;
+  right: 15px;
+  width: 128px;
+  height: 10px;
+}
+
+/*responsive*/
+
+@media screen and (max-width: 818px) {
+}
