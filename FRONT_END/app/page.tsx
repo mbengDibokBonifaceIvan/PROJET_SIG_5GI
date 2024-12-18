@@ -16,6 +16,7 @@ import axios from "axios";
 import { lusitana } from "./Components/lib/fonts";
 import ResultatChart from "./Components/revenue-chart";
 import Navbar from "./Components/Navbar";
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface BureauDeVote {
   nom_bureau: string;
@@ -78,9 +79,13 @@ export default function Home() {
   const handleClick = () => {
     setShowAll(!showAll);
   };
+
+  if (!BureauDeVote || BureauDeVote.length === 0) {
+    return <Skeleton className="h-[12rem] w-full" />;
+  }
   return (
     <main className="mx-[1rem] lg:mx-[2rem] xl:mx-[6rem] 2xl:mx-[8rem] m-auto">
-      <Navbar/>
+      <Navbar />
       <div className="flex flex-col w-full p-4">
         <div className="h-full w-full">
           <AirPollution />
@@ -100,7 +105,7 @@ export default function Home() {
             </div>
           </div>
           <div className="mapbox-con mt-4 flex gap-4 flex-1">
-            <div className="w-2/3 h-full" ref={mapBoxRef}>
+            <div className="border rounded-lg w-2/3 h-full" ref={mapBoxRef}>
               {/**
               *  <h1>
                 Résultats des bureaux de vote aux coordonnées :{" "}
@@ -110,9 +115,9 @@ export default function Home() {
 
               <Mapss />
             </div>
-            <div className="states flex flex-col gap-3 flex-1 h-full">
+            <div className={`${lusitana.className} border rounded-lg states flex flex-col gap-3 flex-1 h-full`}>
               <h2
-                className={`${lusitana.className} mb-4 text-xl md:text-2xl flex items-center gap-2 font-medium text-nowrap text-blue-500`}
+                className="mb-4 text-xl md:text-2xl flex items-center gap-2 font-medium text-nowrap text-blue-500"
               >
                 {calender} Résultats Des Élections Dans Quelques Bureaux De Vote
               </h2>
@@ -123,13 +128,13 @@ export default function Home() {
                 ).map((state, index) => (
                   <div
                     key={index}
-                    className="border rounded-lg cursor-pointer shadow-sm dark:shadow-none bg-white dark:bg-gray-800"
+                    className="border rounded-lg cursor-pointer shadow-sm dark:shadow-none bg-white dark:bg-dark-grey"
                   >
                     <div className="p-4">
-                      <h3 className="text-lg font-semibold text-blue-950 dark:text-blue-100">
+                      <h3 className="text-lg font-semibold text-blue-950 dark:text-blue-300">
                         {state.nom_bureau}
                       </h3>
-                      <p className="text-sm text-gray-600 dark:text-gray-400 mt-2">
+                      <p className="text-sm text-gray-600 dark:text-white mt-2">
                         Centre de vote: {state.centreVote.nom_centre}
                       </p>
                       <div className="mt-4">

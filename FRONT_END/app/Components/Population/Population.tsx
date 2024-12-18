@@ -5,6 +5,7 @@ import { formatNumber } from "@/app/utils/misc";
 import { Skeleton } from "@/components/ui/skeleton";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import { lusitana } from "../lib/fonts";
 
 function Population() {
   const { fiveDayForecast } = useGlobalContext();
@@ -56,7 +57,7 @@ useEffect(() => {
   }
 
   return (
-    <div className="pt-6 pb-5 px-4 h-[12rem] border rounded-lg flex flex-col gap-4 dark:bg-dark-grey shadow-sm dark:shadow-none">
+    <div className={`${lusitana.className} pt-6 pb-5 px-4 h-[12rem] border rounded-lg flex flex-col gap-4 dark:bg-dark-grey shadow-sm dark:shadow-none`}>
       <div className="top">
         <h2 className="flex items-center gap-2 text-blue-500 font-medium ">
           {people} Nombre total d'électeurs.
