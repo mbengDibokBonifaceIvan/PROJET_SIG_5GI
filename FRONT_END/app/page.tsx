@@ -1,22 +1,19 @@
 "use client";
 import Image from "next/image";
 import AirPollution from "./Components/AirPollution/AirPollution";
-
 import Population from "./Components/Population/Population";
 import Sunset from "./Components/Sunset/Sunset";
-import defaultStates from "./utils/defaultStates";
+//import defaultStates from "./utils/defaultStates";
 import { useGlobalContext, useGlobalContextUpdate } from "./context/globalContext";
 import Histogramme from "./Components/Histogramme/Histogramme";
 import React, { useEffect, useRef, useState } from "react";
 import { calender } from "./utils/Icons";
 import CardElecteur from "./Components/CardElecteur/CardElecteur";
-//import RevenueChart from "./Components/revenue-chart";
 import Mapss from "./Components/Map/Mapss";
 import axios from "axios";
 import { lusitana } from "./Components/lib/fonts";
 import ResultatChart from "./Components/revenue-chart";
 import Navbar from "./Components/Navbar";
-import { Skeleton } from "@/components/ui/skeleton";
 
 interface BureauDeVote {
   nom_bureau: string;
@@ -63,26 +60,18 @@ export default function Home() {
     });
   };
   
-  const histogramRef = useRef<HTMLDivElement | null>(null);
-  const mapBoxRef = useRef<HTMLDivElement | null>(null);
-
   const { bureauDeVote } = useGlobalContext();
   
 
   const description1 =
-    "Histogramme montrant la répartition des votes dans le bureau de vote de " +
-    (bureauDeVote ? bureauDeVote.nom_bureau : "N/A") +
-    "."; 
+    "Histogramme montrant la répartition des votes dans le " +
+    (bureauDeVote ? bureauDeVote.nom_bureau : "N/A") ; 
   const itemsPerPage = 9;
   const [showAll, setShowAll] = useState(false);
 
   const handleClick = () => {
     setShowAll(!showAll);
   };
-
-  if (!BureauDeVote || BureauDeVote.length === 0) {
-    return <Skeleton className="h-[12rem] w-full" />;
-  }
   return (
     <main className="mx-[1rem] lg:mx-[2rem] xl:mx-[6rem] 2xl:mx-[8rem] m-auto">
       <Navbar />
@@ -105,7 +94,7 @@ export default function Home() {
             </div>
           </div>
           <div className="mapbox-con mt-4 flex gap-4 flex-1">
-            <div className="border rounded-lg w-2/3 h-full" ref={mapBoxRef}>
+            <div className="border rounded-lg w-2/3 h-full">
               {/**
               *  <h1>
                 Résultats des bureaux de vote aux coordonnées :{" "}
@@ -166,13 +155,14 @@ export default function Home() {
               </div>
             </div>
           </div>
-          <div className="h-full p-4 lg:col-span-2" ref={histogramRef}>
+          <div className="h-full p-4 lg:col-span-2">
+            <br />
             <h1 className={`${lusitana.className} mb-4 text-xl md:text-2xl`}>
               {description1}
             </h1>
             <Histogramme />
           </div>
-          <div className="h-full p-4 lg:col-span-2" ref={histogramRef}>
+          <div className="h-full p-4 lg:col-span-2">
             <ResultatChart />
           </div>
         </div>
