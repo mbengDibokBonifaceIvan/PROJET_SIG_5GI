@@ -11,13 +11,14 @@ import { lusitana } from "../lib/fonts";
 
 function AirPollution() {
 
-   const [annee, setAnnee] = useState(2024);
+  const [annee, setAnnee] = useState(2024);
+  const { votesResults } = useGlobalContext();
 
    useEffect(() => {
      const fetchAnnee = async () => {
        try {
          const response = await axios.get(
-           "http://localhost:8080/resultats/annee/1"
+           `http://localhost:8080/resultats/annee/${votesResults.annee}`
          );
          if (!response) {
            return <Skeleton className="h-[12rem] w-full" />;

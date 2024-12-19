@@ -29,8 +29,8 @@ const AuthLayout = ({ title, children }: Props) => {
                 <div className="pl-6 leading-8 flex items-stretch justify-start">
                   <div className="h-ful w-1 bg-gradient-to-b from-amber-900 via-amber-700 to-amber-500"></div>
                   <p className={styles.textIntro}>
-                    PAGE EDITION <br />
-                    RESERVE AU ADMINISTRATEUR
+                    PAGE D'EDITION <br />
+                    RESERVE AUX ADMINISTRATEURS
                   </p>
                 </div>
               </div>
