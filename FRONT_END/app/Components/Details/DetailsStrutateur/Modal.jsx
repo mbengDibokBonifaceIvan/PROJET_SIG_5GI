@@ -6,7 +6,7 @@ export const Modal = ({ closeModal, onSubmit, defaultValue }) => {
     defaultValue || {
       nom_utilisateur: "", // Aligné avec le backend
       mot_de_passe: "",
-      role: "Strutateur",
+      role: "Scrutateur",
     }
   );
 
@@ -79,7 +79,7 @@ export const Modal = ({ closeModal, onSubmit, defaultValue }) => {
               onChange={handleChange}
               value={formState.role}
             >
-              <option value="Strutateur">Strutateur</option>
+              <option value="Strutateur">Scrutateur</option>
               <option value="Administrateur">Administrateur</option>
             </select>
           </div>

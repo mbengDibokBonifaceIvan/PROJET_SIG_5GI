@@ -21,7 +21,7 @@ const ProductCard = (props) => {
       <h2>{props.name}</h2>
       <p className='Value'>{props.value} </p>
       
-      <button className='btn' onClick={handleViewMore}>View More</button>
+      <button className='btn' onClick={handleViewMore}>Voir Plus</button>
 
 
       </div>

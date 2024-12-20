@@ -1,7 +1,7 @@
 
 "use client"
 import { NavLink } from "react-router-dom";
-import { FaBars, FaHome, FaLock, FaMoneyBill, FaUser } from "react-icons/fa";
+import { FaBars, FaHome, FaLock, FaMoneyBill, FaSignOutAlt, FaUser } from "react-icons/fa";
 import { MdMessage } from "react-icons/md";
 import { BiAnalyse, BiSearch } from "react-icons/bi";
 import { BiCog } from "react-icons/bi";
@@ -10,6 +10,7 @@ import { BsCartCheck } from "react-icons/bs";
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import SidebarMenu from "./SidebarMenu";
+import { lusitana } from "../lib/fonts";
 const routes = [
   {
     path: "/AdminUI",
@@ -23,8 +24,8 @@ const routes = [
   },
 
   {
-    path: "/strutateurs",
-    name: "Strutateurs",
+    path: "/utilisateurs",
+    name: "Utilisateurs",
     icon: <FaUser />,
   },
   // {
@@ -33,13 +34,11 @@ const routes = [
   //   icon: <MdMessage />,
   // },
 
-
   // {
   //   path: "/analytics",
   //   name: "Analytics",
   //   icon: <BiAnalyse />,
   // },
-
 
   // {
   //   path: "/file-manager",
@@ -64,18 +63,16 @@ const routes = [
   //   ],
   // },
 
-
   // {
   //   path: "/order",
   //   name: "Order",
   //   icon: <BsCartCheck />,
   // },
 
-
   {
-    path: "/settings",
-    name: "Settings",
-    icon: <BiCog />,
+    path: "/logout",
+    name: "Deconnexion",
+    icon: <FaSignOutAlt />,
     exact: true,
     // subRoutes: [
     //   {
@@ -98,15 +95,12 @@ const routes = [
     // ],
   },
 
-
-
-
-//   {
-//     path: "/saved",
-//     name: "Saved",
-//     icon: <AiFillHeart />,
-//   },
- ];
+  //   {
+  //     path: "/saved",
+  //     name: "Saved",
+  //     icon: <AiFillHeart />,
+  //   },
+];
 
 const SideBar = ({ children }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -148,7 +142,6 @@ const SideBar = ({ children }) => {
   return (
     <>
       <div className="main-container">
-
         <motion.div
           animate={{
             width: isOpen ? "380px" : "60px",
@@ -171,7 +164,12 @@ const SideBar = ({ children }) => {
                   exit="hidden"
                   className="logo"
                 >
-                  CMR Elections
+                  <div>
+                    {" "}
+                    <p className={`${lusitana.className} text-2xl`}>
+                      ELECAM-RESULTS.COM
+                    </p>{" "}
+                  </div>
                 </motion.h1>
               )}
             </AnimatePresence>
@@ -180,7 +178,7 @@ const SideBar = ({ children }) => {
               <FaBars onClick={toggle} />
             </div>
           </div>
-          <div className="search">
+          {/**   <div className="search">
             <div className="search_icon">
               <BiSearch />
             </div>
@@ -196,7 +194,7 @@ const SideBar = ({ children }) => {
                 />
               )}
             </AnimatePresence>
-          </div>
+          </div> */}
           <section className="routes">
             {routes.map((route, index) => {
               if (route.subRoutes) {

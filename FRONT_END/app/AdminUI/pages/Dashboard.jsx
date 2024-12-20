@@ -6,11 +6,13 @@ import Footer from "../../Components/Footer/footer";
 
 
 function  Dashboard  () {
-  return <div className="Dashboard"> 
-   <Navbar/>
-  <Card/>
-  <Footer/>
-  </div>;
+  return (
+    <div className="Dashboard">
+      {/** <Navbar/> */}
+      <Card />
+      <Footer />
+    </div>
+  );
 };
 
 export default Dashboard;
