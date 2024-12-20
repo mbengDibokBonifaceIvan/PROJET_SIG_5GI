@@ -135,7 +135,7 @@ const Card = () => {
   }, []);
 
   return (
-    <div className='product'>
+    <div className="product">
       <ProductCard
         value={totalRegions} // Utilisez la valeur récupérée ici
         name="Total Region"
@@ -157,7 +157,7 @@ const Card = () => {
         url="/departement"
       />
       <ProductCard
-        name="Total Bureaux De Vote"
+        name="Total Bureau De Vote"
         value={totalBureauVote}
         url="/bureauvote"
       />
@@ -172,14 +172,14 @@ const Card = () => {
         url="/electeur"
       />
       <ProductCard
-        name="Total Structateur"
+        name="Total Scructateur"
         value={totalStrutateurs}
-        url="/strutateurs"
+        url="/scrutateurs"
       />
       <ProductCard
         name="Total Administrateur"
         value={totalAdministrateurs}
-        url="/strutateurs"
+        url="/superAdministrateur"
       />
     </div>
   );

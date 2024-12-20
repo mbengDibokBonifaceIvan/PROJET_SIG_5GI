@@ -39,12 +39,13 @@
 
 .expand {
   width: 100%;
+   color: black;
 }
 
 .label {
   border-radius: 3px;
   padding: 0.3rem;
-  color: white;
+  color: black;
 }
 
 .label-Administrateur {

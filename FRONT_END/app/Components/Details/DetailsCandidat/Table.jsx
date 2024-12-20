@@ -20,18 +20,19 @@ export const Table = ({ rows, deleteRow, editRow }) => {
           {rows.map((row, idx) => {
             return (
               <tr key={idx}>
-                <td>{row.nom_candidat}</td> {/* Correspond à l'attribut du backend */}
+                <td>{row.nom_candidat}</td>{" "}
+                {/* Correspond à l'attribut du backend */}
                 <td className="expand">{row.parti_politique}</td>{" "}
                 {/* Correspond au backend */}
                 <td className="fit">
                   <span className="actions">
-                    <BsFillTrashFill
-                      className="delete-btn"
-                      onClick={() => deleteRow(idx)}
-                    />
                     <BsFillPencilFill
                       className="edit-btn"
                       onClick={() => editRow(idx)}
+                    />
+                    <BsFillTrashFill
+                      className="delete-btn"
+                      onClick={() => deleteRow(idx)}
                     />
                   </span>
                 </td>

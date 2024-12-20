@@ -5,9 +5,10 @@ import "./pages/Dashboard.css";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Dashboard from "./pages/Dashboard";
 
-import Setting from "./pages/Setting";
+import Logout from "../logout/Logout";
 import Candidats from "./pages/Candidat/Candidats";
-import Strutateurs from "./pages/Scrutateur/Scrutateurs";
+import SuperAdmin from "./pages/SuperAdministrateurs/SuperAdmin";
+import Scrutateurs from "./pages/Scrutateurs/Scrutateurs";
 import Region from "./pages/Region/Region";
 import Departement from "./pages/Departement/Departement";
 import Arrondissement from "./pages/Arrondissement/Arrondissement";
@@ -15,6 +16,7 @@ import CentreVote from "./pages/CentreVote/CentreVote";
 import BureauVote from "./pages/BureauVote/BureauVote";
 import Electeur from "./pages/Electeur/Electeur";
 import Card from "../Components/Card";
+import Utilisateurs from "./pages/Utilisateurs/Utilisateurs";
 function App() {
   return (
     <Router>
@@ -22,14 +24,16 @@ function App() {
         <Routes>
           <Route path="/AdminUI" element={<Dashboard />} />
           <Route path="/candidats" element={<Candidats />} />
-          <Route path="/strutateurs" element={<Strutateurs />} />
-           <Route path="/region" element={<Region />} />
-           <Route path="/departement" element={<Departement />} />
+          <Route path="/utilisateurs" element={<Utilisateurs />} />
+          <Route path="/region" element={<Region />} />
+          <Route path="/departement" element={<Departement />} />
           <Route path="/arrondissement" element={<Arrondissement />} />
-           <Route path="/centrevote" element={<CentreVote />} />
-           <Route path="/bureauvote" element={<BureauVote />} />
-           <Route path="/electeur" element={<Electeur />} />
-          <Route path="/settings" element={<Setting />} />
+          <Route path="/centrevote" element={<CentreVote />} />
+          <Route path="/bureauvote" element={<BureauVote />} />
+          <Route path="/electeur" element={<Electeur />} />
+          <Route path="/logout" element={<Logout/>} />
+          <Route path="/scrutateurs" element={<Scrutateurs />} />
+          <Route path="/superAdministrateur" element={<SuperAdmin />} />
 
           {/* <Route path="*" element={<> not found</>} /> */}
         </Routes>

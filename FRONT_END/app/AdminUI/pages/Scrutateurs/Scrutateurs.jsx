@@ -1,10 +1,10 @@
 "use client";
 import { useState, useEffect } from "react";
-import "./Scrutateur.css";
+import "./Scrutateur.css"
 import { Table } from "../../../Components/Details/DetailsStrutateur/Table";
 import { Modal } from "../../../Components/Details/DetailsStrutateur/Modal";
 
-function Strutateurs() {
+function Scrutateurs() {
   const [modalOpen, setModalOpen] = useState(false);
   const [rows, setRows] = useState([]); // Initialise vide
   const [rowToEdit, setRowToEdit] = useState(null);
@@ -12,8 +12,11 @@ function Strutateurs() {
   // Récupérer les utilisateurs depuis le backend
   const fetchUsers = async () => {
     try {
-      const response = await fetch("http://localhost:8080/utilisateurs/all");
+      const response = await fetch(
+        "http://localhost:8080/utilisateurs/getScrutateurs"
+      );
       const data = await response.json();
+      console.log(data);
       setRows(data); // Mettre à jour les lignes avec les données backend
     } catch (error) {
       console.error("Erreur lors du chargement des utilisateurs :", error);
@@ -48,15 +51,18 @@ function Strutateurs() {
     if (rowToEdit === null) {
       // Ajouter un nouvel utilisateur
       try {
-        const response = await fetch("http://localhost:8080/utilisateurs/addUser", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            nom_utilisateur: newRow.nom_utilisateur,
-            mot_de_passe: newRow.mot_de_passe,
-            role: newRow.role,
-          }),
-        });
+        const response = await fetch(
+          "http://localhost:8080/utilisateurs/addUser",
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              nom_utilisateur: newRow.nom_utilisateur,
+              mot_de_passe: newRow.mot_de_passe,
+              role: newRow.role,
+            }),
+          }
+        );
         const addedUser = await response.json();
         setRows([...rows, addedUser]); // Mettre à jour localement
       } catch (error) {
@@ -80,10 +86,15 @@ function Strutateurs() {
         );
         const updatedUser = await response.json();
         setRows(
-          rows.map((currRow, idx) => (idx === rowToEdit ? updatedUser : currRow))
+          rows.map((currRow, idx) =>
+            idx === rowToEdit ? updatedUser : currRow
+          )
         );
       } catch (error) {
-        console.error("Erreur lors de la modification de l'utilisateur :", error);
+        console.error(
+          "Erreur lors de la modification de l'utilisateur :",
+          error
+        );
       }
     }
 
@@ -92,10 +103,10 @@ function Strutateurs() {
   };
 
   return (
-    <div className="Strutateurs">
+    <div className="Utilisateurs">
       <Table rows={rows} deleteRow={handleDeleteRow} editRow={handleEditRow} />
       <button onClick={() => setModalOpen(true)} className="btn">
-        Add
+        Ajouter
       </button>
       {modalOpen && (
         <Modal
@@ -119,4 +130,4 @@ function Strutateurs() {
   );
 }
 
-export default Strutateurs;
+export default Scrutateurs;

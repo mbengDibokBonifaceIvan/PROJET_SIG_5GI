@@ -7,7 +7,7 @@ export const Table = ({ rows, deleteRow, editRow }) => {
     <div className="table-wrapper">
       {/* Titre */}
       <div className="table-title">
-        <h2>Liste Nationale des Scrutateurs</h2>
+        <h2>Liste des Utilisateurs</h2>
       </div>
 
       {/* Tableau */}
@@ -24,26 +24,25 @@ export const Table = ({ rows, deleteRow, editRow }) => {
           {rows.map((row, idx) => {
             const roleText =
               row.role.charAt(0).toUpperCase() + row.role.slice(1);
-
+console.log(row.motDePasse);
             return (
               <tr key={idx}>
                 <td>{row.nom_utilisateur}</td> {/* Nom aligné au backend */}
-                <td className="expand">{row.mot_de_passe}</td> {/* Mot de Passe */}
+                <td className="text-black text-center dark:text-white">{row.motDePasse}</td>{" "}
+                {/* Mot de Passe */}
                 <td>
-                  <span className={`label label-${row.role}`}>
-                    {roleText}
-                  </span>
+                  <span className="text-black">{roleText}</span>
                 </td>
                 {/* Actions */}
                 <td className="fit">
                   <span className="actions">
-                    <BsFillTrashFill
-                      className="delete-btn"
-                      onClick={() => deleteRow(idx)}
-                    />
                     <BsFillPencilFill
                       className="edit-btn"
                       onClick={() => editRow(idx)}
+                    />
+                    <BsFillTrashFill
+                      className="delete-btn"
+                      onClick={() => deleteRow(idx)}
                     />
                   </span>
                 </td>

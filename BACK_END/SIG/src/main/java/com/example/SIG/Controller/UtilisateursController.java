@@ -122,6 +122,13 @@ public class UtilisateursController {
         return utilisateursRepository.countByRole("SuperAdmin");
     }
 
-
+    @GetMapping("/getSuperAdmins")
+    public List<Utilisateurs> getSuperAdmins() {
+        return utilisateursRepository.findByRole("SuperAdmin");
+    }
+    @GetMapping("/getScrutateurs")
+    public List<Utilisateurs> getScrutateurs() {
+        return utilisateursRepository.findByRole("Scrutateur");
+    }
 
 }
