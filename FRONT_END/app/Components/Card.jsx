@@ -135,7 +135,8 @@ const Card = () => {
   }, []);
 
   return (
-    <div className="product">
+    // <div className="product">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4">
       <ProductCard
         value={totalRegions} // Utilisez la valeur récupérée ici
         name="Total Region"

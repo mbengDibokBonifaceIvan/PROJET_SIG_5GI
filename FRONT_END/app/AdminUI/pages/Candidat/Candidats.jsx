@@ -72,8 +72,6 @@ function Candidats() {
           console.log("Candidat modifié :", data);
           const updatedRows = rows.map((currRow, idx) =>
             idx === rowToEdit ? data : currRow
-          );
-          setRows(updatedRows);
         })
         .catch((err) => console.error("Erreur lors de la modification :", err));
     }
@@ -83,9 +81,9 @@ function Candidats() {
   };
 
   return (
-    <div className="Candidats">
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-800">
       <Table rows={rows} deleteRow={handleDeleteRow} editRow={handleEditRow} />
-      <button onClick={() => setModalOpen(true)} className="btn">
+      <button onClick={() => setModalOpen(true)} className="btn mt-4 bg-blue-600 text-white px-4 py-2 rounded-lg shadow">
         Ajouter
       </button>
       {modalOpen && (
