@@ -72,6 +72,8 @@ function Candidats() {
           console.log("Candidat modifié :", data);
           const updatedRows = rows.map((currRow, idx) =>
             idx === rowToEdit ? data : currRow
+          );
+          setRows(updatedRows);
         })
         .catch((err) => console.error("Erreur lors de la modification :", err));
     }
