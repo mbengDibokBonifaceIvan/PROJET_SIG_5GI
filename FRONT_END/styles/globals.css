@@ -1,47 +1,89 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
 body {
-  @apply h-full overflow-x-hidden;
-}
-html {
-  @apply h-full;
-}
-#__next {
-  @apply h-full;
+    @apply h-full overflow-x-hidden;
 }
 
-.public-DraftEditor-content > div h1 {
-  @apply text-4xl;
+html {
+    @apply h-full;
+}
+
+#__next {
+    @apply h-full;
+}
+
+.public-DraftEditor-content>div h1 {
+    @apply text-4xl;
 }
 
 .node-doc {
-  font-weight: bold;
-  font-size: 45px;
-  text-align: center;
+    font-weight: bold;
+    font-size: 45px;
+    text-align: center;
 }
 
 .node-part {
-  font-weight: bold;
-  font-size: 40px;
+    font-weight: bold;
+    font-size: 40px;
 }
 
 .node-chapter {
-  font-weight: bold;
-  font-size: 30px;
+    font-weight: bold;
+    font-size: 30px;
 }
 
 .node-paragraph {
-  font-weight: bold;
-  font-size: 25px;
+    font-weight: bold;
+    font-size: 25px;
 }
 
 .node-notion {
-  font-weight: bold;
-  font-size: 20px;
+    font-weight: bold;
+    font-size: 20px;
 }
 
 .notion-body {
-  font-size: 15px;
+    font-size: 15px;
+}
+
+
+/* Ajoutez ces classes personnalisées dans votre fichier CSS global ou tailwind.css */
+
+.btn {
+    @apply py-2 px-4 bg-blue-500 text-white rounded cursor-pointer transition-colors;
+}
+
+.btn:hover {
+    @apply bg-blue-700;
+}
+
+span {
+    @apply text-sm line-through ml-4 text-gray-400;
+}
+
+.description .para {
+    @apply text-base mb-2;
+}
+
+.description .btn {
+    @apply mt-4 outline-none border border-red-400 py-3 px-8 rounded-full text-red-400 font-bold uppercase cursor-pointer transition;
+}
+
+.description .btn:hover {
+    @apply bg-red-400 text-white;
+}
+
+
+/* Dans votre fichier CSS */
+
+.table {
+    @apply bg-gray-100 dark: bg-gray-800;
+    @apply text-gray-700 dark: text-gray-200;
+}
+
+.table th {
+    @apply bg-gray-200 dark: bg-gray-700;
+    @apply text-left;
+    @apply py-2 px-4;
 }
