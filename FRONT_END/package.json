@@ -24,7 +24,7 @@
     "@radix-ui/react-progress": "^1.0.3",
     "@radix-ui/react-slot": "^1.0.2",
     "@react-pdf/renderer": "^4.0.0",
-    "axios": "^1.6.7",
+    "axios": "^1.7.9",
     "chart.js": "^4.4.7",
     "chroma-js": "^3.1.2",
     "class-variance-authority": "^0.7.0",
