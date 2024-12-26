@@ -95,10 +95,12 @@ import React, { useState, useEffect } from "react";
 import "./Modal.css";
 
 export const Modal = ({ closeModal, onSubmit, defaultValue }) => {
-  const [formState, setFormState] = useState({
-    Nom: "",
-    MotDePasse: "",
-    Role: "Strutateur",
+  const [formState, setFormState] = useState(
+    defaultValue || {
+    nomUtilisateur: "",
+    motDePasse: "",
+    role: "Scrutateur",
+  
   });
   const [errors, setErrors] = useState("");
 
@@ -118,15 +120,15 @@ export const Modal = ({ closeModal, onSubmit, defaultValue }) => {
   useEffect(() => {
     if (defaultValue) {
       setFormState({
-        Nom: defaultValue.Nom || "",
-        MotDePasse: defaultValue.MotDePasse || "",
-        Role: defaultValue.Role || "Strutateur",
+        nomUtilisateur: defaultValue.nomUtilisateur || "",
+        motDePasse: defaultValue.motDePasse || "",
+        role: defaultValue.role || "Scrutateur",
       });
     }
   }, [defaultValue]);
 
   const validateForm = () => {
-    if (formState.Nom && formState.MotDePasse && formState.Role) {
+    if (formState.nomUtilisateur && formState.motDePasse && formState.role) {
       setErrors("");
       return true;
     } else {
@@ -153,6 +155,8 @@ export const Modal = ({ closeModal, onSubmit, defaultValue }) => {
       closeModal();
     }
   };
+
+
 
   return (
     <div className="modal-container" onClick={(e) => {
@@ -181,38 +185,37 @@ export const Modal = ({ closeModal, onSubmit, defaultValue }) => {
           </div>
           <form onSubmit={handleSubmit}>
             <div className="form-group mb-4">
-              <label htmlFor="Nom" className="text-sm font-semibold">
+              <label htmlFor="nomUtilisateur" className="text-sm font-semibold">
                 Nom
               </label>
               <input
-                name="Nom"
+                name="nomUtilisateur"
                 onChange={handleChange}
-                value={formState.Nom}
+                value={formState.nomUtilisateur}
                 className="border rounded p-2 w-full"
               />
             </div>
             <div className="form-group mb-4">
-              <label htmlFor="MotDePasse" className="text-sm font-semibold">
-                Mot de Passe
+              <label htmlFor="motDePasse" className="text-sm font-semibold">Mot de Passe
               </label>
-              <textarea
-                name="MotDePasse"
+              <input
+                name="motDePasse"
                 onChange={handleChange}
-                value={formState.MotDePasse}
+                value={formState.motDePasse}
                 className="border rounded p-2 w-full"
               />
             </div>
             <div className="form-group mb-4">
-              <label htmlFor="Role" className="text-sm font-semibold">
+              <label htmlFor="role" className="text-sm font-semibold">
                 Rôle
               </label>
               <select
-                name="Role"
+                name="role"
                 onChange={handleChange}
-                value={formState.Role}
+                value={formState.role}
                 className="border rounded p-2 w-full"
               >
-                <option value="Strutateur">Strutateur</option>
+                <option value="Scrutateur">Scrutateur</option>
                 <option value="Administrateur">Administrateur</option>
               </select>
             </div>

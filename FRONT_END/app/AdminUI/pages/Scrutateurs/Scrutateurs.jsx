@@ -9,25 +9,19 @@ function Scrutateurs() {
   const [rows, setRows] = useState([]); // Initialise vide
   const [rowToEdit, setRowToEdit] = useState(null);
 
-  // Récupérer les utilisateurs depuis le backend
-  const fetchUsers = async () => {
-    try {
-      const response = await fetch(
-        "http://localhost:8080/utilisateurs/getScrutateurs"
-      );
-      const data = await response.json();
-      console.log(data);
-      setRows(data); // Mettre à jour les lignes avec les données backend
-    } catch (error) {
-      console.error("Erreur lors du chargement des utilisateurs :", error);
-    }
-  };
 
+
+ 
   useEffect(() => {
-    fetchUsers(); // Charger les utilisateurs au montage du composant
+    fetch("http://localhost:8080/utilisateurs/getScrutateurs")
+      .then((res) => res.json())
+      .then((data) => {
+        console.log("Utilisateurs récupérés :", data);
+        setRows(data);
+      })
+      .catch((err) => console.error("Erreur lors du chargement :", err));
   }, []);
 
-  // Supprimer un utilisateur
   const handleDeleteRow = async (targetIndex) => {
     const userId = rows[targetIndex].id_utilisateur; // Récupérer l'ID utilisateur
     try {
@@ -40,72 +34,69 @@ function Scrutateurs() {
     }
   };
 
-  // Ouvrir le modal pour édition
   const handleEditRow = (idx) => {
     setRowToEdit(idx);
     setModalOpen(true);
   };
 
-  // Ajouter ou éditer un utilisateur
-  const handleSubmit = async (newRow) => {
+
+
+
+
+  const handleSubmit = (newRow) => {
     if (rowToEdit === null) {
-      // Ajouter un nouvel utilisateur
-      try {
-        const response = await fetch(
-          "http://localhost:8080/utilisateurs/addUser",
-          {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              nom_utilisateur: newRow.nom_utilisateur,
-              mot_de_passe: newRow.mot_de_passe,
-              role: newRow.role,
-            }),
-          }
-        );
-        const addedUser = await response.json();
-        setRows([...rows, addedUser]); // Mettre à jour localement
-      } catch (error) {
-        console.error("Erreur lors de l'ajout de l'utilisateur :", error);
-      }
+      // POST : Ajouter un candidat
+      fetch("http://localhost:8080/utilisateurs/addUser", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          nom_utilisateur: newRow.nomUtilisateur,
+          mot_de_passe: newRow.motDePasse,
+          role: newRow.role,
+
+        }),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          console.log("Utilisateur ajouté :", data);
+          setRows([...rows, data]);
+        })
+        .catch((err) => console.error("Erreur lors de l'ajout :", err));
     } else {
-      // Modifier un utilisateur existant
-      const userId = rows[rowToEdit].id_utilisateur;
-      try {
-        const response = await fetch(
-          `http://localhost:8080/utilisateurs/editUser/${userId}`,
-          {
-            method: "PUT",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              nom_utilisateur: newRow.nom_utilisateur,
-              mot_de_passe: newRow.mot_de_passe,
-              role: newRow.role,
-            }),
-          }
-        );
-        const updatedUser = await response.json();
-        setRows(
-          rows.map((currRow, idx) =>
-            idx === rowToEdit ? updatedUser : currRow
-          )
-        );
-      } catch (error) {
-        console.error(
-          "Erreur lors de la modification de l'utilisateur :",
-          error
-        );
-      }
+      // PUT : Modifier un candidat
+      const userToUpdate = rows[rowToEdit];
+
+      fetch(`http://localhost:8080/utilisateurs/editUser/${userToUpdate.id_utilisateur}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          nom_utilisateur: newRow.nomUtilisateur,
+          mot_de_passe: newRow.motDePasse,
+          role: newRow.role
+        }),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          console.log("Utilisateur modifié :", data);
+          const updatedRows = rows.map((currRow, idx) =>
+            idx === rowToEdit ? data : currRow
+          );
+          setRows(updatedRows);
+        })
+        .catch((err) => console.error("Erreur lors de la modification :", err));
     }
 
-    setModalOpen(false);
+    setModalOpen(false); // Fermer le modal
     setRowToEdit(null);
   };
 
+
+
+
   return (
-    <div className="Utilisateurs">
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-800">
       <Table rows={rows} deleteRow={handleDeleteRow} editRow={handleEditRow} />
-      <button onClick={() => setModalOpen(true)} className="btn">
+      <button onClick={() => setModalOpen(true)} className="btn mt-4 bg-blue-600 text-white px-4 py-2 rounded-lg shadow">
         Ajouter
       </button>
       {modalOpen && (
@@ -115,15 +106,7 @@ function Scrutateurs() {
             setRowToEdit(null);
           }}
           onSubmit={handleSubmit}
-          defaultValue={
-            rowToEdit !== null
-              ? {
-                  nom_utilisateur: rows[rowToEdit].nom_utilisateur,
-                  mot_de_passe: rows[rowToEdit].mot_de_passe,
-                  role: rows[rowToEdit].role,
-                }
-              : null
-          }
+          defaultValue={rowToEdit !== null ? rows[rowToEdit] : {}}
         />
       )}
     </div>

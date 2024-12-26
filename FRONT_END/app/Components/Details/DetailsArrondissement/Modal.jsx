@@ -159,16 +159,13 @@
 
 
 
-
-
-
 import React, { useState, useEffect } from "react";
 import "./Modal.css";
 
 export const Modal = ({ closeModal, onSubmit, defaultValue }) => {
   const [formState, setFormState] = useState({
-    Nom: "",
-    Departement: "",
+    nom_arrondissement: "",
+    département: "",
   });
 
   const [departements, setDepartements] = useState([]);
@@ -194,20 +191,21 @@ export const Modal = ({ closeModal, onSubmit, defaultValue }) => {
   useEffect(() => {
     if (defaultValue) {
       setFormState({
-        Nom: defaultValue.nom_arrondissement || "",
-        Departement: defaultValue.département?.id_département || "",
+        nom_arrondissement: defaultValue.nom_arrondissement || "",
+        département: defaultValue.département?.id_département || "",
       });
-    } else {
-      setFormState({
-        Nom: "",
-        Departement: "",
-      });
-    }
+    } 
+    // else {
+    //   setFormState({
+    //     Nom: "",
+    //     Departement: "",
+    //   });
+    // }
   }, [defaultValue]);
 
   // Validation du formulaire
   const validateForm = () => {
-    if (formState.Nom && formState.Departement) {
+    if (formState.nom_arrondissement && formState.département) {
       setErrors("");
       return true;
     } else {
@@ -234,8 +232,8 @@ export const Modal = ({ closeModal, onSubmit, defaultValue }) => {
     if (!validateForm()) return;
 
     const formattedData = {
-      nom_arrondissement: formState.Nom,
-      département: { id_département: formState.Departement },
+      nom_arrondissement: formState.nom_arrondissement,
+      département: { id_département: formState.département },
     };
 
     try {
@@ -303,21 +301,21 @@ export const Modal = ({ closeModal, onSubmit, defaultValue }) => {
           </div>
           <form onSubmit={handleSubmit}>
             <div className="form-group mb-4">
-              <label htmlFor="Nom" className="text-sm font-semibold">Nom de l'Arrondissement</label>
+              <label htmlFor="nom_arrondissement" className="text-sm font-semibold">Nom de l'Arrondissement</label>
               <input
-                name="Nom"
+                name="nom_arrondissement"
                 onChange={handleChange}
-                value={formState.Nom}
+                value={formState.nom_arrondissement}
                 placeholder="Entrez le nom de l'arrondissement"
                 className="border rounded p-2 w-full"
               />
             </div>
             <div className="form-group mb-4">
-              <label htmlFor="Departement" className="text-sm font-semibold">Département</label>
+              <label htmlFor="département" className="text-sm font-semibold">Département</label>
               <select
-                name="Departement"
+                name="département"
                 onChange={handleChange}
-                value={formState.Departement}
+                value={formState.département}
                 className="border rounded p-2 w-full"
               >
                 <option value="" disabled>Sélectionnez un département</option>

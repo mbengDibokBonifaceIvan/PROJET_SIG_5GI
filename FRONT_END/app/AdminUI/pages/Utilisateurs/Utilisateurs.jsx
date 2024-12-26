@@ -77,7 +77,7 @@ import { useState, useEffect } from "react";
 import "./Scrutateur.css";
 import { Table } from "../../../Components/Details/DetailsStrutateur/Table";
 import { Modal } from "../../../Components/Details/DetailsStrutateur/Modal";
-import axios from "axios";
+// import axios from "axios";
 
 function Utilisateurs() {
   const [modalOpen, setModalOpen] = useState(false);
@@ -85,26 +85,25 @@ function Utilisateurs() {
   const [rowToEdit, setRowToEdit] = useState(null);
 
 
-
-  const fetchUtilisateurs = async () => {
-    try {
-      const response = await axios.get("http://localhost:8080/utilisateurs/all");
-      setRows(response.data);
-      console.log(response.data)
-    } catch (error) {
-      console.error("Erreur lors de la récupération des utilisateurs:", error);
-    }
-  };
   useEffect(() => {
-    fetchUtilisateurs();
+    fetch("http://localhost:8080/utilisateurs/all")
+      .then((res) => res.json())
+      .then((data) => {
+        console.log("Utilisateurs récupérés :", data);
+        setRows(data);
+      })
+      .catch((err) => console.error("Erreur lors du chargement :", err));
   }, []);
 
-  const handleDeleteRow = async (id) => {
+  const handleDeleteRow = async (targetIndex) => {
+    const userId = rows[targetIndex].id_utilisateur; // Récupérer l'ID utilisateur
     try {
-      await axios.delete(`http://localhost:8080/utilisateurs/deleteUser/${id}`);
-      fetchUtilisateurs(); // Rafraîchir les utilisateurs
+      await fetch(`http://localhost:8080/utilisateurs/deleteUser/${userId}`, {
+        method: "DELETE",
+      });
+      setRows(rows.filter((_, idx) => idx !== targetIndex)); // Mettre à jour localement
     } catch (error) {
-      console.error("Erreur lors de la suppression de l'utilisateur:", error);
+      console.error("Erreur lors de la suppression de l'utilisateur :", error);
     }
   };
 
@@ -113,20 +112,59 @@ function Utilisateurs() {
     setModalOpen(true);
   };
 
-  const handleSubmit = async (newRow) => {
-    try {
-      if (rowToEdit === null) {
-        await axios.post("http://localhost:8080/utilisateurs/addUser", newRow);
-      } else {
-        await axios.put(`http://localhost:8080/utilisateurs/editUser/${rows[rowToEdit].id_utilisateur}`, newRow);
-      }
-      fetchUtilisateurs(); // Rafraîchir les utilisateurs
-      setModalOpen(false);
-      setRowToEdit(null);
-    } catch (error) {
-      console.error("Erreur lors de l'ajout ou de la modification de l'utilisateur:", error);
+
+
+
+
+  const handleSubmit = (newRow) => {
+    if (rowToEdit === null) {
+      // POST : Ajouter un candidat
+      fetch("http://localhost:8080/utilisateurs/addUser", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          nom_utilisateur: newRow.nomUtilisateur,
+          mot_de_passe: newRow.motDePasse,
+          role: newRow.role,
+
+        }),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          console.log("Utilisateur ajouté :", data);
+          setRows([...rows, data]);
+        })
+        .catch((err) => console.error("Erreur lors de l'ajout :", err));
+    } else {
+      // PUT : Modifier un candidat
+      const userToUpdate = rows[rowToEdit];
+
+      fetch(`http://localhost:8080/utilisateurs/editUser/${userToUpdate.id_utilisateur}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          nom_utilisateur: newRow.nomUtilisateur,
+          mot_de_passe: newRow.motDePasse,
+          role: newRow.role
+        }),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          console.log("Utilisateur modifié :", data);
+          const updatedRows = rows.map((currRow, idx) =>
+            idx === rowToEdit ? data : currRow
+          );
+          setRows(updatedRows);
+        })
+        .catch((err) => console.error("Erreur lors de la modification :", err));
     }
+
+    setModalOpen(false); // Fermer le modal
+    setRowToEdit(null);
   };
+
+
+
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-800">
