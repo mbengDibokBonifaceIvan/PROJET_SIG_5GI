@@ -226,48 +226,58 @@ export const Modal = ({ closeModal, onSubmit, defaultValue }) => {
   };
 
   // Soumission du formulaire
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
 
     if (!validateForm()) return;
 
-    const formattedData = {
-      nom_arrondissement: formState.nom_arrondissement,
-      département: { id_département: formState.département },
-    };
-
-    try {
-      if (defaultValue) {
-        const response = await fetch(
-          `http://localhost:8080/arrondissements/editArrondissement/${defaultValue.id_arrondissement}`,
-          {
-            method: "PUT",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(formattedData),
-          }
-        );
-        if (!response.ok) throw new Error("Erreur lors de la mise à jour de l'arrondissement");
-        const updatedArrondissement = await response.json();
-        onSubmit(updatedArrondissement);
-      } else {
-        const response = await fetch("http://localhost:8080/arrondissements/addArrondissement", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(formattedData),
-        });
-        if (!response.ok) throw new Error("Erreur lors de l'ajout de l'arrondissement");
-        const newArrondissement = await response.json();
-        onSubmit(newArrondissement);
-      }
-      closeModal();
-    } catch (error) {
-      console.error("Erreur lors de la soumission :", error);
-    }
+    onSubmit(formState);
+    closeModal();
   };
+
+
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+
+  //   if (!validateForm()) return;
+
+  //   const formattedData = {
+  //     nom_arrondissement: formState.nom_arrondissement,
+  //     département: { id_département: formState.département },
+  //   };
+
+  //   try {
+  //     if (defaultValue) {
+  //       const response = await fetch(
+  //         `http://localhost:8080/arrondissements/editArrondissement/${defaultValue.id_arrondissement}`,
+  //         {
+  //           method: "PUT",
+  //           headers: {
+  //             "Content-Type": "application/json",
+  //           },
+  //           body: JSON.stringify(formattedData),
+  //         }
+  //       );
+  //       if (!response.ok) throw new Error("Erreur lors de la mise à jour de l'arrondissement");
+  //       const updatedArrondissement = await response.json();
+  //       onSubmit(updatedArrondissement);
+  //     } else {
+  //       const response = await fetch("http://localhost:8080/arrondissements/addArrondissement", {
+  //         method: "POST",
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //         },
+  //         body: JSON.stringify(formattedData),
+  //       });
+  //       if (!response.ok) throw new Error("Erreur lors de l'ajout de l'arrondissement");
+  //       const newArrondissement = await response.json();
+  //       onSubmit(newArrondissement);
+  //     }
+  //     closeModal();
+  //   } catch (error) {
+  //     console.error("Erreur lors de la soumission :", error);
+  //   }
+  // };
 
   // Handle click outside modal to close
   const handleClickOutside = (event) => {
