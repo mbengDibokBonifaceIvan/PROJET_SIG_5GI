@@ -165,8 +165,6 @@
 
 
 
-
-
 "use client";
 import { useState, useEffect } from "react";
 import "./Arrondissement.css";
@@ -227,39 +225,28 @@ function Arrondissement() {
   const handleSubmit = async (newRow) => {
     if (rowToEdit === null) {
       // Si on ajoute un nouvel arrondissement, on envoie une requête POST
-      //try {
-       // const response = await 
-        fetch("http://localhost:8080/arrondissements/addArrondissement", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            nom_arrondissement: newRow.nom_arrondissement,
-            département: newRow.département,
-          }),
-        })
-
-
+      fetch("http://localhost:8080/arrondissements/addArrondissement", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          nom_arrondissement: newRow.nom_arrondissement,
+          département: newRow.département,
+        }),
+      })
         .then((res) => res.json())
         .then((data) => {
           console.log("Arrondissement ajouté :", data);
           setRows([...rows, data]);
         })
         .catch((err) => console.error("Erreur lors de l'ajout :", err));
-
-      //   if (!response.ok) throw new Error("Erreur lors de l'ajout de l'arrondissement");
-
-      //   const addedArrondissement = await response.json();
-      //   setRows([...rows, addedArrondissement]); // Met à jour l'état avec le nouvel arrondissement
-      // } catch (error) {
-      //   console.error("Erreur lors de l'ajout :", error);
-      // }
     } else {
       // Si on modifie un arrondissement existant, on envoie une requête PUT
       const rowToUpdate = rows[rowToEdit];
-      try {
-        const response = await fetch(
+      // try {
+      //   const response = await 
+        fetch(
           `http://localhost:8080/arrondissements/editArrondissement/${rowToUpdate.id_arrondissement}`,
           {
             method: "PUT",
@@ -271,50 +258,49 @@ function Arrondissement() {
               département: newRow.département,
             }),
           }
-        );
-
-        if (!response.ok) throw new Error("Erreur lors de la mise à jour de l'arrondissement");
-
-        const updatedArrondissement = await response.json();
-        const updatedRows = rows.map((currRow, idx) =>
-          idx === rowToEdit ? updatedArrondissement : currRow
-        );
-        setRows(updatedRows); // Met à jour l'état avec l'arrondissement modifié
-      } catch (error) {
-        console.error("Erreur lors de la mise à jour :", error);
-      }
+        )
+    .then((res) => res.json())
+        .then((data) => {
+          console.log("Arrondissement modifié :", data);
+          const updatedRows = rows.map((currRow, idx) =>
+            idx === rowToEdit ? data : currRow
+          );
+          setRows(updatedRows);
+        })
+        .catch((err) => console.error("Erreur lors de la modification :", err));
     }
 
-    setModalOpen(false); // Ferme le modal après la soumission
-    setRowToEdit(null); // Réinitialise l'index d'édition
+    setModalOpen(false); // Fermer le modal
+    setRowToEdit(null);
   };
+
+
+
+
+
 
 
 
   
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-800">
-      
-      <div className="Arrondissement w-full md:w-3/4 lg:w-1/2">
-        <Table rows={rows} deleteRow={handleDeleteRow} editRow={handleEditRow} />
-        <button onClick={() => setModalOpen(true)} className="btn mt-4 bg-blue-600 text-white px-4 py-2 rounded-lg shadow">
-          Ajouter
-        </button>
-        {modalOpen && (
-          <Modal
-            closeModal={() => {
-              setModalOpen(false);
-              setRowToEdit(null);
-            }}
-            onSubmit={handleSubmit}
-            defaultValue={rowToEdit !== null ? rows[rowToEdit] : {}}
-          />
-        )}
-      </div>
+      <Table rows={rows} deleteRow={handleDeleteRow} editRow={handleEditRow} />
+      <button onClick={() => setModalOpen(true)} className="btn mt-4 bg-blue-600 text-white px-4 py-2 rounded-lg shadow">
+        Ajouter
+      </button>
+      {modalOpen && (
+        <Modal
+          closeModal={() => {
+            setModalOpen(false);
+            setRowToEdit(null);
+          }}
+          onSubmit={handleSubmit}
+          defaultValue={rowToEdit !== null ? rows[rowToEdit] : {}}
+        />
+      )}
       <Footer />
     </div>
   );
 }
 
 export default Arrondissement;
-

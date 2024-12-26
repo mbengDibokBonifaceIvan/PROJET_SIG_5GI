@@ -58,8 +58,6 @@
 
 
 
-
-
 import React from "react";
 import { BsFillTrashFill, BsFillPencilFill } from "react-icons/bs";
 import "./Table.css";
@@ -83,10 +81,6 @@ export const Table = ({ rows, deleteRow, editRow }) => {
         </thead>
         <tbody>
           {rows.map((row, idx) => {
-            const statusText =
-              row.département?.nom_département.charAt(0).toUpperCase() +
-              row.département?.nom_département.slice(1);
-
             return (
               <tr key={idx} className="hover:bg-gray-200 dark:hover:bg-gray-500">
                 <td>{row.nom_arrondissement}</td>

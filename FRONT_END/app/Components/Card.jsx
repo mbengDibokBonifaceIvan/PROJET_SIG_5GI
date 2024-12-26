@@ -173,7 +173,7 @@ const Card = () => {
         url="/electeur"
       />
       <ProductCard
-        name="Total Scructateur"
+        name="Total Scrutateur"
         value={totalStrutateurs}
         url="/scrutateurs"
       />

@@ -119,12 +119,12 @@ public class UtilisateursController {
 
     @GetMapping("/nombreSuperAdministrateur")
     public int getNombreSuperAdministrateur() {
-        return utilisateursRepository.countByRole("SuperAdmin");
+        return utilisateursRepository.countByRole("Administrateur");
     }
 
     @GetMapping("/getSuperAdmins")
     public List<Utilisateurs> getSuperAdmins() {
-        return utilisateursRepository.findByRole("SuperAdmin");
+        return utilisateursRepository.findByRole("Administrateur");
     }
     @GetMapping("/getScrutateurs")
     public List<Utilisateurs> getScrutateurs() {
