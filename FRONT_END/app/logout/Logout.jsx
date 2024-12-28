@@ -77,6 +77,7 @@ const Logout = () => {
       {/* <Sidebar /> */}
       <div className="flex flex-col w-full ml-2">
         {/* <Navbar /> */}
+        {/* hello */}
 
         <div className="max-w-md mx-auto p-6 bg-white dark:black shadow-md rounded-lg border border-gray-300 dark:border-gray-600">
           <h2 className="text-xl font-bold text-gray-800 dark:text-white mb-4">
