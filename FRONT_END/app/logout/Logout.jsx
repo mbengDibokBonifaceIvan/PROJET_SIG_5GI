@@ -78,7 +78,7 @@ const Logout = () => {
       <div className="flex flex-col w-full ml-2">
         {/* <Navbar /> */}
 
-        <div className="max-w-md mx-auto p-6 bg-white dark:bg-gray-700 shadow-md rounded-lg border border-gray-300 dark:border-gray-600">
+        <div className="max-w-md mx-auto p-6 bg-white dark:black shadow-md rounded-lg border border-gray-300 dark:border-gray-600">
           <h2 className="text-xl font-bold text-gray-800 dark:text-white mb-4">
             Confirmer votre déconnexion
           </h2>
