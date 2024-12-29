@@ -124,9 +124,8 @@ function Utilisateurs() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           nom_utilisateur: newRow.nomUtilisateur,
-          mot_de_passe: newRow.motDePasse,
+          motDePasse: newRow.motDePasse,
           role: newRow.role,
-
         }),
       })
         .then((res) => res.json())
@@ -139,15 +138,18 @@ function Utilisateurs() {
       // PUT : Modifier un candidat
       const userToUpdate = rows[rowToEdit];
 
-      fetch(`http://localhost:8080/utilisateurs/editUser/${userToUpdate.id_utilisateur}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          nom_utilisateur: newRow.nomUtilisateur,
-          mot_de_passe: newRow.motDePasse,
-          role: newRow.role
-        }),
-      })
+      fetch(
+        `http://localhost:8080/utilisateurs/editUser/${userToUpdate.id_utilisateur}`,
+        {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            nom_utilisateur: newRow.nomUtilisateur,
+            motDePasse: newRow.motDePasse,
+            role: newRow.role,
+          }),
+        }
+      )
         .then((res) => res.json())
         .then((data) => {
           console.log("Utilisateur modifié :", data);
