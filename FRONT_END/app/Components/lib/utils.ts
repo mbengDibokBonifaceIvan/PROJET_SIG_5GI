@@ -42,6 +42,16 @@ export type Resultat= {
   annee_election: number;
 }
 
+export type Res= {
+  candidat: Candidat;
+  vote: number;
+}
+
+export type Resu= {
+  candidat: String;
+  vote: number;
+}
+
 
 export const formatCurrency = (amount: number) => {
   return (amount / 100).toLocaleString("en-US", {
@@ -81,6 +91,22 @@ export const generateYAxis = (resultat: Resultat[]) => {
   }
 
   const highestRecord = Math.max(...resultat.map((res) => res.nombre_voix));
+  const topLabel = Math.ceil(highestRecord / 1000) * 1000;
+
+  const yAxisLabels = [];
+  for (let i = topLabel; i >= 0; i -= 1000) {
+    yAxisLabels.push(`${i / 1000}k`);
+  }
+
+  return { yAxisLabels, topLabel };
+};
+
+export const generateYAxish = (res: Resu[]) => {
+  if (!res.length) {
+    return { yAxisLabels: [], topLabel: 0 }; // Handle empty data case
+  }
+
+  const highestRecord = Math.max(...res.map((res) => res.vote));
   const topLabel = Math.ceil(highestRecord / 1000) * 1000;
 
   const yAxisLabels = [];

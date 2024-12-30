@@ -14,6 +14,14 @@
   border-radius: 64px;
 }
 
+.mainLoginContainer-dark {
+  @apply overflow-hidden relative shadow-lg;
+  background: #1a1a1a; /* Dark background */
+  width: 100%;
+  height: 100%;
+  border-radius: 64px;
+}
+
 .textWelcome {
   @apply text-3xl pl-12 text-white;
   width: 500px !important;

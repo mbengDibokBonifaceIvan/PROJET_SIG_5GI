@@ -1,8 +1,18 @@
-.loginForm {
+/* .loginForm {
   @apply bg-white justify-around items-center p-4 h-110 shadow-lg border;
   width: 450px;
   border-radius: 32px;
-}
+} */
+
+
+/* Sidebar sombre (pour le thème clair global) */
+
+/* .loginForm-dark {
+  background: black;
+  color: white;
+  height: 100vh;
+  overflow-y: auto;
+} */
 
 .loginField {
   @apply w-full relative;
@@ -19,7 +29,6 @@
   position: absolute;
   top: -8px;
   left: 10px;
-  background: white;
 }
 .eye {
   position: absolute;

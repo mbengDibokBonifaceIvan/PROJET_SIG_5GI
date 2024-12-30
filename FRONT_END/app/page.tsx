@@ -14,6 +14,8 @@ import axios from "axios";
 import { lusitana } from "./Components/lib/fonts";
 import ResultatChart from "./Components/revenue-chart";
 import Navbar from "./Components/Navbar";
+import Footer from "./Components/Footer/footer";
+import HistoVerticale from "./Components/HistoVerticale/HistoVerticale";
 
 interface BureauDeVote {
   nom_bureau: string;
@@ -165,18 +167,17 @@ export default function Home() {
           <div className="h-full p-4 lg:col-span-2">
             <ResultatChart />
           </div>
+          <div className="h-full p-4 lg:col-span-2">
+            <br />
+            <h1 className={`${lusitana.className} mb-4 text-xl md:text-2xl`}>
+              {description1}
+            </h1>
+            <HistoVerticale />
+          </div>
         </div>
       </div>
 
-      <footer className="py-4 flex justify-center pb-8">
-        <p className="footer-text text-sm flex items-center gap-1">
-          CopyRight
-          <Image src={"/logo-white.svg"} alt="logo" width={20} height={20} />
-          <a href="#" target="_blank" className=" text-green-300 font-bold">
-            WebGenius 2025
-          </a>
-        </p>
-      </footer>
+      <Footer />
     </main>
   );
 }
