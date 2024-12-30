@@ -159,13 +159,20 @@ export const Modal = ({ closeModal, onSubmit, defaultValue }) => {
 
 
   return (
-    <div className="modal-container" onClick={(e) => {
-      if (e.target.className === "modal-container") closeModal();
-    }}>
+    <div
+      className="modal-container"
+      onClick={(e) => {
+        if (e.target.className === "modal-container") closeModal();
+      }}
+    >
       <div className="fixed z-10 left-0 top-0 w-full h-full bg-black bg-opacity-50 flex items-center justify-center">
-        <div className="modal bg-white dark:bg-gray-800 rounded-lg p-8 w-96 mx-auto"> {/* Centered with mx-auto */}
+        <div className="modal bg-white dark:bg-gray-800 rounded-lg p-8 w-96 mx-auto">
+          {" "}
+          {/* Centered with mx-auto */}
           <div className="modal-header flex justify-between items-center mb-4">
-            <h3 className="text-2xl font-bold text-gray-800 dark:text-gray-100">Utilisateur</h3>
+            <h3 className="text-2xl font-bold text-gray-800 dark:text-gray-100">
+              Utilisateur
+            </h3>
             <button type="button" className="close-btn" onClick={closeModal}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -196,7 +203,8 @@ export const Modal = ({ closeModal, onSubmit, defaultValue }) => {
               />
             </div>
             <div className="form-group mb-4">
-              <label htmlFor="motDePasse" className="text-sm font-semibold">Mot de Passe
+              <label htmlFor="motDePasse" className="text-sm font-semibold">
+                Mot de Passe
               </label>
               <input
                 name="motDePasse"
@@ -216,7 +224,7 @@ export const Modal = ({ closeModal, onSubmit, defaultValue }) => {
                 className="border rounded p-2 w-full"
               >
                 <option value="Scrutateur">Scrutateur</option>
-                <option value="Administrateur">Administrateur</option>
+                <option value="SuperAdmin">SuperAdministrateur</option>
               </select>
             </div>
             {errors && (
