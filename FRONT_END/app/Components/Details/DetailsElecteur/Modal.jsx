@@ -294,7 +294,7 @@ export const Modal = ({ closeModal, onSubmit, defaultValue }) => {
     <div className="modal-container" onClick={(e) => { if (e.target.className === "modal-container") closeModal(); }}>
       <div className="modal bg-white dark:bg-gray-800 rounded-lg p-8 w-96 mx-auto">
         <div className="modal-header flex justify-between items-center">
-          <h3 className="text-2xl font-bold text-gray-800 dark:text-gray-100">Candidat</h3>
+          <h3 className="text-2xl font-bold text-gray-800 dark:text-gray-100">Electeurs</h3>
           <button type="button" className="close-btn" onClick={closeModal}>
             <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
