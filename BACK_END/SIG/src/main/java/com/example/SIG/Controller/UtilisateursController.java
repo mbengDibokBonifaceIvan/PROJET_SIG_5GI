@@ -3,7 +3,8 @@ package com.example.SIG.Controller;
 import com.example.SIG.Model.Utilisateurs;
 import com.example.SIG.Repository.UtilisateursRepository;
 import com.example.SIG.Service.UtilisateursService;
-import com.example.SIG.dto.LoginRequestDTO;
+import com.example.SIG.dto.UtilisateurRequestDTO;
+import com.example.SIG.dto.UtilisateurResponseDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,26 +26,38 @@ public class UtilisateursController {
     @Autowired
     private UtilisateursService utilisateursService;
 
-//    @GetMapping("/verify")
-//       public ResponseEntity<?> verify(@RequestParam String name, @RequestParam String password) {
-//        System.out.println("Received login request with name: " + name + " and password: " + password);
-//           boolean isValidUser = utilisateursService.verifyUser(name, password);
-//        System.out.println("Result: " + isValidUser);
-//           if (isValidUser) {
-//               return ResponseEntity.ok("User is valid");
-//           } else {
-//               return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
-//           }
-//       }
+    @PostMapping("/createUser")
+    public ResponseEntity<UtilisateurResponseDTO> createUtilisateur(@RequestBody UtilisateurRequestDTO requestDTO) {
+       // Convert DTO to entity directly
+        Utilisateurs newUser = requestDTO.toEntity();
+
+        // Save the user
+        Utilisateurs savedUser = utilisateursService.createUtilisateur(newUser);
+
+        // Create the response DTO using the static method
+        UtilisateurResponseDTO responseDTO = UtilisateurResponseDTO.fromEntity(savedUser);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.CREATED);
+
+    }
+
     @GetMapping("/verify")
-    public ResponseEntity<?> verifyUser(@RequestParam String name, @RequestParam String password) {
-        boolean isValidUser = utilisateursService.verifyUser1(name, password);
-        if (isValidUser) {
-            // Renvoie un objet JSON contenant le message et le rôle
-            return ResponseEntity.ok(new UserResponse("User is valid", "admin")); // Exemple de rôle
+    public ResponseEntity<?> verifyUser(@RequestParam String nomUtilisateur, @RequestParam String motDePasse ,@RequestParam String role) {
+       // boolean isValidUser = utilisateursService.verifyUser1(nomUtilisateur, motDePasse ,role);
+        Utilisateurs utilisateur = utilisateursService.verifyUser1(nomUtilisateur, motDePasse, role);
+
+        if (utilisateur != null) {
+            // Return a JSON object containing the message and the user's role
+            return ResponseEntity.ok(new UserResponse("User is valid", utilisateur.getRole()));
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponse("Invalid credentials"));
         }
+//        if (isValidUser) {
+//            // Renvoie un objet JSON contenant le message et le rôle
+//            return ResponseEntity.ok(new UserResponse("User is valid", "admin")); // Exemple de rôle
+//        } else {
+//            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponse("Invalid credentials"));
+//        }
     }
 
     // Classe pour représenter la réponse de l'utilisateur
@@ -73,14 +86,7 @@ public class UtilisateursController {
         public String getMessage() { return message; }
     }
 
-    @GetMapping("/login")
-    public ResponseEntity<?> login(@RequestParam String name, @RequestParam String password) {
-        System.out.println("Received login request with name: " + name + " and password: " + password);
-        if (utilisateursService.verifyUser1(name, password)) {
-            return ResponseEntity.ok("User verified");
-        }
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
-    }
+
 
     @GetMapping("/all")
     public List<Utilisateurs> getAllUtilisateurs() {
@@ -96,6 +102,7 @@ public class UtilisateursController {
     public Utilisateurs createUtilisateurs(@RequestBody Utilisateurs utilisateurs) {
         return utilisateursRepository.save(utilisateurs);
     }
+
 
     @PutMapping("/editUser/{id}")
     public Utilisateurs updateUtilisateurs(@PathVariable Long id, @RequestBody Utilisateurs utilisateurs) {
