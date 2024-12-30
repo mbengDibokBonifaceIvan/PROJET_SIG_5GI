@@ -1,130 +1,5 @@
-// "use client";
-// import { useState, useEffect } from "react";
-// import "./Departement.css";
-// import { Table } from "../../../Components/Details/DetailsDepartement/Table";
-// import { Modal } from "../../../Components/Details/DetailsDepartement/Modal";
-
-// function Departement() {
-//   const [modalOpen, setModalOpen] = useState(false);
-//   const [rows, setRows] = useState([]); // Liste des départements
-//   const [regions, setRegions] = useState([]); // Liste des régions pour le modal
-//   const [rowToEdit, setRowToEdit] = useState(null);
-
-//   // Fetch départements depuis le backend
-//   useEffect(() => {
-//     const fetchDepartements = async () => {
-//       try {
-//         const response = await fetch("http://localhost:8080/departements/all");
-//         if (!response.ok) throw new Error("Erreur lors de la récupération des départements");
-//         const data = await response.json();
-//         setRows(data);
-//       } catch (error) {
-//         console.error("Erreur :", error);
-//       }
-//     };
-
-//     const fetchRegions = async () => {
-//       try {
-//         const response = await fetch("http://localhost:8080/regions/all");
-//         if (!response.ok) throw new Error("Erreur lors de la récupération des régions");
-//         const data = await response.json();
-//         setRegions(data);
-//       } catch (error) {
-//         console.error("Erreur :", error);
-//       }
-//     };
-
-//     fetchDepartements();
-//     fetchRegions();
-//   }, []);
-
-//   // Fonction pour supprimer un département
-//   const handleDeleteRow = (targetIndex) => {
-//     const departementToDelete = rows[targetIndex];
-//     fetch(`http://localhost:8080/departements/deleteDepartement/${departementToDelete.id_département}`, {
-//       method: "DELETE",
-//     })
-//       .then((response) => {
-//         if (!response.ok) throw new Error("Erreur lors de la suppression du département");
-//         setRows(rows.filter((_, idx) => idx !== targetIndex));
-//       })
-//       .catch((error) => console.error("Erreur :", error));
-//   };
-
-//   // Fonction pour ouvrir le modal en mode édition
-//   const handleEditRow = (idx) => {
-//     setRowToEdit(idx);
-//     setModalOpen(true);
-//   };
-
-//   // Fonction pour soumettre un département (ajout ou édition)
-//   const handleSubmit = (newRow) => {
-//     const url = rowToEdit === null
-//       ? "http://localhost:8080/departements/addDepartement"
-//       : `http://localhost:8080/departements/editDepartement/${rows[rowToEdit].id_département}`;
-
-//     const method = rowToEdit === null ? "POST" : "PUT";
-
-//     fetch(url, {
-//       method: method,
-//       headers: { "Content-Type": "application/json" },
-//       body: JSON.stringify({
-//         nom_département:newRow.nom_département,
-//       région:newRow.nom_région}),
-//     })
-//       .then((response) => {
-//         if (!response.ok) throw new Error("Erreur lors de la soumission du département");
-//         return response.json();
-//       })
-//       .then((data) => {
-//         if (rowToEdit === null) {
-//           setRows([...rows, data]); // Ajouter un département
-//         } else {
-//           setRows(rows.map((currRow, idx) => (idx !== rowToEdit ? currRow : data))); // Mettre à jour un département
-//         }
-//       })
-//       .catch((error) => console.error("Erreur :", error));
-//   };
-
-//   return (
-//     <div className="Departement">
-//       <Table rows={rows} deleteRow={handleDeleteRow} editRow={handleEditRow} />
-//       <button onClick={() => setModalOpen(true)} className="btn">Add</button>
-//       {modalOpen && (
-//         <Modal
-//           closeModal={() => {
-//             setModalOpen(false);
-//             setRowToEdit(null);
-//           }}
-//           onSubmit={handleSubmit}
-//           defaultValue={rowToEdit !== null && rows[rowToEdit]}
-//           regions={regions} // Passer les régions pour le menu déroulant
-//         />
-//       )}
-//     </div>
-//   );
-// }
-
-// export default Departement;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-"use client";
 import { useState, useEffect } from "react";
+import apiClient from "../../../utils/axiosConfig"; // Importer l'instance d'axios configurée
 import "./Departement.css";
 import { Table } from "../../../Components/Details/DetailsDepartement/Table";
 import { Modal } from "../../../Components/Details/DetailsDepartement/Modal";
@@ -139,23 +14,19 @@ function Departement() {
   useEffect(() => {
     const fetchDepartements = async () => {
       try {
-        const response = await fetch("http://localhost:8080/departements/all");
-        if (!response.ok) throw new Error("Erreur lors de la récupération des départements");
-        const data = await response.json();
-        setRows(data);
+        const response = await apiClient.get("/departements/all"); // Utiliser apiClient
+        setRows(response.data);
       } catch (error) {
-        console.error("Erreur :", error);
+        console.error("Erreur lors de la récupération des départements", error);
       }
     };
 
     const fetchRegions = async () => {
       try {
-        const response = await fetch("http://localhost:8080/regions/all");
-        if (!response.ok) throw new Error("Erreur lors de la récupération des régions");
-        const data = await response.json();
-        setRegions(data);
+        const response = await apiClient.get("/regions/all"); // Utiliser apiClient
+        setRegions(response.data);
       } catch (error) {
-        console.error("Erreur :", error);
+        console.error("Erreur lors de la récupération des régions", error);
       }
     };
 
@@ -164,16 +35,14 @@ function Departement() {
   }, []);
 
   // Fonction pour supprimer un département
-  const handleDeleteRow = (targetIndex) => {
+  const handleDeleteRow = async (targetIndex) => {
     const departementToDelete = rows[targetIndex];
-    fetch(`http://localhost:8080/departements/deleteDepartement/${departementToDelete.id_département}`, {
-      method: "DELETE",
-    })
-      .then((response) => {
-        if (!response.ok) throw new Error("Erreur lors de la suppression du département");
-        setRows(rows.filter((_, idx) => idx !== targetIndex));
-      })
-      .catch((error) => console.error("Erreur :", error));
+    try {
+      await apiClient.delete(`/departements/deleteDepartement/${departementToDelete.id_département}`); // Utiliser apiClient
+      setRows(rows.filter((_, idx) => idx !== targetIndex)); // Supprimer le département de l'état
+    } catch (error) {
+      console.error("Erreur lors de la suppression du département", error);
+    }
   };
 
   // Fonction pour ouvrir le modal en mode édition
@@ -183,41 +52,39 @@ function Departement() {
   };
 
   // Fonction pour soumettre un département (ajout ou édition)
-  const handleSubmit = (newRow) => {
-    const url = rowToEdit === null
-      ? "http://localhost:8080/departements/addDepartement"
-      : `http://localhost:8080/departements/editDepartement/${rows[rowToEdit].id_département}`;
+  const handleSubmit = async (newRow) => {
+    const isEditing = rowToEdit !== null;
+    const url = isEditing
+      ? `/departements/editDepartement/${rows[rowToEdit].id_département}`
+      : "/departements/addDepartement";
 
-    const method = rowToEdit === null ? "POST" : "PUT";
+    const method = isEditing ? "PUT" : "POST";
 
-    fetch(url, {
-      method: method,
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        nom_département: newRow.nom_département,
-        région: newRow.nom_région,
-      }),
-    })
-      .then((response) => {
-        if (!response.ok) throw new Error("Erreur lors de la soumission du département");
-        return response.json();
-      })
-      .then((data) => {
-        if (rowToEdit === null) {
-          setRows([...rows, data]); // Ajouter un département
-        } else {
-          setRows(rows.map((currRow, idx) => (idx !== rowToEdit ? currRow : data))); // Mettre à jour un département
-        }
-      })
-      .catch((error) => console.error("Erreur :", error));
+    try {
+      const response = await apiClient({
+        method: method,
+        url: url,
+        data: newRow, // Données du département
+      });
+
+      if (isEditing) {
+        setRows(rows.map((currRow, idx) => (idx === rowToEdit ? response.data : currRow))); // Mettre à jour un département
+      } else {
+        setRows([...rows, response.data]); // Ajouter un nouveau département
+      }
+
+      // Fermer le modal et réinitialiser l'état
+      setModalOpen(false);
+      setRowToEdit(null);
+    } catch (error) {
+      console.error("Erreur lors de la soumission du département", error);
+    }
   };
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-800">
       <Table rows={rows} deleteRow={handleDeleteRow} editRow={handleEditRow} />
-      <button onClick={() => setModalOpen(true)} className="btn mt-4 bg-blue-600 text-white px-4 py-2 rounded-lg shadow">
-        Ajouter
-      </button>
+      <button onClick={() => setModalOpen(true)} className="btn">Add</button>
       {modalOpen && (
         <Modal
           closeModal={() => {
@@ -225,7 +92,7 @@ function Departement() {
             setRowToEdit(null);
           }}
           onSubmit={handleSubmit}
-          defaultValue={rowToEdit !== null ? rows[rowToEdit] : {}}
+          defaultValue={rowToEdit !== null && rows[rowToEdit]}
           regions={regions} // Passer les régions pour le menu déroulant
         />
       )}

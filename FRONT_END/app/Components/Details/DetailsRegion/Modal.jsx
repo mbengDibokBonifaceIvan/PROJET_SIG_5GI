@@ -1,92 +1,3 @@
-// import React, { useState, useEffect } from "react";
-// import "./Modal.css";
-
-// export const Modal = ({ closeModal, onSubmit, defaultValue }) => {
-//   // Initialiser l'état avec les bonnes clés (nom_région)
-//   const [formState, setFormState] = useState({
-//     nom_région: "",
-//   });
-
-//   const [errors, setErrors] = useState("");
-
-//   // Mettre à jour formState si une valeur par défaut est fournie (pour l'édition)
-//   useEffect(() => {
-//     if (defaultValue) {
-//       setFormState({
-//         nom_région: defaultValue.nom_région || "", // Assure la compatibilité
-//       });
-//     }
-//   }, [defaultValue]);
-
-//   // Validation du formulaire
-//   const validateForm = () => {
-//     if (formState.nom_région) {
-//       setErrors("");
-//       return true;
-//     } else {
-//       setErrors("Le champ nom_région est obligatoire.");
-//       return false;
-//     }
-//   };
-
-//   // Mettre à jour les champs lors de la saisie
-//   const handleChange = (e) => {
-//     setFormState({ ...formState, [e.target.name]: e.target.value });
-//   };
-
-//   // Soumission du formulaire
-//   const handleSubmit = (e) => {
-//     e.preventDefault();
-//     if (!validateForm()) return;
-
-//     // Appeler la fonction onSubmit avec les données du formulaire
-//     onSubmit(formState);
-
-//     // Fermer le modal
-//     closeModal();
-//   };
-
-//   return (
-//     <div
-//       className="modal-container"
-//       onClick={(e) => {
-//         if (e.target.className === "modal-container") closeModal();
-//       }}
-//     >
-//       <div className="modal">
-//         <form>
-//           <div className="form-group">
-//             <label htmlFor="nom_région">Nom de la Région</label>
-//             <input
-//               name="nom_région"
-//               onChange={handleChange}
-//               value={formState.nom_région}
-//               placeholder="Entrez le nom de la région"
-//             />
-//           </div>
-//           {errors && <div className="error">{errors}</div>}
-//           <button type="submit" className="btn" onClick={handleSubmit}>
-//             Submit
-//           </button>
-//         </form>
-//       </div>
-//     </div>
-//   );
-// };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 import React, { useState, useEffect } from "react";
 import "./Modal.css";
 
@@ -97,37 +8,36 @@ export const Modal = ({ closeModal, onSubmit, defaultValue }) => {
 
   const [errors, setErrors] = useState("");
 
-  // Mettre à jour formState si une valeur par défaut est fournie (pour l'édition)
+  // Initialiser formState avec defaultValue pour l'édition
   useEffect(() => {
     if (defaultValue) {
       setFormState({
-        nom_région: defaultValue.nom_région || "", // Assure la compatibilité
+        nom_région: defaultValue.nom_région || "",
       });
     }
   }, [defaultValue]);
 
   // Validation du formulaire
   const validateForm = () => {
-    if (formState.nom_région) {
-      setErrors("");
-      return true;
-    } else {
-      setErrors("Le champ nom_région est obligatoire.");
+    if (!formState.nom_région.trim()) {
+      setErrors("Le champ 'Nom de la Région' est obligatoire.");
       return false;
     }
+    setErrors("");
+    return true;
   };
 
-  // Mettre à jour les champs lors de la saisie
+  // Gestion des changements dans les champs du formulaire
   const handleChange = (e) => {
     setFormState({ ...formState, [e.target.name]: e.target.value });
   };
 
-  // Soumission du formulaire
+  // Gestion de la soumission du formulaire
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!validateForm()) return;
 
-    // Appeler la fonction onSubmit avec les données du formulaire
+    // Appeler la fonction de soumission parent avec les données du formulaire
     onSubmit(formState);
 
     // Fermer le modal
@@ -135,13 +45,18 @@ export const Modal = ({ closeModal, onSubmit, defaultValue }) => {
   };
 
   return (
-    <div className="modal-container" onClick={(e) => {
-      if (e.target.className === "modal-container") closeModal();
-    }}>
+    <div
+      className="modal-container"
+      onClick={(e) => {
+        if (e.target.className === "modal-container") closeModal();
+      }}
+    >
       <div className="fixed z-10 left-0 top-0 w-full h-full bg-black bg-opacity-50 flex items-center justify-center">
-        <div className="modal bg-white dark:bg-gray-800 rounded-lg p-8 w-96 mx-auto"> {/* Centered with mx-auto */}
+        <div className="modal bg-white dark:bg-gray-800 rounded-lg p-8 w-96 mx-auto">
           <div className="modal-header flex justify-between items-center mb-4">
-            <h3 className="text-2xl font-bold text-gray-800 dark:text-gray-100">Région</h3>
+            <h3 className="text-2xl font-bold text-gray-800 dark:text-gray-100">
+              {defaultValue ? "Modifier la Région" : "Ajouter une Région"}
+            </h3>
             <button type="button" className="close-btn" onClick={closeModal}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -165,6 +80,7 @@ export const Modal = ({ closeModal, onSubmit, defaultValue }) => {
                 Nom de la Région
               </label>
               <input
+                id="nom_région"
                 name="nom_région"
                 onChange={handleChange}
                 value={formState.nom_région}
@@ -181,7 +97,7 @@ export const Modal = ({ closeModal, onSubmit, defaultValue }) => {
               type="submit"
               className="btn bg-blue-600 text-white px-4 py-2 rounded-lg block w-full"
             >
-              Valider
+              {defaultValue ? "Modifier" : "Ajouter"}
             </button>
           </form>
         </div>
