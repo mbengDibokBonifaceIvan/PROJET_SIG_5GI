@@ -55,7 +55,7 @@ export const Modal = ({ closeModal, onSubmit, defaultValue }) => {
         <div className="modal bg-white dark:bg-gray-800 rounded-lg p-8 w-96 mx-auto">
           <div className="modal-header flex justify-between items-center mb-4">
             <h3 className="text-2xl font-bold text-gray-800 dark:text-gray-100">
-              {defaultValue ? "Modifier la Région" : "Ajouter une Région"}
+              Région
             </h3>
             <button type="button" className="close-btn" onClick={closeModal}>
               <svg
