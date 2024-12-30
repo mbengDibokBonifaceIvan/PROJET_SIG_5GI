@@ -1,85 +1,20 @@
-// import React from "react";
-// import { BsFillTrashFill, BsFillPencilFill } from "react-icons/bs";
-// import "./Table.css";
-
-// export const Table = ({ rows, deleteRow, editRow }) => {
-//   return (
-//     <div className="table-wrapper">
-//       <div className="table-title">
-//         <h2>Liste Nationale des Départements</h2>
-//       </div>
-
-//       <table className="table">
-//         <thead>
-//           <tr>
-//             <th>Nom du Département</th>
-//             <th>Région</th>
-//             <th>Actions</th>
-//           </tr>
-//         </thead>
-//         <tbody>
-//           {rows.map((row, idx) => (
-//             <tr key={idx}>
-//               <td>{row.nom_département}</td>
-//               <td>{row.région?.nom_région || "Non spécifiée"}</td>
-//               <td className="fit">
-//                 <span className="actions">
-//                   <BsFillTrashFill
-//                     className="delete-btn"
-//                     onClick={() => deleteRow(idx)}
-//                   />
-//                   <BsFillPencilFill
-//                     className="edit-btn"
-//                     onClick={() => editRow(idx)}
-//                   />
-//                 </span>
-//               </td>
-//             </tr>
-//           ))}
-//         </tbody>
-//       </table>
-//     </div>
-//   );
-// };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 import React from "react";
 import { BsFillTrashFill, BsFillPencilFill } from "react-icons/bs";
+import apiClient from "../../../utils/axiosConfig"; // Importer l'instance Axios
 import "./Table.css";
 
 export const Table = ({ rows, deleteRow, editRow }) => {
+  // Gestion de la suppression d'un département
+  const handleDeleteRow = async (idx) => {
+    const departementToDelete = rows[idx];
+    try {
+      await apiClient.delete(`/departements/deleteDepartement/${departementToDelete.id_département}`);
+      deleteRow(idx); // Appeler la fonction parent pour mettre à jour l'état
+    } catch (error) {
+      console.error("Erreur lors de la suppression du département :", error);
+    }
+  };
+
   return (
     <div className="w-full">
       <div className="text-center mb-8">
@@ -109,7 +44,7 @@ export const Table = ({ rows, deleteRow, editRow }) => {
                 <span className="mx-2"></span> {/* Espacement entre les icônes */}
                 <BsFillTrashFill
                   className="delete-btn cursor-pointer"
-                  onClick={() => deleteRow(idx)}
+                  onClick={() => handleDeleteRow(idx)}
                 />
               </td>
             </tr>

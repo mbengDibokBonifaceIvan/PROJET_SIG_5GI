@@ -1,63 +1,3 @@
-// import React from "react";
-// import { BsFillTrashFill, BsFillPencilFill } from "react-icons/bs";
-// import "./Table.css";
-
-// export const Table = ({ rows, deleteRow, editRow }) => {
-//   return (
-//     <div className="table-wrapper">
-//       <div className="table-title">
-//         <h2>Liste Nationale Des Arrondissements</h2>
-//       </div>
-
-//       <table className="table">
-//         <thead>
-//           <tr>
-//             <th>Nom</th>
-//             <th>Département</th>
-//             <th>Actions</th>
-//           </tr>
-//         </thead>
-//         <tbody>
-//           {rows.map((row, idx) => {
-//             const statusText =
-//               row.département?.nom_département.charAt(0).toUpperCase() +
-//               row.département?.nom_département.slice(1);
-
-//             return (
-//               <tr key={idx}>
-//                 <td>{row.nom_arrondissement}</td>
-//                 <td>
-//                     {row.département?.nom_département || "Non spécifié"}
-                 
-//                 </td>
-//                 <td className="fit">
-//                   <span className="actions">
-
-//                   <BsFillPencilFill
-//                       className="edit-btn"
-//                       onClick={() => editRow(idx)}
-//                     />
-//                     <BsFillTrashFill
-//                       className="delete-btn"
-//                       onClick={() => deleteRow(idx)}
-//                     />
-
-//                   </span>
-//                 </td>
-//               </tr>
-//             );
-//           })}
-//         </tbody>
-//       </table>
-//     </div>
-//   );
-// };
-
-
-
-
-
-
 import React from "react";
 import { BsFillTrashFill, BsFillPencilFill } from "react-icons/bs";
 import "./Table.css";
@@ -80,27 +20,25 @@ export const Table = ({ rows, deleteRow, editRow }) => {
           </tr>
         </thead>
         <tbody>
-          {rows.map((row, idx) => {
-            return (
-              <tr key={idx} className="hover:bg-gray-200 dark:hover:bg-gray-500">
-                <td>{row.nom_arrondissement}</td>
-                <td className="w-full text-center">
-                  {row.département?.nom_département || "Non spécifié"}
-                </td>
-                <td className="flex items-center justify-center">
-                  <BsFillPencilFill
-                    className="edit-btn cursor-pointer"
-                    onClick={() => editRow(idx)}
-                  />
-                  <span className="mx-2"></span> {/* Espacement entre les icônes */}
-                  <BsFillTrashFill
-                    className="delete-btn cursor-pointer"
-                    onClick={() => deleteRow(idx)}
-                  />
-                </td>
-              </tr>
-            );
-          })}
+          {rows.map((row, idx) => (
+            <tr key={row.id_arrondissement} className="hover:bg-gray-200 dark:hover:bg-gray-500">
+              <td>{row.nom_arrondissement}</td>
+              <td className="w-full text-center">
+                {row.département?.nom_département || "Non spécifié"}
+              </td>
+              <td className="flex items-center justify-center">
+                <BsFillPencilFill
+                  className="edit-btn cursor-pointer"
+                  onClick={() => editRow(idx)} // Appel de la fonction d'édition
+                />
+                <span className="mx-2"></span> {/* Espacement entre les icônes */}
+                <BsFillTrashFill
+                  className="delete-btn cursor-pointer"
+                  onClick={() => deleteRow(idx)} // Appel de la fonction de suppression
+                />
+              </td>
+            </tr>
+          ))}
         </tbody>
       </table>
     </div>

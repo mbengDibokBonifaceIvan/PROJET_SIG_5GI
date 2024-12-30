@@ -1,209 +1,90 @@
-// "use client";
-// import { useState, useEffect } from "react";
-// import "./BureauVote.css";
-// import { Table } from "../../../Components/Details/DetailsBureauVote/Table";
-// import { Modal } from "../../../Components/Details/DetailsBureauVote/Modal";
-
-// function BureauVote() {
-//   const [modalOpen, setModalOpen] = useState(false);
-//   const [rows, setRows] = useState([]); // Initialement vide car on va fetch les données du backend
-//   const [rowToEdit, setRowToEdit] = useState(null);
-
-//   // Charger les bureaux de vote au montage du composant
-//   useEffect(() => {
-//     const fetchBureaux = async () => {
-//       try {
-//         const response = await fetch("http://localhost:8080/bureaux-de-vote/all");
-//         if (!response.ok) {
-//           throw new Error("Erreur lors du chargement des bureaux de vote");
-//         }
-//         const data = await response.json();
-//         setRows(data); // Mise à jour des rows avec les données de la BD
-//       } catch (error) {
-//         console.error("Erreur :", error);
-//       }
-//     };
-
-//     fetchBureaux();
-//   }, []);
-
-//   // Supprimer un bureau de vote
-//   const handleDeleteRow = async (id) => {
-//     try {
-//       const response = await fetch(
-//         `http://localhost:8080/bureaux-de-vote/deleteBureauDeVote/${id}`,
-//         { method: "DELETE" }
-//       );
-//       if (!response.ok) throw new Error("Erreur lors de la suppression");
-
-//       setRows(rows.filter((row) => row.id_bureau_vote !== id));
-//       console.log("Bureau de vote supprimé :", id);
-//     } catch (error) {
-//       console.error("Erreur :", error);
-//     }
-//   };
-
-//   // Ajouter ou éditer un bureau de vote
-//   const handleSubmit = async (newRow) => {
-//     try {
-//       let response;
-
-//       if (rowToEdit === null) {
-//         // Ajout d'un nouveau bureau
-//         response = await fetch("http://localhost:8080/bureaux-de-vote/addBureauDeVote", {
-//           method: "POST",
-//           headers: { "Content-Type": "application/json" },
-//           body: JSON.stringify(newRow),
-//         });
-//       } else {
-//         // Modification d'un bureau existant
-//         const id = rows[rowToEdit].id_bureau_vote;
-//         response = await fetch(
-//           `http://localhost:8080/bureaux-de-vote/editBureauDeVote/${id}`,
-//           {
-//             method: "PUT",
-//             headers: { "Content-Type": "application/json" },
-//             body: JSON.stringify(newRow),
-//           }
-//         );
-//       }
-
-//       if (!response.ok) throw new Error("Erreur lors de l'envoi des données");
-
-//       const updatedData = await response.json();
-
-//       // Mettre à jour l'état après ajout/édition
-//       setRows((prevRows) => {
-//         if (rowToEdit === null) {
-//           return [...prevRows, updatedData];
-//         } else {
-//           return prevRows.map((row, idx) => (idx === rowToEdit ? updatedData : row));
-//         }
-//       });
-
-//       setModalOpen(false);
-//       setRowToEdit(null);
-//     } catch (error) {
-//       console.error("Erreur :", error);
-//     }
-//   };
-
-//   const handleEditRow = (idx) => {
-//     setRowToEdit(idx);
-//     setModalOpen(true);
-//   };
-
-//   return (
-//     <div className="BureauVote">
-//       <Table rows={rows} deleteRow={(idx) => handleDeleteRow(rows[idx].id_bureau_vote)} editRow={handleEditRow} />
-//       <button onClick={() => setModalOpen(true)} className="btn">
-//         Ajouter
-//       </button>
-//       {modalOpen && (
-//         <Modal
-//           closeModal={() => {
-//             setModalOpen(false);
-//             setRowToEdit(null);
-//           }}
-//           onSubmit={handleSubmit}
-//           defaultValue={rowToEdit !== null ? rows[rowToEdit] : {}}
-//         />
-//       )}
-//     </div>
-//   );
-// }
-
-// export default BureauVote;
-
-
-
-
 "use client";
 import { useState, useEffect } from "react";
+import apiClient from "../../../utils/axiosConfig"; // Importer l'instance d'axios configurée
 import "./BureauVote.css";
 import { Table } from "../../../Components/Details/DetailsBureauVote/Table";
 import { Modal } from "../../../Components/Details/DetailsBureauVote/Modal";
 
 function BureauVote() {
   const [modalOpen, setModalOpen] = useState(false);
-  const [rows, setRows] = useState([]);
+  const [rows, setRows] = useState([]); // Liste des bureaux de vote
+  const [centres, setCentres] = useState([]); // Liste des centres de vote pour le modal
   const [rowToEdit, setRowToEdit] = useState(null);
 
+  // Fetch bureaux de vote et centres de vote depuis le backend
   useEffect(() => {
     const fetchBureaux = async () => {
       try {
-        const response = await fetch("http://localhost:8080/bureaux-de-vote/all");
-        if (!response.ok) {
-          throw new Error("Erreur lors du chargement des bureaux de vote");
-        }
-        const data = await response.json();
-        setRows(data);
+        const response = await apiClient.get("/bureaux-de-vote/all"); // Utiliser apiClient
+        setRows(response.data);
       } catch (error) {
-        console.error("Erreur :", error);
+        console.error("Erreur lors de la récupération des bureaux de vote", error);
+      }
+    };
+
+    const fetchCentres = async () => {
+      try {
+        const response = await apiClient.get("/centres-de-vote/all"); // Utiliser apiClient
+        setCentres(response.data);
+      } catch (error) {
+        console.error("Erreur lors de la récupération des centres de vote", error);
       }
     };
 
     fetchBureaux();
+    fetchCentres();
   }, []);
 
-  const handleDeleteRow = async (id) => {
+  // Fonction pour supprimer un bureau de vote
+  const handleDeleteRow = async (targetIndex) => {
+    const bureauToDelete = rows[targetIndex];
     try {
-      const response = await fetch(`http://localhost:8080/bureaux-de-vote/deleteBureauDeVote/${id}`, { method: "DELETE" });
-      if (!response.ok) throw new Error("Erreur lors de la suppression");
-
-      setRows(rows.filter((row) => row.id_bureau_vote !== id));
-      console.log("Bureau de vote supprimé :", id);
+      await apiClient.delete(`/bureaux-de-vote/deleteBureauDeVote/${bureauToDelete.id_bureau_vote}`); // Utiliser apiClient
+      setRows(rows.filter((_, idx) => idx !== targetIndex)); // Supprimer le bureau de vote de l'état
     } catch (error) {
-      console.error("Erreur :", error);
+      console.error("Erreur lors de la suppression du bureau de vote", error);
     }
   };
 
-  const handleSubmit = async (newRow) => {
-    try {
-      let response;
-
-      if (rowToEdit === null) {
-        response = await fetch("http://localhost:8080/bureaux-de-vote/addBureauDeVote", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(newRow),
-        });
-      } else {
-        const id = rows[rowToEdit].id_bureau_vote;
-        response = await fetch(`http://localhost:8080/bureaux-de-vote/editBureauDeVote/${id}`, {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(newRow),
-        });
-      }
-
-      if (!response.ok) throw new Error("Erreur lors de l'envoi des données");
-
-      const updatedData = await response.json();
-
-      setRows((prevRows) => {
-        if (rowToEdit === null) {
-          return [...prevRows, updatedData];
-        } else {
-          return prevRows.map((row, idx) => (idx === rowToEdit ? updatedData : row));
-        }
-      });
-
-      setModalOpen(false);
-      setRowToEdit(null);
-    } catch (error) {
-      console.error("Erreur :", error);
-    }
-  };
-
+  // Fonction pour ouvrir le modal en mode édition
   const handleEditRow = (idx) => {
     setRowToEdit(idx);
     setModalOpen(true);
   };
 
+  // Fonction pour soumettre un bureau de vote (ajout ou édition)
+  const handleSubmit = async (newRow) => {
+    const isEditing = rowToEdit !== null;
+    const url = isEditing
+      ? `/bureaux-de-vote/editBureauDeVote/${rows[rowToEdit].id_bureau_vote}`
+      : "/bureaux-de-vote/addBureauDeVote";
+
+    const method = isEditing ? "PUT" : "POST";
+
+    try {
+      const response = await apiClient({
+        method: method,
+        url: url,
+        data: newRow, // Données du bureau de vote
+      });
+
+      if (isEditing) {
+        setRows(rows.map((currRow, idx) => (idx === rowToEdit ? response.data : currRow))); // Mettre à jour un bureau de vote
+      } else {
+        setRows([...rows, response.data]); // Ajouter un nouveau bureau de vote
+      }
+
+      // Fermer le modal et réinitialiser l'état
+      setModalOpen(false);
+      setRowToEdit(null);
+    } catch (error) {
+      console.error("Erreur lors de la soumission du bureau de vote", error);
+    }
+  };
+
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-800">
-      <Table rows={rows} deleteRow={(idx) => handleDeleteRow(rows[idx].id_bureau_vote)} editRow={handleEditRow} />
+      <Table rows={rows} deleteRow={handleDeleteRow} editRow={handleEditRow} />
       <button onClick={() => setModalOpen(true)} className="btn mt-4 bg-blue-600 text-white px-4 py-2 rounded-lg shadow">
         Ajouter
       </button>
@@ -214,7 +95,8 @@ function BureauVote() {
             setRowToEdit(null);
           }}
           onSubmit={handleSubmit}
-          defaultValue={rowToEdit !== null ? rows[rowToEdit] : {}}
+          defaultValue={rowToEdit !== null && rows[rowToEdit]} // Passer la ligne à éditer
+          centres={centres} // Passer les centres de vote pour le menu déroulant
         />
       )}
     </div>
