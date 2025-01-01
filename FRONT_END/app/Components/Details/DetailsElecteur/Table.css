@@ -82,3 +82,39 @@
 .table-title h2 {
   font-weight: bold; /* Make the title bold */
 }
+
+/* Style de l'en-tête des colonnes */
+.column-header {
+  padding: 12px;
+  text-align: left;
+  font-weight: bold;
+  background-color: #f4f4f4;
+  border-right: 1px solid #ddd;
+}
+
+/* Espacement des cellules de données */
+.column-cell {
+  padding: 10px;
+  border-right: 1px solid #ddd;
+  text-align: left;
+}
+
+/* Style de la cellule des actions */
+.actions-cell {
+  text-align: center;
+}
+
+/* Supprimer la bordure de la dernière colonne */
+tbody tr td:last-child {
+  border-right: none;
+}
+
+/* Espacement entre les colonnes */
+table {
+  border-collapse: collapse;
+}
+
+table td, table th {
+  padding: 12px;
+  text-align: left;
+}

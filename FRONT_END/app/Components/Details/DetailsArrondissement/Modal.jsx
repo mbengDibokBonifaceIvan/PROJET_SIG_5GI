@@ -3,15 +3,22 @@ import apiClient from "../../../utils/axiosConfig"; // Importer l'instance d'axi
 import "./Modal.css";
 
 export const Modal = ({ closeModal, onSubmit, defaultValue }) => {
-  const [formState, setFormState] = useState(
-    defaultValue || {
-      nom_arrondissement: "",
-      département: "",
-    }
-  );
-
+  const [formState, setFormState] = useState({
+    nom_arrondissement: "",
+    département: "",
+  });
   const [departements, setDepartements] = useState([]); // État pour stocker les départements
   const [errors, setErrors] = useState("");
+
+  // Mettre à jour `formState` lorsque `defaultValue` change
+  useEffect(() => {
+    if (defaultValue) {
+      setFormState({
+        nom_arrondissement: defaultValue.nom_arrondissement || "",
+        département: defaultValue.département?.id_département || "",
+      });
+    }
+  }, [defaultValue]);
 
   // Fetch des départements au chargement du modal
   useEffect(() => {
@@ -33,13 +40,8 @@ export const Modal = ({ closeModal, onSubmit, defaultValue }) => {
       setErrors("");
       return true;
     } else {
-      let errorFields = [];
-      for (const [key, value] of Object.entries(formState)) {
-        if (!value) {
-          errorFields.push(key);
-        }
-      }
-      setErrors(errorFields.join(", "));
+      const missingFields = Object.keys(formState).filter((key) => !formState[key]);
+      setErrors(missingFields.join(", "));
       return false;
     }
   };
@@ -65,7 +67,7 @@ export const Modal = ({ closeModal, onSubmit, defaultValue }) => {
       nom_arrondissement: formState.nom_arrondissement,
       département: {
         id_département: selectedDepartement.id_département,
-        nom_département: selectedDepartement.nom_département, // Inclure le nom du département
+        nom_département: selectedDepartement.nom_département,
       },
     };
 
@@ -84,7 +86,9 @@ export const Modal = ({ closeModal, onSubmit, defaultValue }) => {
       <div className="fixed z-10 left-0 top-0 w-full h-full bg-black bg-opacity-50 flex items-center justify-center">
         <div className="modal bg-white dark:bg-gray-800 rounded-lg p-8 w-96">
           <div className="modal-header flex justify-between items-center mb-4">
-            <h3 className="text-2xl font-bold text-gray-800 dark:text-gray-100">Arrondissement</h3>
+            <h3 className="text-2xl font-bold text-gray-800 dark:text-gray-100">
+              {defaultValue ? "Modifier un Arrondissement" : "Ajouter un Arrondissement"}
+            </h3>
             <button type="button" className="close-btn" onClick={closeModal}>
               <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -95,18 +99,22 @@ export const Modal = ({ closeModal, onSubmit, defaultValue }) => {
             <div className="form-group">
               <label htmlFor="nom_arrondissement">Nom de l'Arrondissement</label>
               <input
+                id="nom_arrondissement"
                 name="nom_arrondissement"
                 onChange={handleChange}
                 value={formState.nom_arrondissement}
                 placeholder="Entrez le nom de l'arrondissement"
+                required
               />
             </div>
             <div className="form-group">
               <label htmlFor="département">Département</label>
               <select
+                id="département"
                 name="département"
                 onChange={handleChange}
                 value={formState.département}
+                required
               >
                 <option value="" disabled>
                   Sélectionnez un département
@@ -119,9 +127,14 @@ export const Modal = ({ closeModal, onSubmit, defaultValue }) => {
               </select>
             </div>
             {errors && <div className="error">{`Veuillez remplir : ${errors}`}</div>}
-            <button type="submit" className="btn" onClick={handleSubmit}>
-              Soumettre
-            </button>
+            <div className="modal-actions flex">
+              <button type="submit" className="btn mr-4" onClick={handleSubmit}>
+                Valider
+              </button>
+              <button type="button" className="btn btn-secondary" onClick={closeModal}>
+                Annuler
+              </button>
+            </div>
           </form>
         </div>
       </div>
