@@ -3,8 +3,7 @@ import apiClient from "../../../utils/axiosConfig"; // Importer l'instance d'axi
 import "./Modal.css";
 
 export const Modal = ({ closeModal, onSubmit, defaultValue }) => {
-  const [formState, setFormState] = useState(
-    defaultValue || {
+  const [formState, setFormState] = useState({
       nom_centre_vote: "",
       arrondissement: "",
     }
@@ -12,6 +11,16 @@ export const Modal = ({ closeModal, onSubmit, defaultValue }) => {
 
   const [arrondissements, setArrondissements] = useState([]); // État pour stocker les arrondissements
   const [errors, setErrors] = useState("");
+
+  // Mise à jour de l'état avec les valeurs par défaut si elles changent
+    useEffect(() => {
+      if (defaultValue) {
+        setFormState({
+          nom_centre_vote: defaultValue.nom_centre || "",
+          arrondissement: defaultValue.arrondissement?.id_arrondissement || "",
+        });
+      }
+    }, [defaultValue]);
 
   // Fetch des arrondissements au chargement du modal
   useEffect(() => {

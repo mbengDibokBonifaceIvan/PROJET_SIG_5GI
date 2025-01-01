@@ -3,8 +3,7 @@ import apiClient from "../../../utils/axiosConfig"; // Importer l'instance d'axi
 import "./Modal.css";
 
 export const Modal = ({ closeModal, onSubmit, defaultValue }) => {
-  const [formState, setFormState] = useState(
-    defaultValue || {
+  const [formState, setFormState] = useState({
       nom_bureau: "",
       latitude: "",
       longitude: "",
@@ -14,6 +13,18 @@ export const Modal = ({ closeModal, onSubmit, defaultValue }) => {
 
   const [centresDeVote, setCentresDeVote] = useState([]); // État pour stocker les centres de vote
   const [errors, setErrors] = useState("");
+
+  // Mise à jour de l'état avec les valeurs par défaut si elles changent
+  useEffect(() => {
+    if (defaultValue) {
+      setFormState({
+        nom_bureau: defaultValue.nom_bureau || "",
+        latitude: defaultValue.coordonnees?.latitude || "",
+        longitude: defaultValue.coordonnees?.longitude || "",
+        centreVote: defaultValue.centreVote?.id_centre_vote || "",
+      });
+    }
+  }, [defaultValue]);
 
   // Fetch des centres de vote au chargement du modal
   useEffect(() => {
