@@ -4,7 +4,6 @@ import SideBar from "../Components/Sidebar1/SideBar";
 import "./pages/Dashboard.css";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Dashboard from "./pages/Dashboard";
-
 import Candidats from "./pages/Candidat/Candidats";
 import SuperAdmin from "./pages/SuperAdministrateurs/SuperAdmin";
 import Scrutateurs from "./pages/Scrutateurs/Scrutateurs";
@@ -14,7 +13,6 @@ import Arrondissement from "./pages/Arrondissement/Arrondissement";
 import CentreVote from "./pages/CentreVote/CentreVote";
 import BureauVote from "./pages/BureauVote/BureauVote";
 import Electeur from "./pages/Electeur/Electeur";
-import Card from "../Components/Card";
 import Utilisateurs from "./pages/Utilisateurs/Utilisateurs";
 function App() {
   return (
