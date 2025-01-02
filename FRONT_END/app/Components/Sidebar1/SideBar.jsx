@@ -28,17 +28,6 @@ const routes = [
     name: "Utilisateurs",
     icon: <FaUser />,
   },
-
-
-  {
-    path: "/logout",
-    name: "Deconnexion",
-    icon: <FaSignOutAlt />,
-    exact: true,
-
-  },
-
-
 ];
 
 const SideBar = ({ children }) => {
@@ -76,6 +65,13 @@ const SideBar = ({ children }) => {
         duration: 0.5,
       },
     },
+  };
+
+  const handleLogout = () => {
+    if (window.confirm("Êtes-vous sûr de vouloir vous déconnecter ?")) {
+      // Si l'utilisateur confirme, on redirige vers la page d'accueil
+      window.location.href = "http://localhost:3000"; // Redirection vers la page d'accueil
+    }
   };
 
   return (
@@ -171,6 +167,26 @@ const SideBar = ({ children }) => {
                 </NavLink>
               );
             })}
+
+              {/* Déconnexion */}
+              <div className="link" onClick={handleLogout}>
+                <div className="icon">
+                  <FaSignOutAlt />
+                </div>
+                <AnimatePresence>
+                  {isOpen && (
+                    <motion.div
+                      variants={showAnimation}
+                      initial="hidden"
+                      animate="show"
+                      exit="hidden"
+                      className="link_text"
+                    >
+                      Déconnexion
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
           </section>
         </motion.div>
 
