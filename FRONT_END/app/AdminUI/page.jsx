@@ -5,7 +5,6 @@ import "./pages/Dashboard.css";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Dashboard from "./pages/Dashboard";
 
-import Logout from "../logout/Logout";
 import Candidats from "./pages/Candidat/Candidats";
 import SuperAdmin from "./pages/SuperAdministrateurs/SuperAdmin";
 import Scrutateurs from "./pages/Scrutateurs/Scrutateurs";
@@ -31,7 +30,7 @@ function App() {
           <Route path="/centrevote" element={<CentreVote />} />
           <Route path="/bureauvote" element={<BureauVote />} />
           <Route path="/electeur" element={<Electeur />} />
-          <Route path="/logout" element={<Logout/>} />
+      
           <Route path="/scrutateurs" element={<Scrutateurs />} />
           <Route path="/superAdministrateur" element={<SuperAdmin />} />
 
