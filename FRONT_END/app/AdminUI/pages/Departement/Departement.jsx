@@ -84,7 +84,9 @@ function Departement() {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-800">
       <Table rows={rows} deleteRow={handleDeleteRow} editRow={handleEditRow} />
-      <button onClick={() => setModalOpen(true)} className="btn">Add</button>
+      <button onClick={() => setModalOpen(true)} className="btn">
+        Ajouter
+      </button>
       {modalOpen && (
         <Modal
           closeModal={() => {

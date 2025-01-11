@@ -13,7 +13,7 @@ function Dashboard() {
           BIENVENUE CHER ADMINISTRATEUR
         </h1>
         <p className="text-sm text-gray-500 dark:text-gray-300">
-          Veuillez charger les paramétres l'application afin que les
+          Veuillez charger les parametres l'application afin que les
           utilisateurs puissent voir les résultats. Merci!{" "}
         </p>
         <div className="w-full max-w-screen-lg">
