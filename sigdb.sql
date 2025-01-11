@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le : jeu. 19 déc. 2024 à 17:01
+-- Généré le : dim. 12 jan. 2025 à 00:34
 -- Version du serveur : 10.4.32-MariaDB
 -- Version de PHP : 8.2.12
 
@@ -50,8 +50,7 @@ INSERT INTO `arrondissements` (`id_arrondissement`, `nom_arrondissement`, `id_d�
 (11, 'Arrondissement de Bamenda I', 10),
 (12, 'Arrondissement de Dschang ', 13),
 (13, 'Arrondissement de Kribi ', 11),
-(14, 'Arrondissement de Kumba ', 12),
-(15, 'BOUNGUI', 8);
+(14, 'Arrondissement de Kumba ', 12);
 
 -- --------------------------------------------------------
 
@@ -107,11 +106,11 @@ CREATE TABLE `candidats` (
 --
 
 INSERT INTO `candidats` (`id_candidat`, `nom_candidat`, `parti_politique`) VALUES
-(1, 'Eto\'o', 'Parti Politique 9'),
-(2, 'TRUMP', 'USA'),
-(3, 'Paul', 'CMR'),
-(4, 'Elon Musk', 'Parti Modifié'),
-(5, 'Damso', 'DEM\'S');
+(1, 'Ivan', 'Solo Leveling'),
+(2, 'Yasmine', 'Tiktok Coorporation'),
+(3, 'Hemery', 'Bankai'),
+(4, 'Diroil', 'Aomine'),
+(5, 'Raissa', 'Tiom\'s');
 
 -- --------------------------------------------------------
 
@@ -201,7 +200,13 @@ INSERT INTO `electeurs` (`id_électeur`, `adresse`, `date_inscription`, `date_na
 (1, 'Adresse de l\'électeur', '2024-12-03 01:00:00.000000', '2001-01-01 01:00:00.000000', 'Mboto', '12345', 'celestin', 1),
 (2, 'Adresse de l\'électeur', '2024-12-03 01:00:00.000000', '2001-01-01 01:00:00.000000', 'Atangana', '9854', 'Vincent', 2),
 (3, 'Adresse de l\'électeur', '2024-12-03 01:00:00.000000', '2001-01-01 01:00:00.000000', 'Balep', '8753', 'Alexandra', 3),
-(4, 'Nouvelle adresse de l\'électeur', '2024-12-04 01:00:00.000000', '1995-01-01 01:00:00.000000', 'Nouveau nom de l\'électeur', '54321', 'Nouveau prénom de l\'électeur', 2);
+(4, 'Nouvelle adresse de l\'électeur', '2024-12-04 01:00:00.000000', '1995-01-01 01:00:00.000000', 'Nouveau nom de l\'électeur', '54321', 'Nouveau prénom de l\'électeur', 2),
+(9, '321 Pine Street', '2024-07-10 01:00:00.000000', '1980-03-20 01:00:00.000000', 'Johnson', '1234', 'Alice', 2),
+(10, '567 Cedar Avenue', '2025-02-28 01:00:00.000000', '1992-11-12 01:00:00.000000', 'Wilson', '6789', 'Michael', 7),
+(11, '987 Willow Lane', '2024-10-15 01:00:00.000000', '1975-08-05 01:00:00.000000', 'Martinez', '3456', 'Sofia', 15),
+(12, '789 Elm Street', '2024-09-12 01:00:00.000000', '1987-06-28 01:00:00.000000', 'Lee', '5432', 'David', 3),
+(13, '456 Oak Avenue', '2025-03-05 01:00:00.000000', '1990-04-15 01:00:00.000000', 'Garcia', '8765', 'Maria', 10),
+(14, '123 Maple Street', '2024-11-20 01:00:00.000000', '1983-12-03 01:00:00.000000', 'Chen', '9876', 'Ling', 18);
 
 -- --------------------------------------------------------
 
@@ -228,8 +233,7 @@ INSERT INTO `regions` (`id_région`, `nom_région`) VALUES
 (9, 'Extrême-Nord'),
 (10, 'Nord-Ouest'),
 (11, 'Sud-Ouest'),
-(12, 'Sud'),
-(13, 'testUpdate');
+(12, 'Sud');
 
 -- --------------------------------------------------------
 
@@ -262,7 +266,12 @@ INSERT INTO `resultats` (`id_résultat`, `annee_election`, `date_saisie`, `nombr
 (10, 2024, '2024-12-06 01:00:00.000000', 600, 3, 4),
 (11, 2024, '2024-12-06 01:00:00.000000', 100, 3, 1),
 (12, 2024, '2024-12-06 01:00:00.000000', 258, 3, 2),
-(13, 2024, '2024-12-06 01:00:00.000000', 180, 3, 3);
+(13, 2024, '2024-12-06 01:00:00.000000', 180, 3, 3),
+(15, 2024, '2024-12-06 01:00:00.000000', 100, 1, 5),
+(16, 2024, '2024-12-06 01:00:00.000000', 90, 7, 5),
+(17, 2024, '2024-12-06 01:00:00.000000', 250, 15, 5),
+(18, 2024, '2024-12-06 01:00:00.000000', 180, 10, 5),
+(19, 2024, '2024-12-06 01:00:00.000000', 75, 18, 5);
 
 -- --------------------------------------------------------
 
@@ -283,14 +292,14 @@ CREATE TABLE `utilisateurs` (
 --
 
 INSERT INTO `utilisateurs` (`id_utilisateur`, `mot_de_passe`, `nom_utilisateur`, `role`, `id_bureau_vote`) VALUES
-(1, '123456789', 'Ivan', 'SuperAdmin', NULL),
-(2, '975126', 'Amirah', 'SuperAdmin', NULL),
-(3, '975126', 'Paul', 'SuperAdmin', NULL),
-(4, 'Modifié', 'UtilisateurModifié', 'SuperAdmin', NULL),
-(6, 'test', 'Atangana', 'Scrutateur', 1),
-(7, 'test', 'Ludovic', 'Scrutateur', 2),
-(8, '9845', 'Victor', 'Scrutateur', 3),
-(9, '123456789', 'Yann', 'Scrutateur', 2);
+(1, '12345678', 'Mbeng', 'SuperAdmin', 1),
+(2, '87654321', 'Mfangam', 'SuperAdmin', 2),
+(3, '123456789', 'Mbong', 'Scrutateur', 2),
+(4, '987654321', 'Keumouo', 'SuperAdmin', 3),
+(6, 'tiomela18', 'Tiomela', 'Scrutateur', 1),
+(7, 'afoncraft', 'Lashu', 'Scrutateur', 2),
+(8, 'frantzDimitri', 'Tapamo', 'Scrutateur', 3),
+(9, 'MonsieurBel', 'Belinga', 'Scrutateur', 2);
 
 --
 -- Index pour les tables déchargées
@@ -366,7 +375,7 @@ ALTER TABLE `utilisateurs`
 -- AUTO_INCREMENT pour la table `arrondissements`
 --
 ALTER TABLE `arrondissements`
-  MODIFY `id_arrondissement` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id_arrondissement` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT pour la table `bureaux_de_vote`
@@ -390,13 +399,13 @@ ALTER TABLE `centres_de_vote`
 -- AUTO_INCREMENT pour la table `departements`
 --
 ALTER TABLE `departements`
-  MODIFY `id_département` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id_département` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT pour la table `electeurs`
 --
 ALTER TABLE `electeurs`
-  MODIFY `id_électeur` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id_électeur` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT pour la table `regions`
@@ -408,7 +417,7 @@ ALTER TABLE `regions`
 -- AUTO_INCREMENT pour la table `resultats`
 --
 ALTER TABLE `resultats`
-  MODIFY `id_résultat` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id_résultat` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT pour la table `utilisateurs`
