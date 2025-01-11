@@ -33,6 +33,12 @@ import {
   faUserCheck,
   faDownload,
 } from "@fortawesome/free-solid-svg-icons";
+import { BiPlus, BiTrash, BiEdit } from "react-icons/bi";
+
+
+export const BiPlusIcon = <BiPlus size={24} />;
+export const BiTrashIcon = <BiTrash size={24} />;
+export const BiEditIcon = <BiEdit size={24} />;
 export const voteIcon = <Vote size={20} />;
 export const downloadIcon = <FontAwesomeIcon icon={faDownload} />;
 export const flagIcon = <FontAwesomeIcon icon={faFlag} />;
