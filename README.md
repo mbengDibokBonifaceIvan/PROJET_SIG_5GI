@@ -7,9 +7,10 @@
 1. Exécutez le fichier `BACK_END\SIG\src\main\java\com\example\SIG\SigApplication.java` pour lancer le backend de l'application.
 
 ## Démarrage du frontend
-1. Accédez au dossier `FRONT_END` de l'application.
-2. Installez toutes les dépendances nécessaires en exécutant `npm i`.
-3. Lancez l'application en tapant `npm run dev`.
+1. Dans la racine du projet créer le fichier .env et insérer ceci: `OPENWEATHERMAP_API_KEY=4bafd5735d1d9807cbbe6df96016ef9f`.
+2. Accédez au dossier `FRONT_END` de l'application.
+3. Installez toutes les dépendances nécessaires en exécutant `npm i`.
+4. Lancez l'application en tapant `npm run dev`.
 
 ## Connexion à l'application
 1. Accédez à la page d'accueil de l'application. 
