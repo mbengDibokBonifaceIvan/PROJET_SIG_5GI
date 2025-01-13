@@ -1,15 +1,16 @@
 'use client';
 import { faEye, faEyeSlash, faHome } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React, { useEffect, useState } from 'react';
-import Link from 'next/link';
+import React, { useContext, useEffect, useState } from 'react';
 import styles from '@/styles/Login.module.css';
 import SignInBtn from '@/components/SignInBtn';
 import AuthLayout from '@/layouts/AuthLayout';
+import { useTheme  } from 'next-themes';
+
 
 const Login = () => {
   const [name, setName] = useState(''); // Champ pour le nom
-  const [role, setRole] = useState('admin'); // État pour le rôle de l'utilisateur
+  const [role, setRole] = useState('SuperAdmin'); // État pour le rôle de l'utilisateur
   const [password, setPassword] = useState('');
   const [error, setError] = useState(false);
   const [nameError, setNameError] = useState(''); // État pour les erreurs de nom
@@ -29,28 +30,18 @@ const Login = () => {
       setPasswordError('Password is required');
     }
 
-    if (name && password) {
+    if (name && password && role) { 
+
+      console.log(name)
+      console.log(password)
+      console.log(role)
 
         if (password.length < 8) {
           setError(true);
           setPasswordError('Password is too short');
         } else {
           try {
-            // const res = await fetch(`http://localhost:8080/utilisateurs/verify`, {
-            //   method: 'POST',
-            //   headers: { 'Content-Type': 'application/json' },
-            //   body: JSON.stringify({
-            //     name, // Ajout du nom
-            //     password
-            //   })
-            // });
-            // const res = await fetch(`http://localhost:8080/utilisateurs/login?name=${encodeURIComponent(name)}&password=${encodeURIComponent(password)}`, {
-            //   method: 'GET',
-            //   headers: {
-            //     'Content-Type': 'application/json',
-            //   }
-            // });
-          const res = await fetch(`http://localhost:8080/utilisateurs/verify?name=${encodeURIComponent(name)}&password=${encodeURIComponent(password)}`, {
+          const res = await fetch(`http://localhost:8080/utilisateurs/verify?nomUtilisateur=${encodeURIComponent(name)}&motDePasse=${encodeURIComponent(password)}&role=${encodeURIComponent(role)}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -65,9 +56,9 @@ const Login = () => {
             console.log("User Data:", userData); // Logger les données utilisateur
 
             // Rediriger en fonction du rôle
-            if (userData.role === 'admin') {
+            if (userData.role === 'SuperAdmin') {
                 window.location.href = '/AdminUI';
-            } else if (userData.role === 'scrutateur') {
+            } else if (userData.role === 'Scrutateur') {
                 window.location.href = '/scrutateur';
             } else {
                 console.log("Unknown role:", userData.role);
@@ -95,9 +86,11 @@ const Login = () => {
     resetError();
   }, []);
 
+  const { theme } = useTheme(); // Utilisez le hook pour obtenir le thème
+
   return (
     <AuthLayout title="login Page">
-      <div className={styles.loginForm}>
+      <div className={theme === 'light' ? 'loginForm-light' : 'loginForm-dark'}>
         <div className='flex text-center'>
         <h1 className="font-bold text-center ml-auto text-xl">Se connecter</h1>
         <a href="/" className="ml-auto"> <FontAwesomeIcon icon={faHome} /></a>
@@ -115,26 +108,25 @@ const Login = () => {
             {nameError && <p className="my-1 text-xs">{nameError}</p>}
             {name && <span className="text-xs">Nom</span>}
           </div>
-          
            {/* Boutons radio pour le rôle */}
            <div className={styles.loginField}>
             <label className="mr-4">
               <input
                 type="radio"
-                value="admin"
-                checked={role === 'admin'}
-                onChange={() => setRole('admin')}
+                value="SuperAdmin"
+                checked={role === 'SuperAdmin'}
+                onChange={() => setRole('SuperAdmin')}
               />
-              admin
+              SuperAdmin
             </label>
             <label>
               <input
                 type="radio"
-                value="scrutateur"
-                checked={role === 'scrutateur'}
-                onChange={() => setRole('scrutateur')}
+                value="Scrutateur"
+                checked={role === 'Scrutateur'}
+                onChange={() => setRole('Scrutateur')}
               />
-              scrutateur
+              Scrutateur
             </label>
           </div>
 
@@ -162,19 +154,12 @@ const Login = () => {
               </div>
             )}
           </div>
-
-          <div className={styles.loginField}>
-            <Link href="/register" className={styles.allez}>
-              Créer un compte
-            </Link>
-          </div>
-          
           <div>
             <button className="w-32 h-8 bg-blue-600 rounded capitalize" onClick={login}>
-              <span className="w-full text-white text-lg">Connexion</span>
+              <span className="w-full text-blue text-lg">Connexion</span>
             </button>
           </div>
-          
+
           <SignInBtn />
         </div>
       </div>
@@ -183,3 +168,4 @@ const Login = () => {
 };
 
 export default Login;
+

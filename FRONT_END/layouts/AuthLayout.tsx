@@ -2,6 +2,7 @@ import Head from 'next/head';
 import Image from 'next/image';
 import React, { Children } from 'react';
 import styles from '../styles/AuthLayout.module.css';
+import { useTheme } from 'next-themes';
 
 type Props = {
   title: string;
@@ -9,6 +10,8 @@ type Props = {
 };
 
 const AuthLayout = ({ title, children }: Props) => {
+  const { theme } = useTheme();
+
   return (
     <>
       <Head>
@@ -16,7 +19,7 @@ const AuthLayout = ({ title, children }: Props) => {
       </Head>
       <div className={styles.layoutContainer}>
         <div className={styles.loginContainer}>
-          <div className={styles.mainLoginContainer}>
+          <div className={theme === 'light' ? 'mainLoginContainer-light' : 'mainLoginContainer-dark'}>
             <div className={styles.leftSide}>
               <div className="w-full flex items-center justify-start my">
                 <div className="mr-4 border-2 h-22 w-22 rounded-full overflow-hidden flex items-center justify-center">
