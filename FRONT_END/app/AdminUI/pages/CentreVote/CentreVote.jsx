@@ -4,7 +4,7 @@ import apiClient from "../../../utils/axiosConfig"; // Importer l'instance d'axi
 import "./CentreVote.css";
 import { Table } from "../../../Components/Details/DetailsCentreVote/Table";
 import { Modal } from "../../../Components/Details/DetailsCentreVote/Modal";
-
+import CentreDeVoteTable from "@/app/Components/CentreDeVoteTable";
 function CentreVote() {
   const [modalOpen, setModalOpen] = useState(false);
   const [rows, setRows] = useState([]); // Liste des centres de vote
@@ -84,8 +84,15 @@ function CentreVote() {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-800">
-      <Table rows={rows} deleteRow={handleDeleteRow} editRow={handleEditRow} />
-      <button onClick={() => setModalOpen(true)} className="btn mt-4 bg-blue-600 text-white px-4 py-2 rounded-lg shadow">
+      <CentreDeVoteTable
+        rows={rows}
+        editRow={handleEditRow}
+        deleteRow={handleDeleteRow}
+      />
+      <button
+        onClick={() => setModalOpen(true)}
+        className="btn mt-4 bg-blue-600 text-white px-4 py-2 rounded-lg shadow"
+      >
         Ajouter
       </button>
       {modalOpen && (

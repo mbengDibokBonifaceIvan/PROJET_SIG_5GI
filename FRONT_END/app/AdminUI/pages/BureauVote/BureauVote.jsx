@@ -4,6 +4,7 @@ import apiClient from "../../../utils/axiosConfig"; // Importer l'instance d'axi
 import "./BureauVote.css";
 import { Table } from "../../../Components/Details/DetailsBureauVote/Table";
 import { Modal } from "../../../Components/Details/DetailsBureauVote/Modal";
+import PollingStationsTable from "@/app/Components/PollingStationsTable ";
 
 function BureauVote() {
   const [modalOpen, setModalOpen] = useState(false);
@@ -84,8 +85,15 @@ function BureauVote() {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-800">
-      <Table rows={rows} deleteRow={handleDeleteRow} editRow={handleEditRow} />
-      <button onClick={() => setModalOpen(true)} className="btn mt-4 bg-blue-600 text-white px-4 py-2 rounded-lg shadow">
+      <PollingStationsTable
+        rows={rows}
+        editRow={handleEditRow}
+        deleteRow={handleDeleteRow}
+      />
+      <button
+        onClick={() => setModalOpen(true)}
+        className="btn mt-4 bg-blue-600 text-white px-4 py-2 rounded-lg shadow"
+      >
         Ajouter
       </button>
       {modalOpen && (

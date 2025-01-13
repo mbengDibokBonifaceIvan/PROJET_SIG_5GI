@@ -12,14 +12,6 @@ export const Table = ({ rows, deleteRow, editRow }) => {
         </h2>
       </div>
 
-      {/**
-     *   <PollingStationsTable
-        rows={rows}
-        editRow={editRow}
-        deleteRow={deleteRow}
-      />
-     */}
-
       <table className="mx-auto w-full md:w-3/4 lg:w-1/2 table-auto shadow-lg rounded-lg dark:bg-gray-800">
         <thead className="bg-gray-300 dark:bg-gray-600 text-black dark:text-white">
           <tr>

@@ -4,6 +4,7 @@ import apiClient from "../../../utils/axiosConfig"; // Importer l'instance d'axi
 import "./Arrondissement.css";
 import { Table } from "../../../Components/Details/DetailsArrondissement/Table";
 import { Modal } from "../../../Components/Details/DetailsArrondissement/Modal";
+import ArrondissementTable from"../../../Components/ArrondissementTable";
 
 function Arrondissement() {
   const [modalOpen, setModalOpen] = useState(false);
@@ -84,8 +85,15 @@ function Arrondissement() {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-800">
-      <Table rows={rows} deleteRow={handleDeleteRow} editRow={handleEditRow} />
-      <button onClick={() => setModalOpen(true)} className="btn">Ajouter</button>
+      <ArrondissementTable
+        rows={rows}
+        editRow={handleEditRow}
+        deleteRow={handleDeleteRow}
+      />
+
+      <button onClick={() => setModalOpen(true)} className="btn">
+        Ajouter
+      </button>
       {modalOpen && (
         <Modal
           closeModal={() => {
