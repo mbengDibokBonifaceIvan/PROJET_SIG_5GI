@@ -17,7 +17,6 @@ import axios from "axios";
 import { lusitana } from "./Components/lib/fonts";
 import ResultatChart from "./Components/revenue-chart";
 import Navbar from "./Components/Navbar";
-import { ChevronLeft, ChevronRight } from "lucide-react";
 import VotingStationsList from "./Components/VotingStationsList";
 interface BureauDeVote {
   nom_bureau: string;
