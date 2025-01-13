@@ -22,7 +22,9 @@ public class Utilisateurs {
     @Getter
     @Column(name = "mot_de_passe") // Again, ensure this matches the column name in the database
     private String motDePasse;
-    private String role; // scrutateur, administrateur, etc.
+
+    @Enumerated(EnumType.STRING)
+    private Role role; // Utilisation de l'énum  scrutateur, administrateur, etc.
 
     @ManyToOne
     @JoinColumn(name = "id_bureau_vote")
@@ -36,16 +38,19 @@ public class Utilisateurs {
         this.id_utilisateur = id_utilisateur;
         this.nomUtilisateur = nomUtilisateur;
         this.motDePasse = motDePasse;
-        this.role = role;
+        this.role = Role.valueOf(role);
+
     }
 
     public Utilisateurs(Long id_utilisateur, String nom_utilisateur, String mot_de_passe, String role, Bureaux_De_Vote bureauVote) {
         this.id_utilisateur = id_utilisateur;
         this.nomUtilisateur = nomUtilisateur;
         this.motDePasse = motDePasse;
-        this.role = role;
+        this.role = Role.valueOf(role);
         this.bureauVote = bureauVote;
     }
+
+
 // Getters and Setters
 
     public Long getId_utilisateur() {
@@ -69,11 +74,11 @@ public class Utilisateurs {
     }
 
     public String getRole() {
-        return role;
+        return String.valueOf(role);
     }
 
     public void setRole(String role) {
-        this.role = role;
+        this.role = Role.valueOf(role);
     }
 
     public Bureaux_De_Vote getBureauVote() {
