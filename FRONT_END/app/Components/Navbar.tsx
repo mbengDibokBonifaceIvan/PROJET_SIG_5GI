@@ -112,10 +112,6 @@ const generatePDF = async () => {
   // Generate the first table
   autoTable(pdf, tableOptions);
 
-  // Signatures
-  pdf.setFontSize(12);
-  pdf.text(signatures, 15, pdf.internal.pageSize.height - 30);
-
   // Fetch and format data for the second table
   const classementData = await fetchClassementData();
   classementData.sort((a, b) => b[2] - a[2]); // Sort candidates by total votes in descending order
@@ -128,7 +124,7 @@ const generatePDF = async () => {
     index + 1,
   ]);
 
-  const startYClassement = 115;
+  const startYClassement = 510;
 
   const tableOptionsClassement = {
     startY: startYClassement,
@@ -150,12 +146,17 @@ const generatePDF = async () => {
   pdf.text(
     titleClassement,
     pdf.internal.pageSize.width / 2,
-    startYClassement - 10,
+    startYClassement - 500,
     { align: "center" }
   );
 
+  // Signatures
+  pdf.setFontSize(12);
+  pdf.text(signatures, 15, pdf.internal.pageSize.height - 30);
+
   // Save the PDF with both tables
-pdf.save(`Bordereau_Des_Resultats_Electoraux_Au_Cameroun_${annee}.pdf`);};
+  pdf.save(`Bordereau_Des_Resultats_Electoraux_Au_Cameroun_${annee}.pdf`);
+};
 
 // Function to fetch data for the second table
 const fetchClassementData = async () => {
