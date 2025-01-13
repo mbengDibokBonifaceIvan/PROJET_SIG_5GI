@@ -3,7 +3,7 @@ import apiClient from "../../../utils/axiosConfig"; // Importer l'instance d'axi
 import "./Electeur.css";
 import { Table } from "../../../Components/Details/DetailsElecteur/Table";
 import { Modal } from "../../../Components/Details/DetailsElecteur/Modal";
-
+import ElecteurTable from "@/app/Components/ElecteurTable";
 function Electeur() {
   const [modalOpen, setModalOpen] = useState(false);
   const [rows, setRows] = useState([]); // Liste des électeurs
@@ -90,7 +90,7 @@ function Electeur() {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-800">
-      <Table
+      <ElecteurTable
         rows={rows.map((row) => ({
           ...row,
           date_naissance: formatReadableDate(row.date_naissance),
@@ -99,6 +99,7 @@ function Electeur() {
         deleteRow={handleDeleteRow}
         editRow={handleEditRow}
       />
+      
       <button
         onClick={() => setModalOpen(true)}
         className="btn mt-4 bg-blue-600 text-white px-4 py-2 rounded-lg shadow"

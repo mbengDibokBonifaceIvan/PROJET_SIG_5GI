@@ -3,7 +3,7 @@ import apiClient from "../../../utils/axiosConfig"; // Importer l'instance d'axi
 import "./Departement.css";
 import { Table } from "../../../Components/Details/DetailsDepartement/Table";
 import { Modal } from "../../../Components/Details/DetailsDepartement/Modal";
-
+import DepartementTable from "../../../Components/DepartementTable"; 
 function Departement() {
   const [modalOpen, setModalOpen] = useState(false);
   const [rows, setRows] = useState([]); // Liste des départements
@@ -83,7 +83,11 @@ function Departement() {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-800">
-      <Table rows={rows} deleteRow={handleDeleteRow} editRow={handleEditRow} />
+      <DepartementTable
+        rows={rows}
+        editRow={handleEditRow}
+        deleteRow={handleDeleteRow}
+      />
       <button onClick={() => setModalOpen(true)} className="btn">
         Ajouter
       </button>
