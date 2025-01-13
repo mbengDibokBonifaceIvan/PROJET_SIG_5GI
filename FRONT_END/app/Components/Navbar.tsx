@@ -50,44 +50,80 @@ function Navbar() {
 
     fetchDataResultats();
   }, []);
+
+
 const generatePDF = async () => {
+  // Création du document PDF
   const pdf = new jsPDF();
 
-  const title = "REPUBLIQUE DU CAMEROUN";
-  const motto = "PAIX-TRAVAIL-PATRIE";
-  const resumeInfo = "RESUME DES INFORMATIONS ELECTORALES";
-  const signatures = "Signature : ______By WEBGENIUS_5GI\n";
+  // Définition des couleurs personnalisées
+  const colors = {
+    primary: [0, 102, 204], // Bleu royal
+    secondary: [220, 53, 69], // Rouge officiel
+    accent: [25, 135, 84], // Vert institutionnel
+    text: [33, 37, 41], // Texte foncé
+    lightBg: [248, 249, 250], // Fond clair
+  };
 
-  // Text styles
-  pdf.setFont("times");
-  pdf.setFontSize(18);
+  // Configuration de la page
+  pdf.setFillColor(...colors.lightBg);
+  pdf.rect(
+    0,
+    0,
+    pdf.internal.pageSize.width,
+    pdf.internal.pageSize.height,
+    "F"
+  );
 
-  // Insertion d'images
-  const imgData1 = "/Armoiries_CMR.png";
-  pdf.addImage(imgData1, "PNG", 10, 10, 30, 30);
+  // En-tête
+  const headerY = 15;
+  const headerCenter = pdf.internal.pageSize.width / 2;
 
-  const imgData2 = "/LOGO-POLYTECHNIQUE-01-scaled.jpg";
-  pdf.addImage(imgData2, "JPG", pdf.internal.pageSize.width - 40, 10, 30, 30);
+  // Images
+  pdf.addImage("/Armoiries_CMR.png", "PNG", 15, headerY, 25, 25);
+  pdf.addImage(
+    "/LOGO-POLYTECHNIQUE-01-scaled.jpg",
+    "JPG",
+    pdf.internal.pageSize.width - 40,
+    headerY,
+    25,
+    25
+  );
 
-  // Title
-  pdf.text(title, pdf.internal.pageSize.width / 2, 20, { align: "center" });
-
-  // Motto
-  pdf.setFontSize(15);
-  pdf.text(motto, pdf.internal.pageSize.width / 2, 30, { align: "center" });
-
-  // Résumé des informations électorales
-  pdf.setFontSize(16);
-  pdf.text(resumeInfo, pdf.internal.pageSize.width / 2, 55, {
+  // Titre principal et sous-titres
+  pdf.setTextColor(...colors.primary);
+  pdf.setFont("helvetica", "bold");
+  pdf.setFontSize(20);
+  pdf.text("RÉPUBLIQUE DU CAMEROUN", headerCenter, headerY + 10, {
     align: "center",
   });
 
-  // Table header and data for the first table
+  pdf.setTextColor(...colors.secondary);
+  pdf.setFontSize(16);
+  pdf.text("PAIX - TRAVAIL - PATRIE", headerCenter, headerY + 20, {
+    align: "center",
+  });
+
+  // Ligne de séparation décorative
+  pdf.setDrawColor(...colors.primary);
+  pdf.setLineWidth(0.5);
+  pdf.line(40, headerY + 30, pdf.internal.pageSize.width - 40, headerY + 30);
+
+  // Titre du document
+  pdf.setFontSize(18);
+  pdf.setTextColor(...colors.text);
+  pdf.text(
+    "RÉSULTATS DES ÉLECTIONS PRÉSIDENTIELLES",
+    headerCenter,
+    headerY + 45,
+    { align: "center" }
+  );
+  pdf.setFontSize(16);
+  pdf.text(`Année ${annee}`, headerCenter, headerY + 55, { align: "center" });
+
+  // Première table - Résultats détaillés
   const tableHeaders = [
-    "Nom du candidat",
-    "Nombre de voix",
-    "Bureau de vote",
-    "Parti politique",
+    ["Nom du candidat", "Nombre de voix", "Bureau de vote", "Parti politique"],
   ];
   const tableData = resultats.map((resultat) => [
     resultat.candidat.nom_candidat,
@@ -96,66 +132,103 @@ const generatePDF = async () => {
     resultat.candidat.parti_politique,
   ]);
 
-  // Styles for the first table
-  const tableOptions = {
-    startY: 68,
-    tableColumnWidth: pdf.internal.pageSize.width / tableHeaders.length,
-    head: [tableHeaders],
+  autoTable(pdf, {
+    startY: headerY + 65,
+    head: tableHeaders,
     body: tableData,
     theme: "grid",
-    styles: { cellPadding: 5, fontSize: 12 },
-    headStyles: { fillColor: [51, 68, 170], textColor: [255, 255, 255] },
-    bodyStyles: { textColor: [51, 68, 170] },
-    alternateRowStyles: { fillColor: [225, 231, 242] },
-  };
+    styles: {
+      font: "helvetica",
+      fontSize: 10,
+      cellPadding: 5,
+    },
+    headStyles: {
+      fillColor: colors.primary,
+      textColor: [255, 255, 255],
+      fontStyle: "bold",
+      halign: "center",
+    },
+    columnStyles: {
+      0: { cellWidth: 50 },
+      1: { cellWidth: 40, halign: "center" },
+      2: { cellWidth: 50 },
+      3: { cellWidth: 50 },
+    },
+    alternateRowStyles: {
+      fillColor: [245, 247, 250],
+    },
+  });
 
-  // Generate the first table
-  autoTable(pdf, tableOptions);
-
-  // Fetch and format data for the second table
+  // Deuxième table - Classement National
   const classementData = await fetchClassementData();
-  classementData.sort((a, b) => b[2] - a[2]); // Sort candidates by total votes in descending order
+  classementData.sort((a, b) => b[2] - a[2]);
 
-  const titleClassement = "Classement National";
-  const tableHeadersClassement = ["Nom du candidat", "Total de voix", "Rang"];
+  pdf.addPage();
+
+  // Titre du classement
+  pdf.setFontSize(18);
+  pdf.setTextColor(...colors.primary);
+  pdf.text("CLASSEMENT NATIONAL", headerCenter, 30, { align: "center" });
+
+  const tableHeadersClassement = [
+    ["Rang", "Nom du candidat", "Total des voix", "Pourcentage"],
+  ];
+  const totalVotes = classementData.reduce((sum, data) => sum + data[2], 0);
   const tableDataClassement = classementData.map((data, index) => [
+    (index + 1).toString(),
     data[1],
-    data[2],
-    index + 1,
+    data[2].toLocaleString(),
+    `${((data[2] / totalVotes) * 100).toFixed(2)}%`,
   ]);
 
-  const startYClassement = 510;
-
-  const tableOptionsClassement = {
-    startY: startYClassement,
-    tableColumnWidth:
-      pdf.internal.pageSize.width / tableHeadersClassement.length,
-    head: [tableHeadersClassement],
+  autoTable(pdf, {
+    startY: 40,
+    head: tableHeadersClassement,
     body: tableDataClassement,
     theme: "grid",
-    styles: { cellPadding: 5, fontSize: 10 },
-    headStyles: { fillColor: [51, 68, 170], textColor: [255, 255, 255] },
-    bodyStyles: { textColor: [51, 68, 170] },
-    alternateRowStyles: { fillColor: [225, 231, 242] },
-  };
+    styles: {
+      font: "helvetica",
+      fontSize: 11,
+      cellPadding: 8,
+    },
+    headStyles: {
+      fillColor: colors.secondary,
+      textColor: [255, 255, 255],
+      fontStyle: "bold",
+      halign: "center",
+    },
+    columnStyles: {
+      0: { cellWidth: 25, halign: "center" },
+      1: { cellWidth: 60 },
+      2: { cellWidth: 40, halign: "right" },
+      3: { cellWidth: 40, halign: "center" },
+    },
+    alternateRowStyles: {
+      fillColor: [245, 247, 250],
+    },
+  });
 
-  // Generate the second table
-  autoTable(pdf, tableOptionsClassement);
+  // Pied de page
+  const footerY = pdf.internal.pageSize.height - 30;
 
-  pdf.setFontSize(16);
+  // Ligne de séparation
+  pdf.setDrawColor(...colors.primary);
+  pdf.setLineWidth(0.5);
+  pdf.line(40, footerY - 10, pdf.internal.pageSize.width - 40, footerY - 10);
+
+  // Informations de signature
+  pdf.setFontSize(10);
+  pdf.setTextColor(...colors.text);
+  pdf.text("Document généré par WEBGENIUS_5GI", 40, footerY);
   pdf.text(
-    titleClassement,
-    pdf.internal.pageSize.width / 2,
-    startYClassement - 500,
-    { align: "center" }
+    `Date d'édition : ${new Date().toLocaleDateString()}`,
+    pdf.internal.pageSize.width - 40,
+    footerY,
+    { align: "right" }
   );
 
-  // Signatures
-  pdf.setFontSize(12);
-  pdf.text(signatures, 15, pdf.internal.pageSize.height - 30);
-
-  // Save the PDF with both tables
-  pdf.save(`Bordereau_Des_Resultats_Electoraux_Au_Cameroun_${annee}.pdf`);
+  // Sauvegarde du PDF
+  pdf.save(`Resultats_Electoraux_Cameroun_${annee}.pdf`);
 };
 
 // Function to fetch data for the second table
