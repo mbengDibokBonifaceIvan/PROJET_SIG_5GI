@@ -90,10 +90,15 @@ const Login = () => {
 
   return (
     <AuthLayout title="login Page">
-      <div className={theme === 'light' ? 'loginForm-light' : 'loginForm-dark'}>
-        <div className='flex text-center'>
-        <h1 className="font-bold text-center ml-auto text-xl">Se connecter</h1>
-        <a href="/" className="ml-auto"> <FontAwesomeIcon icon={faHome} /></a>
+      <div className={theme === "light" ? "loginForm-light" : "loginForm-dark"}>
+        <div className="flex text-center">
+          <h1 className="font-bold text-center ml-auto text-xl">
+            Se connecter
+          </h1>
+          <a href="/" className="ml-auto">
+            {" "}
+            <FontAwesomeIcon icon={faHome} />
+          </a>
         </div>
         <div className="w-full flex flex-col space-y-4 items-center mt-2 h-60">
           {/* Champ pour le nom */}
@@ -106,16 +111,16 @@ const Login = () => {
               onClick={resetError}
             />
             {nameError && <p className="my-1 text-xs">{nameError}</p>}
-            {name && <span className="text-xs">Nom</span>}
+            {name && <span className="text-xs dark:text-black">Nom</span>}
           </div>
-           {/* Boutons radio pour le rôle */}
-           <div className={styles.loginField}>
+          {/* Boutons radio pour le rôle */}
+          <div className={styles.loginField}>
             <label className="mr-4">
               <input
                 type="radio"
                 value="SuperAdmin"
-                checked={role === 'SuperAdmin'}
-                onChange={() => setRole('SuperAdmin')}
+                checked={role === "SuperAdmin"}
+                onChange={() => setRole("SuperAdmin")}
               />
               SuperAdmin
             </label>
@@ -123,18 +128,17 @@ const Login = () => {
               <input
                 type="radio"
                 value="Scrutateur"
-                checked={role === 'Scrutateur'}
-                onChange={() => setRole('Scrutateur')}
+                checked={role === "Scrutateur"}
+                onChange={() => setRole("Scrutateur")}
               />
               Scrutateur
             </label>
           </div>
 
-
           {/* Champ pour le mot de passe */}
           <div className={error ? styles.loginFieldErr : styles.loginField}>
             <input
-              type={passwordIsVisible ? 'text' : 'password'}
+              type={passwordIsVisible ? "text" : "password"}
               name=""
               placeholder="Mot de passe"
               className="w-full h-10 border outline-none px-3"
@@ -142,20 +146,31 @@ const Login = () => {
               onClick={resetError}
             />
             {passwordError && <p className=" text-xs">{passwordError}</p>}
-            {password && <span className="text-xs">Mot de passe</span>}
+            {password && (
+              <span className="text-xs dark:text-black">Mot de passe</span>
+            )}
             {passwordIsVisible && (
               <div className={styles.eye}>
-                <FontAwesomeIcon icon={faEye} onClick={() => setPasswordIsVisible(!passwordIsVisible)} />
+                <FontAwesomeIcon
+                  icon={faEye}
+                  onClick={() => setPasswordIsVisible(!passwordIsVisible)}
+                />
               </div>
             )}
             {!passwordIsVisible && (
               <div className={styles.eye}>
-                <FontAwesomeIcon icon={faEyeSlash} onClick={() => setPasswordIsVisible(!passwordIsVisible)} />
+                <FontAwesomeIcon
+                  icon={faEyeSlash}
+                  onClick={() => setPasswordIsVisible(!passwordIsVisible)}
+                />
               </div>
             )}
           </div>
           <div>
-            <button className="w-32 h-8 bg-blue-600 rounded capitalize" onClick={login}>
+            <button
+              className="w-32 h-8 bg-blue-600 rounded capitalize"
+              onClick={login}
+            >
               <span className="w-full text-blue text-lg">Connexion</span>
             </button>
           </div>

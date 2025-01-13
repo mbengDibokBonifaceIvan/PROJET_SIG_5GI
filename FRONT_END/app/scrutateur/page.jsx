@@ -6,6 +6,7 @@ import { BiPlusIcon, BiTrashIcon, BiEditIcon } from "../utils/Icons";
 import Footer from "../Components/Footer/footer";
 import Sidebar from "../Components/Sidebar/SideBar";
 import ThemeDropdown from "../Components/ThemeDropdown/ThemeDropdown";
+import CandidatesTable from "../Components/CandidatesTable";
 
 const API_URL = "http://localhost:8080/resultats/all";
 
@@ -180,48 +181,13 @@ const Scrutateur = () => {
           </Button>
 
           {/* Table */}
-          <div className="overflow-x-auto">
-            <table className="min-w-full mx-auto w-full bg-white dark:bg-dark-grey text-center border rounded-lg cursor-pointer shadow-sm dark:shadow-none">
-              <thead className="dark:bg-gray-800">
-                <tr className="bg-gray-100 text-left">
-                  <th className="py-2 px-4 border-b">Nom du Candidat</th>
-                  <th className="py-2 px-4 border-b">Nombre de voix</th>
-                  <th className="py-2 px-4 border-b">Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {candidats.map((item) => (
-                  <tr
-                    key={item.id_résultat}
-                    className="hover:bg-gray-50 dark:hover:bg-gray-600"
-                  >
-                    {" "}
-                    <td className="py-2 px-4 border-b">
-                      {item.candidat?.nom_candidat || "Unknown"}
-                    </td>
-                    <td className="py-2 px-4 border-b">{item.nombre_voix}</td>
-                    <td className="py-2 px-4 border-b flex gap-5 text-center justify-center">
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => handleEdit(item)}
-                      >
-                        {BiEditIcon}
-                      </Button>
-                      {/* Bouton Delete */}
-                      <Button
-                        variant="destructive"
-                        size="sm"
-                        onClick={() => handleDelete(item.id_résultat)}
-                      >
-                        {BiTrashIcon}
-                      </Button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+          <CandidatesTable
+            candidats={candidats}
+            handleEdit={handleEdit}
+            handleDelete={handleDelete}
+            BiEditIcon={BiEditIcon}
+            BiTrashIcon={BiTrashIcon}
+          />
 
           {/* Modal */}
           {isModalOpen && (
