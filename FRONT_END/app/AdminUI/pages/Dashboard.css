@@ -1,0 +1,36 @@
+.product {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: space-between;
+    /* Adjust spacing between cards */
+}
+
+.productCard {
+    /* Card styling */
+    width: calc(25% - 10px);
+    /* Adjust width for responsive layout */
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    /* Content styling */
+    text-align: center;
+    img {
+        max-width: 100%;
+        height: auto;
+    }
+    p {
+        margin: 10px 0;
+        font-size: 14px;
+    }
+}
+
+
+/* Media query for smaller screens */
+
+@media (max-width: 768px) {
+    .productCard {
+        width: calc(50% - 10px);
+    }
+}
