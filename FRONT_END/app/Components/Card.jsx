@@ -57,7 +57,7 @@ const Card = () => {
 
     const fetchtotalStrutateurs = async () => {
       try {
-        const response = await axios.get('http://localhost:8080/utilisateurs/nombreScrutateurs'); 
+        const response = await axios.get('http://localhost:8080/utilisateurs/nombreScrutateurs');
         setTotalStrutateurs(response.data);
       } catch (error) {
         console.error('Erreur lors de la récupération des Strutateurs:', error);

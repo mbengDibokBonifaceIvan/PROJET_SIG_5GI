@@ -97,19 +97,11 @@ export const Table = ({ rows, deleteRow, editRow }) => {
           </tr>
         </thead>
         <tbody>
-          {rows.map((row, idx) => {
-            // const statusText =
-            //   row.Role.charAt(0).toUpperCase() + row.Role.slice(1);
-
-            return (
+          {rows.map((row, idx) => (
               <tr key={idx} className="hover:bg-gray-200 dark:hover:bg-gray-500">
                 <td>{row.nomUtilisateur}</td>
                 <td className="w-full text-center">{row.motDePasse}</td>
-                <td>
-                 
-                    {row.role}
-                
-                </td>
+                <td>{row.role}</td>
                 <td className="flex items-center justify-center">
                   <BsFillPencilFill
                     className="edit-btn cursor-pointer"
@@ -122,8 +114,7 @@ export const Table = ({ rows, deleteRow, editRow }) => {
                   />
                 </td>
               </tr>
-            );
-          })}
+          ))}
         </tbody>
       </table>
     </div>

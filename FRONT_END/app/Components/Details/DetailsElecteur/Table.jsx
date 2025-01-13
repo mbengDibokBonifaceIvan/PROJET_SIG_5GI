@@ -14,14 +14,14 @@ export const Table = ({ rows, deleteRow, editRow }) => {
       <table className="mx-auto w-full md:w-3/4 lg:w-1/2 table-auto shadow-lg rounded-lg dark:bg-gray-800">
         <thead className="bg-gray-300 dark:bg-gray-600 text-black dark:text-white">
           <tr>
-            <th className="column-header">Nom</th>
-            <th className="column-header">Prénom</th>
-            <th className="column-header">Numéro</th>
-            <th className="column-header">Date de Naissance</th>
-            <th className="column-header">Date d'Inscription</th>
-            <th className="column-header">Adresse</th>
-            <th className="column-header">Bureau de Vote</th>
-            <th className="column-header">Actions</th>
+            <th className="dark:bg-gray-800">Nom</th>
+            <th className="dark:bg-gray-800">Prénom</th>
+            <th className="dark:bg-gray-800">Numéro</th>
+            <th className="dark:bg-gray-800">Date de Naissance</th>
+            <th className="dark:bg-gray-800">Date d'Inscription</th>
+            <th className="dark:bg-gray-800">Adresse</th>
+            <th className="dark:bg-gray-800">Bureau de Vote</th>
+            <th className="dark:bg-gray-800">Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -33,7 +33,9 @@ export const Table = ({ rows, deleteRow, editRow }) => {
               <td className="column-cell">{row.date_naissance}</td>
               <td className="column-cell">{row.date_inscription}</td>
               <td className="column-cell">{row.adresse}</td>
-              <td className="column-cell">{row.bureauVote?.nom_bureau || "Non défini"}</td>
+              <td className="column-cell">
+                {row.bureauVote?.nom_bureau || "Non défini"}
+              </td>
               <td className="actions-cell flex items-center justify-center">
                 <BsFillPencilFill
                   className="edit-btn cursor-pointer"

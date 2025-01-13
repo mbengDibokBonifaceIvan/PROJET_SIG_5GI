@@ -4,8 +4,6 @@ import SideBar from "../Components/Sidebar1/SideBar";
 import "./pages/Dashboard.css";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Dashboard from "./pages/Dashboard";
-
-import Logout from "../logout/Logout";
 import Candidats from "./pages/Candidat/Candidats";
 import SuperAdmin from "./pages/SuperAdministrateurs/SuperAdmin";
 import Scrutateurs from "./pages/Scrutateurs/Scrutateurs";
@@ -15,7 +13,6 @@ import Arrondissement from "./pages/Arrondissement/Arrondissement";
 import CentreVote from "./pages/CentreVote/CentreVote";
 import BureauVote from "./pages/BureauVote/BureauVote";
 import Electeur from "./pages/Electeur/Electeur";
-import Card from "../Components/Card";
 import Utilisateurs from "./pages/Utilisateurs/Utilisateurs";
 function App() {
   return (
@@ -31,7 +28,7 @@ function App() {
           <Route path="/centrevote" element={<CentreVote />} />
           <Route path="/bureauvote" element={<BureauVote />} />
           <Route path="/electeur" element={<Electeur />} />
-          <Route path="/logout" element={<Logout/>} />
+      
           <Route path="/scrutateurs" element={<Scrutateurs />} />
           <Route path="/superAdministrateur" element={<SuperAdmin />} />
 
