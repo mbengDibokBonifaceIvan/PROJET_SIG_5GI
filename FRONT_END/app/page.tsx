@@ -17,14 +17,17 @@ import { lusitana } from "./Components/lib/fonts";
 import ResultatChart from "./Components/revenue-chart";
 import Navbar from "./Components/Navbar";
 import VotingStationsList from "./Components/VotingStationsList";
+import { User, Award, ChevronRight, TrendingUp, MapPin } from "lucide-react";
 import {
-  User,
-  Award,
-  ChevronRight,
-  TrendingUp,
-  MapPin,
-} from "lucide-react";
-
+  BarChart,
+  Bar,
+  PieChart,
+  Pie,
+  Cell,
+  ResponsiveContainer,
+  Tooltip,
+  Legend,
+} from "recharts";
 interface BureauDeVote {
   nom_bureau: string;
   centreVote: {
@@ -43,6 +46,15 @@ interface Candidat {
   photo: string | null;
 }
 
+interface Resultat {
+  id_resultat: number;
+  bureauVote: BureauDeVote;
+  candidat: Candidat;
+  nombre_voix: number;
+  date_saisie: Date;
+  annee_election: number;
+}
+
 export default function Home() {
   const { setActiveCityCoords } = useGlobalContextUpdate();
   const [coordonnees, setCoordonnees] = useState({
@@ -51,6 +63,50 @@ export default function Home() {
   });
   const [BureauDeVote, setBureauDeVote] = useState<BureauDeVote[]>([]);
   const [candidats, setCandidats] = useState<Candidat[]>([]);
+  const [resultats, setResultats] = useState<Resultat[]>([]);
+
+  // Données pour le diagramme à barres
+  const barChartData = resultats.map((resultat) => ({
+    name: resultat.candidat.nom_candidat,
+    votes: resultat.nombre_voix,
+  }));
+
+  // Données pour le diagramme circulaire
+  const pieChartData = resultats.map((resultat) => ({
+    name: resultat.candidat.nom_candidat,
+    value: resultat.nombre_voix,
+  }));
+
+  const COLORS = [
+    "#8b5cf6",
+    "#6366f1",
+    "#ec4899",
+    "#14b8a6",
+    "#f97316",
+    "#84cc16",
+    "#06b6d4",
+  ];
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:8080/resultats/totalVoixByCandidatWithNames"
+        );
+        setResultats(
+          response.data.map((data: any) => ({
+            id_resultat: data[0],
+            candidat: { nom_candidat: data[1] },
+            nombre_voix: data[2],
+          }))
+        );
+      } catch (error) {
+        console.error("Erreur lors de la récupération des résultats:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -87,38 +143,111 @@ export default function Home() {
     (bureauDeVote ? bureauDeVote.nom_bureau : "N/A");
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-gray-900">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-gray-900 dark:to-gray-800">
       <Navbar />
 
       {/* Hero Section avec Stats */}
-      <div className="max-w-[2000px] mx-auto px-4 sm:px-6 lg:px-8 pt-6">
-        <div className="grid lg:grid-cols-4 gap-6">
-          {/* Stats Cards Row */}
-          <div className="lg:col-span-1 space-y-6">
-            <div className="bg-white dark:bg-gray-800 rounded-3xl shadow-lg p-6 border border-gray-100 dark:border-gray-700">
+      {/* Hero Section avec Stats */}
+      <div className="max-w-[2000px] mx-auto px-4 sm:px-6 lg:px-8 pt-8">
+        {/* Stats Cards Row */}
+        <div className="grid lg:grid-cols-4 gap-8">
+          <div className="lg:col-span-1 space-y-8">
+            <div className="backdrop-blur-xl bg-white/60 dark:bg-gray-800/60 rounded-3xl shadow-xl p-6 border border-white/20 dark:border-gray-700/20">
               <Population />
             </div>
-            <div className="bg-white dark:bg-gray-800 rounded-3xl shadow-lg p-6 border border-gray-100 dark:border-gray-700">
+            <div className="backdrop-blur-xl bg-white/60 dark:bg-gray-800/60 rounded-3xl shadow-xl p-6 border border-white/20 dark:border-gray-700/20">
               <CardElecteur />
             </div>
-            <div className="bg-white dark:bg-gray-800 rounded-3xl shadow-lg p-6 border border-gray-100 dark:border-gray-700">
+            <div className="backdrop-blur-xl bg-white/60 dark:bg-gray-800/60 rounded-3xl shadow-xl p-6 border border-white/20 dark:border-gray-700/20">
               <Sunset />
             </div>
           </div>
 
-          {/* Main Content Area */}
-          <div className="lg:col-span-3 space-y-6">
-            {/* Air Pollution Card */}
-            <div className="bg-white dark:bg-gray-800 rounded-3xl shadow-lg p-6 border border-gray-100 dark:border-gray-700">
-              <div className="flex items-center mb-4">
-                <TrendingUp className="w-6 h-6 text-blue-500 dark:text-blue-400 mr-3" />
-                <h2
-                  className={`${lusitana.className} text-xl font-bold text-gray-800 dark:text-white`}
-                >
-                  Tendances Électorales
+          {/* Nouveaux diagrammes */}
+          <div className="lg:col-span-3 grid gap-8">
+            <div className="backdrop-blur-xl bg-white/60 dark:bg-gray-800/60 rounded-3xl shadow-xl p-6 border border-white/20 dark:border-gray-700/20">
+              <div className="flex items-center mb-6">
+                <TrendingUp className="w-6 h-6 text-purple-500 dark:text-purple-400 mr-3" />
+                <h2 className="text-xl font-bold text-gray-800 dark:text-white">
+                  Distribution des votes
                 </h2>
               </div>
-              <AirPollution />
+              <div className="h-80">
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart data={barChartData}>
+                    <Tooltip
+                      contentStyle={{
+                        backgroundColor: "rgba(255, 255, 255, 0.8)",
+                        borderRadius: "0.75rem",
+                        border: "none",
+                        boxShadow: "0 4px 6px -1px rgb(0 0 0 / 0.1)",
+                      }}
+                    />
+                    <Legend />
+                    <Bar dataKey="votes" fill="#8b5cf6" radius={[4, 4, 0, 0]}>
+                      {barChartData.map((entry, index) => (
+                        <Cell
+                          key={index}
+                          fill={COLORS[index % COLORS.length]}
+                        />
+                      ))}
+                    </Bar>
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-8">
+              <div className="backdrop-blur-xl bg-white/60 dark:bg-gray-800/60 rounded-3xl shadow-xl p-6 border border-white/20 dark:border-gray-700/20">
+                <div className="flex items-center mb-6">
+                  <Award className="w-6 h-6 text-pink-500 dark:text-pink-400 mr-3" />
+                  <h2 className="text-xl font-bold text-gray-800 dark:text-white">
+                    Répartition des votes
+                  </h2>
+                </div>
+                <div className="h-64">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <PieChart>
+                      <Pie
+                        data={pieChartData}
+                        dataKey="value"
+                        nameKey="name"
+                        cx="50%"
+                        cy="50%"
+                        outerRadius={80}
+                        label
+                      >
+                        {pieChartData.map((entry, index) => (
+                          <Cell
+                            key={index}
+                            fill={COLORS[index % COLORS.length]}
+                          />
+                        ))}
+                      </Pie>
+                      <Tooltip />
+                      <Legend />
+                    </PieChart>
+                  </ResponsiveContainer>
+                </div>
+              </div>
+
+              {/* Main Content Area */}
+              <div className="lg:col-span-3 space-y-6">
+                {/* Air Pollution Card */}
+                <div className="bg-white dark:bg-gray-800 rounded-3xl shadow-lg p-6 border border-gray-100 dark:border-gray-700">
+                  <div className="flex items-center mb-4">
+                    <TrendingUp className="w-6 h-6 text-blue-500 dark:text-blue-400 mr-3" />
+                    <h2
+                      className={`${lusitana.className} text-xl font-bold text-gray-800 dark:text-white`}
+                    >
+                      Tendances Électorales
+                    </h2>
+                  </div>
+                  <div className="backdrop-blur-xl bg-white/60 dark:bg-gray-800/60 rounded-3xl shadow-xl p-6 border border-white/20 dark:border-gray-700/20">
+                    <AirPollution />
+                  </div>
+                </div>
+              </div>
             </div>
 
             {/* Candidates Section */}
@@ -126,9 +255,7 @@ export default function Home() {
               <div className="flex items-center justify-between mb-6">
                 <div className="flex items-center">
                   <Award className="w-6 h-6 text-purple-500 dark:text-purple-400 mr-3" />
-                  <h2
-                    className={`${lusitana.className} text-xl font-bold text-gray-800 dark:text-white`}
-                  >
+                  <h2 className="text-xl font-bold text-gray-800 dark:text-white">
                     Candidats
                   </h2>
                 </div>
@@ -142,8 +269,8 @@ export default function Home() {
                   <div
                     key={candidat.id_candidat}
                     className="group relative bg-gradient-to-br from-white to-gray-50 dark:from-gray-800 dark:to-gray-700 
-                                rounded-2xl p-6 transition-all duration-300 hover:shadow-xl
-                                border border-gray-100 dark:border-gray-700"
+          rounded-2xl p-6 transition-all duration-300 hover:shadow-xl
+          border border-gray-100 dark:border-gray-700"
                   >
                     <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity">
                       <div className="bg-green-500/10 dark:bg-green-400/10 rounded-full p-1">
@@ -151,37 +278,57 @@ export default function Home() {
                       </div>
                     </div>
 
-                    <div className="flex flex-col items-center">
-                      <div className="relative">
+                    <div className="flex flex-col items-center space-y-4">
+                      <div className="relative w-24 h-24">
                         {candidat.photo ? (
-                          <div className="relative w-24 h-24">
+                          <div className="relative h-full">
                             <img
                               src={`http://localhost:8080/candidats/photo/${candidat.id_candidat}`}
                               alt={candidat.nom_candidat}
                               className="w-full h-full rounded-2xl object-cover shadow-lg
-                                       group-hover:scale-105 transition-transform duration-300"
+                    group-hover:scale-105 transition-transform duration-300"
                             />
-                            <div className="absolute inset-0 rounded-2xl ring-1 ring-inset ring-black/10 dark:ring-white/10"></div>
+                            <div className="absolute inset-0 rounded-2xl ring-1 ring-inset ring-black/10 dark:ring-white/10" />
                           </div>
                         ) : (
                           <div
-                            className="w-24 h-24 rounded-2xl bg-gray-100 dark:bg-gray-700 
-                                        flex items-center justify-center shadow-lg"
+                            className="h-full rounded-2xl bg-gray-100 dark:bg-gray-700 
+                flex items-center justify-center shadow-lg"
                           >
                             <User className="w-12 h-12 text-gray-400 dark:text-gray-500" />
                           </div>
                         )}
                       </div>
 
-                      <h3 className="mt-4 text-lg font-semibold text-gray-800 dark:text-white text-center">
-                        {candidat.nom_candidat}
-                      </h3>
+                      <div className="space-y-3 text-center">
+                        <h3 className="text-lg font-semibold text-gray-800 dark:text-white">
+                          {candidat.nom_candidat}
+                        </h3>
 
-                      <div
-                        className="mt-2 px-3 py-1 bg-purple-50 dark:bg-purple-900/30 
-                                    rounded-full text-sm text-purple-600 dark:text-purple-400"
-                      >
-                        {candidat.parti_politique}
+                        <div
+                          className="inline-block px-3 py-1 bg-purple-50 dark:bg-purple-900/30 
+              rounded-full text-sm text-purple-600 dark:text-purple-400"
+                        >
+                          {candidat.parti_politique}
+                        </div>
+
+                        {resultats.map(
+                          (resultat) =>
+                            candidat.nom_candidat ===
+                              resultat.candidat.nom_candidat && (
+                              <div
+                                className="inline-flex items-center px-3 py-1 bg-blue-50 dark:bg-blue-900/30 
+                  rounded-full text-sm text-blue-600 dark:text-blue-400"
+                              >
+                                <span className="font-medium">
+                                  {resultat.nombre_voix?.toLocaleString()}
+                                </span>
+                                <span className="ml-1 text-xs opacity-75">
+                                  voix
+                                </span>
+                              </div>
+                            )
+                        )}
                       </div>
                     </div>
                   </div>
@@ -190,7 +337,6 @@ export default function Home() {
             </div>
           </div>
         </div>
-
         {/* Map Section */}
         <div className="mt-6 grid lg:grid-cols-3 gap-6">
           <div className="lg:col-span-2 bg-white dark:bg-gray-800 rounded-3xl shadow-lg overflow-hidden border border-gray-100 dark:border-gray-700">
@@ -216,7 +362,6 @@ export default function Home() {
             />
           </div>
         </div>
-
         {/* Charts Section */}
         <div className="mt-6 grid lg:grid-cols-2 gap-6 pb-8">
           <div className="bg-white dark:bg-gray-800 rounded-3xl shadow-lg p-6 border border-gray-100 dark:border-gray-700">
