@@ -52,7 +52,7 @@ public class Candidats {
     public void setParti_politique(String parti_politique) {
         this.parti_politique = parti_politique;
     }
-
+  
     public byte[] getPhoto() {
         return photo;
     }

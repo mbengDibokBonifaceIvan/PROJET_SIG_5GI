@@ -141,7 +141,7 @@ const Login = () => {
               type={passwordIsVisible ? "text" : "password"}
               name=""
               placeholder="Mot de passe"
-              className="w-full h-10 border outline-none px-3"
+              className="w-full h-10 border outline-none px-3 "
               onChange={(e) => setPassword(e.target.value)}
               onClick={resetError}
             />

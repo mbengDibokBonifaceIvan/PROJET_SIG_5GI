@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import "./App.css";
 import SideBar from "../Components/Sidebar1/SideBar";
 import "./pages/Dashboard.css";
@@ -14,6 +14,7 @@ import CentreVote from "./pages/CentreVote/CentreVote";
 import BureauVote from "./pages/BureauVote/BureauVote";
 import Electeur from "./pages/Electeur/Electeur";
 import Utilisateurs from "./pages/Utilisateurs/Utilisateurs";
+import ProcesVerbaux from "./pages/ProcesVerbaux/ProcesVerbaux";
 function App() {
   return (
     <Router>
@@ -28,7 +29,7 @@ function App() {
           <Route path="/centrevote" element={<CentreVote />} />
           <Route path="/bureauvote" element={<BureauVote />} />
           <Route path="/electeur" element={<Electeur />} />
-      
+          <Route path="/pv" element={<ProcesVerbaux />} />
           <Route path="/scrutateurs" element={<Scrutateurs />} />
           <Route path="/superAdministrateur" element={<SuperAdmin />} />
 
