@@ -31,7 +31,7 @@
     "clsx": "^2.1.0",
     "cmdk": "^0.2.1",
     "embla-carousel-react": "^8.0.0-rc22",
-    "framer-motion": "^11.13.1",
+    "framer-motion": "^11.17.0",
     "jspdf": "^2.5.2",
     "jspdf-autotable": "^3.8.4",
     "leaflet": "^1.9.4",

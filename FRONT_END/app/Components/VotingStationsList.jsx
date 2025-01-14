@@ -27,15 +27,12 @@ const VotingStationsList = ({
   };
 
   return (
-    <div className="mapbox-con mt-4 flex gap-4 flex-1">
-      <div className="border rounded-lg w-2/3 h-full">
-        <Mapss />
-      </div>
+   
 
       <div
         className={`${lusitana.className} border rounded-lg states flex flex-col gap-3 flex-1 h-full p-4`}
       >
-        <h2 className="mb-4 text-xl md:text-2xl flex items-center gap-2 font-medium text-nowrap text-blue-500">
+        <h2 className="mb-4 text-xl md:text-2xl flex items-center gap-2 font-medium text-wrap text-blue-500">
           {calender} Résultats Des Élections Dans Quelques Bureaux De Vote
         </h2>
 
@@ -103,7 +100,7 @@ const VotingStationsList = ({
           </button>
         </div>
       </div>
-    </div>
+    
   );
 };
 
