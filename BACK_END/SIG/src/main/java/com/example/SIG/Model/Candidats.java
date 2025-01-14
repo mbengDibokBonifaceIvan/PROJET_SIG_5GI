@@ -13,17 +13,21 @@ public class Candidats {
     private String nom_candidat;
     private String parti_politique;
 
+    @Lob
+    @Column(name = "photo", columnDefinition = "LONGBLOB")
+    private byte[] photo;
+
     public Candidats() {
     }
 
-    public Candidats(Long id_candidat, String nom_candidat, String parti_politique) {
+    public Candidats(Long id_candidat, String nom_candidat, String parti_politique, byte[] photo) {
         this.id_candidat = id_candidat;
         this.nom_candidat = nom_candidat;
         this.parti_politique = parti_politique;
+        this.photo = photo;
     }
 
-
-// Getters and Setters
+    // Getters and Setters
 
     public Long getId_candidat() {
         return id_candidat;
@@ -47,5 +51,13 @@ public class Candidats {
 
     public void setParti_politique(String parti_politique) {
         this.parti_politique = parti_politique;
+    }
+
+    public byte[] getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(byte[] photo) {
+        this.photo = photo;
     }
 }
