@@ -215,6 +215,9 @@ function Mapss() {
                       },
                     }}
                   >
+                    <h4 className="text-lg font-semibold text-blue-600 dark:text-blue-400">
+                      Session {new Date().getFullYear()}
+                    </h4>
                     {votesResults.map((resultat, index) => (
                       <motion.li
                         key={index}
@@ -224,9 +227,6 @@ function Mapss() {
                         }}
                         className="mb-4 border-b last:border-b-0 pb-2"
                       >
-                        <h4 className="text-lg font-semibold text-blue-600 dark:text-blue-400">
-                          Session {resultat.annee_election}
-                        </h4>
                         <p className="text-gray-700 dark:text-gray-300">
                           {resultat.candidat.nom_candidat}:{" "}
                           {resultat.nombre_voix} voix

@@ -169,7 +169,6 @@ export default function Home() {
 
           {/* Main Content Area */}
           <div className="lg:col-span-3 space-y-6">
-            
             {/* Title Card */}
             <div className="bg-white dark:bg-gray-800 rounded-3xl shadow-lg p-6 border border-gray-100 dark:border-gray-700">
               <div className="flex items-center mb-4">
