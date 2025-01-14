@@ -65,27 +65,7 @@ export default function Home() {
   const [candidats, setCandidats] = useState<Candidat[]>([]);
   const [resultats, setResultats] = useState<Resultat[]>([]);
 
-  // Données pour le diagramme à barres
-  const barChartData = resultats.map((resultat) => ({
-    name: resultat.candidat.nom_candidat,
-    votes: resultat.nombre_voix,
-  }));
-
-  // Données pour le diagramme circulaire
-  const pieChartData = resultats.map((resultat) => ({
-    name: resultat.candidat.nom_candidat,
-    value: resultat.nombre_voix,
-  }));
-
-  const COLORS = [
-    "#8b5cf6",
-    "#6366f1",
-    "#ec4899",
-    "#14b8a6",
-    "#f97316",
-    "#84cc16",
-    "#06b6d4",
-  ];
+  
 
   useEffect(() => {
     const fetchData = async () => {
@@ -143,111 +123,38 @@ export default function Home() {
     (bureauDeVote ? bureauDeVote.nom_bureau : "N/A");
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-gray-900 dark:to-gray-800">
+    <div className="min-h-screen bg-slate-50 dark:bg-gray-900">
       <Navbar />
 
       {/* Hero Section avec Stats */}
-      {/* Hero Section avec Stats */}
-      <div className="max-w-[2000px] mx-auto px-4 sm:px-6 lg:px-8 pt-8">
-        {/* Stats Cards Row */}
-        <div className="grid lg:grid-cols-4 gap-8">
-          <div className="lg:col-span-1 space-y-8">
-            <div className="backdrop-blur-xl bg-white/60 dark:bg-gray-800/60 rounded-3xl shadow-xl p-6 border border-white/20 dark:border-gray-700/20">
+      <div className="max-w-[2000px] mx-auto px-4 sm:px-6 lg:px-8 pt-6">
+        <div className="grid lg:grid-cols-4 gap-6">
+          {/* Stats Cards Row */}
+          <div className="lg:col-span-1 space-y-6">
+            <div className="bg-white dark:bg-gray-800 rounded-3xl shadow-lg p-6 border border-gray-100 dark:border-gray-700">
               <Population />
             </div>
-            <div className="backdrop-blur-xl bg-white/60 dark:bg-gray-800/60 rounded-3xl shadow-xl p-6 border border-white/20 dark:border-gray-700/20">
+            <div className="bg-white dark:bg-gray-800 rounded-3xl shadow-lg p-6 border border-gray-100 dark:border-gray-700">
               <CardElecteur />
             </div>
-            <div className="backdrop-blur-xl bg-white/60 dark:bg-gray-800/60 rounded-3xl shadow-xl p-6 border border-white/20 dark:border-gray-700/20">
+            <div className="bg-white dark:bg-gray-800 rounded-3xl shadow-lg p-6 border border-gray-100 dark:border-gray-700">
               <Sunset />
             </div>
           </div>
 
-          {/* Nouveaux diagrammes */}
-          <div className="lg:col-span-3 grid gap-8">
-            <div className="backdrop-blur-xl bg-white/60 dark:bg-gray-800/60 rounded-3xl shadow-xl p-6 border border-white/20 dark:border-gray-700/20">
-              <div className="flex items-center mb-6">
-                <TrendingUp className="w-6 h-6 text-purple-500 dark:text-purple-400 mr-3" />
-                <h2 className="text-xl font-bold text-gray-800 dark:text-white">
-                  Distribution des votes
+          {/* Main Content Area */}
+          <div className="lg:col-span-3 space-y-6">
+            {/* Air Pollution Card */}
+            <div className="bg-white dark:bg-gray-800 rounded-3xl shadow-lg p-6 border border-gray-100 dark:border-gray-700">
+              <div className="flex items-center mb-4">
+                <TrendingUp className="w-6 h-6 text-blue-500 dark:text-blue-400 mr-3" />
+                <h2
+                  className={`${lusitana.className} text-xl font-bold text-gray-800 dark:text-white`}
+                >
+                  Tendances Électorales
                 </h2>
               </div>
-              <div className="h-80">
-                <ResponsiveContainer width="100%" height="100%">
-                  <BarChart data={barChartData}>
-                    <Tooltip
-                      contentStyle={{
-                        backgroundColor: "rgba(255, 255, 255, 0.8)",
-                        borderRadius: "0.75rem",
-                        border: "none",
-                        boxShadow: "0 4px 6px -1px rgb(0 0 0 / 0.1)",
-                      }}
-                    />
-                    <Legend />
-                    <Bar dataKey="votes" fill="#8b5cf6" radius={[4, 4, 0, 0]}>
-                      {barChartData.map((entry, index) => (
-                        <Cell
-                          key={index}
-                          fill={COLORS[index % COLORS.length]}
-                        />
-                      ))}
-                    </Bar>
-                  </BarChart>
-                </ResponsiveContainer>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-2 gap-8">
-              <div className="backdrop-blur-xl bg-white/60 dark:bg-gray-800/60 rounded-3xl shadow-xl p-6 border border-white/20 dark:border-gray-700/20">
-                <div className="flex items-center mb-6">
-                  <Award className="w-6 h-6 text-pink-500 dark:text-pink-400 mr-3" />
-                  <h2 className="text-xl font-bold text-gray-800 dark:text-white">
-                    Répartition des votes
-                  </h2>
-                </div>
-                <div className="h-64">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <PieChart>
-                      <Pie
-                        data={pieChartData}
-                        dataKey="value"
-                        nameKey="name"
-                        cx="50%"
-                        cy="50%"
-                        outerRadius={80}
-                        label
-                      >
-                        {pieChartData.map((entry, index) => (
-                          <Cell
-                            key={index}
-                            fill={COLORS[index % COLORS.length]}
-                          />
-                        ))}
-                      </Pie>
-                      <Tooltip />
-                      <Legend />
-                    </PieChart>
-                  </ResponsiveContainer>
-                </div>
-              </div>
-
-              {/* Main Content Area */}
-              <div className="lg:col-span-3 space-y-6">
-                {/* Air Pollution Card */}
-                <div className="bg-white dark:bg-gray-800 rounded-3xl shadow-lg p-6 border border-gray-100 dark:border-gray-700">
-                  <div className="flex items-center mb-4">
-                    <TrendingUp className="w-6 h-6 text-blue-500 dark:text-blue-400 mr-3" />
-                    <h2
-                      className={`${lusitana.className} text-xl font-bold text-gray-800 dark:text-white`}
-                    >
-                      Tendances Électorales
-                    </h2>
-                  </div>
-                  <div className="backdrop-blur-xl bg-white/60 dark:bg-gray-800/60 rounded-3xl shadow-xl p-6 border border-white/20 dark:border-gray-700/20">
-                    <AirPollution />
-                  </div>
-                </div>
-              </div>
+              <AirPollution />
             </div>
 
             {/* Candidates Section */}
@@ -337,6 +244,7 @@ export default function Home() {
             </div>
           </div>
         </div>
+
         {/* Map Section */}
         <div className="mt-6 grid lg:grid-cols-3 gap-6">
           <div className="lg:col-span-2 bg-white dark:bg-gray-800 rounded-3xl shadow-lg overflow-hidden border border-gray-100 dark:border-gray-700">
@@ -362,6 +270,7 @@ export default function Home() {
             />
           </div>
         </div>
+
         {/* Charts Section */}
         <div className="mt-6 grid lg:grid-cols-2 gap-6 pb-8">
           <div className="bg-white dark:bg-gray-800 rounded-3xl shadow-lg p-6 border border-gray-100 dark:border-gray-700">
