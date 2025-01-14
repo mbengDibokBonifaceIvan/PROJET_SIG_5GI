@@ -1,7 +1,7 @@
 
 "use client"
 import { NavLink } from "react-router-dom";
-import { FaBars, FaHome, FaLock, FaMoneyBill, FaSignOutAlt, FaUser } from "react-icons/fa";
+import { FaBars, FaHome, FaLock, FaMapMarkedAlt, FaMoneyBill, FaSignOutAlt, FaUser } from "react-icons/fa";
 import { MdMessage } from "react-icons/md";
 import { BiAnalyse, BiSearch } from "react-icons/bi";
 import { BiCog } from "react-icons/bi";
@@ -28,6 +28,14 @@ const routes = [
     name: "Utilisateurs",
     icon: <FaUser />,
   },
+
+  {
+    path: "/pv",
+    name: "Proces  Verbaux",
+    icon: <FaMapMarkedAlt />,
+  },
+
+
 ];
 
 const SideBar = ({ children }) => {

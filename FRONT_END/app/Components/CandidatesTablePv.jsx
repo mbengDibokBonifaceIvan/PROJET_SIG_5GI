@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
-const CandidatesTable = ({
+const CandidatesTablePv = ({
   candidats,
   handleEdit,
   handleDelete,
@@ -33,15 +33,19 @@ const CandidatesTable = ({
         <table className="min-w-full mx-auto w-full bg-white dark:bg-dark-grey text-center border rounded-lg cursor-pointer shadow-sm dark:shadow-none">
           <thead className="dark:bg-gray-800">
             <tr className="bg-gray-100 text-left">
-              <th className="py-2 px-4 border-b dark:text-black">Nom du Candidat</th>
-              <th className="py-2 px-4 border-b dark:text-black">Nombre de voix</th>
+              <th className="py-2 px-4 border-b dark:text-black">
+                Nom du Candidat
+              </th>
+              <th className="py-2 px-4 border-b dark:text-black">
+                Nombre de voix
+              </th>
               <th className="py-2 px-4 border-b dark:text-black">Actions</th>
             </tr>
           </thead>
           <tbody>
             {currentItems.map((item) => (
               <tr
-                key={item.id_résultat}
+                key={item.id_Pv}
                 className="hover:bg-gray-50 dark:hover:bg-gray-600"
               >
                 <td className="py-2 px-4 border-b">
@@ -59,7 +63,7 @@ const CandidatesTable = ({
                   <Button
                     variant="destructive"
                     size="sm"
-                    onClick={() => handleDelete(item.id_résultat)}
+                    onClick={() => handleDelete(item.id_Pv)}
                   >
                     {BiTrashIcon}
                   </Button>
@@ -147,4 +151,4 @@ const CandidatesTable = ({
   );
 };
 
-export default CandidatesTable;
+export default CandidatesTablePv;
