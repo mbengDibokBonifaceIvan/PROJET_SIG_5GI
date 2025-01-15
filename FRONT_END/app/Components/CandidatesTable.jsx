@@ -4,10 +4,8 @@ import { Button } from "@/components/ui/button";
 
 const CandidatesTable = ({
   candidats,
-  handleEdit,
-  handleDelete,
-  BiEditIcon,
-  BiTrashIcon,
+  handleViewCandidate,
+  Eye,
 }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
@@ -33,8 +31,12 @@ const CandidatesTable = ({
         <table className="min-w-full mx-auto w-full bg-white dark:bg-dark-grey text-center border rounded-lg cursor-pointer shadow-sm dark:shadow-none">
           <thead className="dark:bg-gray-800">
             <tr className="bg-gray-100 text-left">
-              <th className="py-2 px-4 border-b dark:text-black">Nom du Candidat</th>
-              <th className="py-2 px-4 border-b dark:text-black">Nombre de voix</th>
+              <th className="py-2 px-4 border-b dark:text-black">
+                Nom du Candidat
+              </th>
+              <th className="py-2 px-4 border-b dark:text-black">
+                Nombre de voix
+              </th>
               <th className="py-2 px-4 border-b dark:text-black">Actions</th>
             </tr>
           </thead>
@@ -52,16 +54,9 @@ const CandidatesTable = ({
                   <Button
                     variant="outline"
                     size="sm"
-                    onClick={() => handleEdit(item)}
+                    onClick={() => handleViewCandidate(item)}
                   >
-                    {BiEditIcon}
-                  </Button>
-                  <Button
-                    variant="destructive"
-                    size="sm"
-                    onClick={() => handleDelete(item.id_résultat)}
-                  >
-                    {BiTrashIcon}
+                    {Eye}
                   </Button>
                 </td>
               </tr>

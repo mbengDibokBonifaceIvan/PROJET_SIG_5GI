@@ -2,11 +2,11 @@
 import "./App.css";
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { BiPlusIcon, BiTrashIcon, BiEditIcon } from "../../../utils/Icons";
+import { BiPlusIcon, BiTrashIcon, BiEditIcon, eye } from "../../../utils/Icons";
 import Footer from "../../../Components/Footer/footer";
 import ThemeDropdown from "../../../Components/ThemeDropdown/ThemeDropdown";
 import CandidatesTablePv from "../../../Components/CandidatesTablePv";
-
+import PvDetailsModal from "../../../Components/PvDetailsModal";
 const API_URL = "http://localhost:8080/pvs/all";
 
 const ProcesVerbaux = () => {
@@ -22,7 +22,9 @@ const ProcesVerbaux = () => {
     annee: new Date().getFullYear(),
   });
   const [editId, setEditId] = useState(null);
+const [selectedPv, setSelectedPv] = useState(null);
 
+  
   useEffect(() => {
     fetchVotes();
     fetchCandidats();
@@ -147,17 +149,18 @@ const ProcesVerbaux = () => {
     setIsModalOpen(true);
   };
 
+  const handleViewPv = (pv) => {
+    setSelectedPv(pv);
+  };
   return (
     <div className="flex h-screen">
-    
-
       {/* Main content */}
       <div className="flex flex-col w-full ml-[15rem] bg-gray-100 dark:bg-dark-grey">
         <ThemeDropdown />
         <main className="flex flex-col flex-1 p-8 text-gray-800 dark:text-white">
           <h1 className="text-2xl font-bold mb-4 text-center">
             {" "}
-            PROCES VERBAUX DES ELECTIONS 
+            PROCES VERBAUX DES ELECTIONS
           </h1>
 
           {/* Add button */}
@@ -175,7 +178,7 @@ const ProcesVerbaux = () => {
               setIsModalOpen(true);
             }}
           >
-            {BiPlusIcon} Ajouter un champ
+            {BiPlusIcon} Ajouter un resultat
           </Button>
 
           {/* Table */}
@@ -185,6 +188,8 @@ const ProcesVerbaux = () => {
             handleDelete={handleDelete}
             BiEditIcon={BiEditIcon}
             BiTrashIcon={BiTrashIcon}
+            handleViewCandidate={handleViewPv}
+            Eye={eye}
           />
 
           {/* Modal */}
@@ -278,6 +283,15 @@ const ProcesVerbaux = () => {
               </div>
             </div>
           )}
+
+          {/* Nouveau modal de détails */}
+          {selectedPv && (
+            <PvDetailsModal
+              pv={selectedPv}
+              onClose={() => setSelectedPv(null)}
+            />
+          )}
+
         </main>
         <Footer />
       </div>

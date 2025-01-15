@@ -17,8 +17,6 @@ import { lusitana } from "./Components/lib/fonts";
 import ResultatChart from "./Components/revenue-chart";
 import Navbar from "./Components/Navbar";
 import VotingStationsList from "./Components/VotingStationsList";
-import CandidatsGrid from "./Components/CandidatsGrid ";
-
 import { User, Award, ChevronRight, TrendingUp, MapPin } from "lucide-react";
 import {
   BarChart,
@@ -35,6 +33,9 @@ import {
   YAxis,
   LabelList,
 } from "recharts";
+import CandidatsGrid from "./Components/CandidatsGrid ";
+
+
 interface BureauDeVote {
   nom_bureau: string;
   centreVote: {
@@ -171,7 +172,6 @@ export default function Home() {
 
           {/* Main Content Area */}
           <div className="lg:col-span-3 space-y-6">
-            
             {/* Title Card */}
             <div className="bg-white dark:bg-gray-800 rounded-3xl shadow-lg p-6 border border-gray-100 dark:border-gray-700">
               <div className="flex items-center mb-4">
@@ -185,9 +185,10 @@ export default function Home() {
               <AirPollution />
             </div>
 
-            {/* Candidates Section */}
-            <CandidatsGrid candidats={candidats} resultats={resultats} />
-
+            {/* Candidates Grid */}
+            <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-xl rounded-2xl shadow-xl border border-white/20 dark:border-gray-700/20">
+              <CandidatsGrid candidats={candidats} resultats={resultats} />
+            </div>
           </div>
         </div>
 
@@ -217,60 +218,68 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="mt-6 grid lg:grid-cols-2 gap-8">
+        {/* Charts Section */}
+        <div className="grid lg:grid-cols-12 gap-6 mb-8 mt-10">
           {/* Bar Chart */}
-          <div className="backdrop-blur-xl bg-white/60 dark:bg-gray-800/60 rounded-3xl shadow-xl p-6 border border-white/20 dark:border-gray-700/20">
-            <div className="flex items-center mb-6">
-              <TrendingUp className="w-6 h-6 text-purple-500 dark:text-purple-400 mr-3" />
-              <h2
-                className={`${lusitana.className}text-xl font-bold text-gray-800 dark:text-white`}
-              >
-                DISTRIBUTION DES VOTES
-              </h2>
-            </div>
-            <div className="h-80">
-              <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={barChartData}>
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="name">
-                    <Label
-                      value="Candidats"
-                      offset={0}
-                      position="insideBottom"
+          <div className="lg:col-span-6">
+            <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-xl rounded-2xl shadow-xl p-6 border border-white/20 dark:border-gray-700/20 h-full">
+              <div className="flex items-center mb-6">
+                <TrendingUp className="w-8 h-8 text-violet-500 dark:text-violet-400 mr-4" />
+                <h2
+                  className={`${lusitana.className} text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-violet-500 to-purple-500 dark:from-violet-400 dark:to-purple-400`}
+                >
+                  DISTRIBUTION DES VOTES
+                </h2>
+              </div>
+
+              <div className="h-80">
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart data={barChartData}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="name">
+                      <Label
+                        value="Candidats"
+                        offset={0}
+                        position="insideBottom"
+                      />
+                    </XAxis>
+                    <YAxis />
+                    <Tooltip
+                      contentStyle={{
+                        backgroundColor: "rgba(255, 255, 255, 0.8)",
+                        borderRadius: "0.75rem",
+                        border: "none",
+                        boxShadow: "0 4px 6px -1px rgb(0 0 0 / 0.1)",
+                      }}
                     />
-                  </XAxis>
-                  <YAxis />
-                  <Tooltip
-                    contentStyle={{
-                      backgroundColor: "rgba(255, 255, 255, 0.8)",
-                      borderRadius: "0.75rem",
-                      border: "none",
-                      boxShadow: "0 4px 6px -1px rgb(0 0 0 / 0.1)",
-                    }}
-                  />
-                  <Legend />
-                  <Bar dataKey="votes" fill="#8b5cf6" radius={[4, 4, 0, 0]}>
-                    {barChartData.map((entry, index) => (
-                      <Cell key={index} fill={COLORS[index % COLORS.length]} />
-                    ))}
-                    <LabelList dataKey="name" position="top" />
-                  </Bar>
-                </BarChart>
-              </ResponsiveContainer>
+                    <Legend />
+                    <Bar dataKey="votes" fill="#8b5cf6" radius={[4, 4, 0, 0]}>
+                      {barChartData.map((entry, index) => (
+                        <Cell
+                          key={index}
+                          fill={COLORS[index % COLORS.length]}
+                        />
+                      ))}
+                      <LabelList dataKey="name" position="top" />
+                    </Bar>
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
             </div>
           </div>
 
           {/* Pie Chart */}
-          <div>
-            <div className="backdrop-blur-xl bg-white/60 dark:bg-gray-800/60 rounded-3xl shadow-xl p-6 border border-white/20 dark:border-gray-700/20">
+          <div className="lg:col-span-6">
+            <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-xl rounded-2xl shadow-xl p-6 border border-white/20 dark:border-gray-700/20 h-full">
               <div className="flex items-center mb-6">
-                <Award className="w-6 h-6 text-pink-500 dark:text-pink-400 mr-3" />
+                <Award className="w-8 h-8 text-pink-500 dark:text-pink-400 mr-4" />
                 <h2
-                  className={`${lusitana.className} text-xl font-bold text-gray-800 dark:text-white`}
+                  className={`${lusitana.className} text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-rose-500 dark:from-pink-400 dark:to-rose-400`}
                 >
-                  REPARTITION DES VOTES
+                  RÉPARTITION DES VOTES
                 </h2>
               </div>
+
               <div className="h-64">
                 <ResponsiveContainer width="100%" height="100%">
                   <PieChart>
@@ -299,7 +308,7 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Charts Section */}
+        {/* Additional Charts */}
         <div className="mt-6 grid lg:grid-cols-2 gap-6 pb-8">
           <div className="bg-white dark:bg-gray-800 rounded-3xl shadow-lg p-6 border border-gray-100 dark:border-gray-700">
             <div className="flex items-center mb-4">

@@ -8,6 +8,8 @@ const CandidatesTablePv = ({
   handleDelete,
   BiEditIcon,
   BiTrashIcon,
+  handleViewCandidate,
+  Eye,
 }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
@@ -60,6 +62,15 @@ const CandidatesTablePv = ({
                   >
                     {BiEditIcon}
                   </Button>
+
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => handleViewCandidate(item)}
+                  >
+                    {Eye}
+                  </Button>
+
                   <Button
                     variant="destructive"
                     size="sm"

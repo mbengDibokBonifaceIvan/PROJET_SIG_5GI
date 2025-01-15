@@ -52,6 +52,7 @@
     "react-router-dom": "^7.0.2",
     "recharts": "^2.15.0",
     "shadcn": "^2.1.7",
+    "shadcn-ui": "^0.9.4",
     "SIG_FRONTEND": "file:",
     "supports-color": "^9.4.0",
     "tailwind-merge": "^2.2.1",
