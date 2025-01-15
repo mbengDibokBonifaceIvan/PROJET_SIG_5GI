@@ -1,19 +1,20 @@
-"use client";
-import { useState, useEffect } from "react";
-import "./Scrutateur.css"
-import { Table } from "../../../Components/Details/DetailsStrutateur/Table";
-import { Modal } from "../../../Components/Details/DetailsStrutateur/Modal";
 
-function Scrutateurs() {
+"use client";
+
+import { useState, useEffect } from "react";
+import SideBar from "../Components/Sidebar1/SideBar";
+import { Table } from "../Components/Details/DetailsStrutateur/Table";
+import { Modal } from "../Components/Details/DetailsStrutateur/Modal";
+import Footer from "../Components/Footer/footer";
+
+
+function Utilisateurs() {
   const [modalOpen, setModalOpen] = useState(false);
-  const [rows, setRows] = useState([]); // Initialise vide
+  const [rows, setRows] = useState([]);
   const [rowToEdit, setRowToEdit] = useState(null);
 
-
-
- 
   useEffect(() => {
-    fetch("http://localhost:8080/utilisateurs/getScrutateurs")
+    fetch("http://localhost:8080/utilisateurs/all")
       .then((res) => res.json())
       .then((data) => {
         console.log("Utilisateurs récupérés :", data);
@@ -38,10 +39,6 @@ function Scrutateurs() {
     setRowToEdit(idx);
     setModalOpen(true);
   };
-
-
-
-
 
   const handleSubmit = (newRow) => {
     if (rowToEdit === null) {
@@ -92,27 +89,37 @@ function Scrutateurs() {
     setRowToEdit(null);
   };
 
+    return (
+      <SideBar>
+        {" "}
+        <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-800">
+          <Table
+            rows={rows}
+            deleteRow={handleDeleteRow}
+            editRow={handleEditRow}
+          />
+          <button
+            onClick={() => setModalOpen(true)}
+            className="btn mt-4 bg-blue-600 text-white px-4 py-2 rounded-lg shadow"
+          >
+            Ajouter
+          </button>
+          {modalOpen && (
+            <Modal
+              closeModal={() => {
+                setModalOpen(false);
+                setRowToEdit(null);
+              }}
+              onSubmit={handleSubmit}
+              defaultValue={rowToEdit !== null ? rows[rowToEdit] : {}}
+            />
+          )}
+        </div>
+        <Footer/>
+      </SideBar>
+    );
+            
 
-
-
-  return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-800">
-      <Table rows={rows} deleteRow={handleDeleteRow} editRow={handleEditRow} />
-      <button onClick={() => setModalOpen(true)} className="btn mt-4 bg-blue-600 text-white px-4 py-2 rounded-lg shadow">
-        Ajouter
-      </button>
-      {modalOpen && (
-        <Modal
-          closeModal={() => {
-            setModalOpen(false);
-            setRowToEdit(null);
-          }}
-          onSubmit={handleSubmit}
-          defaultValue={rowToEdit !== null ? rows[rowToEdit] : {}}
-        />
-      )}
-    </div>
-  );
 }
 
-export default Scrutateurs;
+export default Utilisateurs;

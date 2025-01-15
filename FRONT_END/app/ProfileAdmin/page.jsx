@@ -1,13 +1,17 @@
 "use client";
+
+import Footer from "../Components/Footer/footer";
 import SideBar from "../Components/Sidebar1/SideBar";
 import AdminProfile from "./AdminProfile";
 
 const ProfileAdmin = () => {
   return (
-    
-    <div className="flex"> 
-     <AdminProfile/>
-    </div>
+    <SideBar>
+      <div className="flex">
+        <AdminProfile />
+      </div>
+      <Footer/>
+    </SideBar>
   );
 };
 

@@ -24,6 +24,11 @@ const PollingStationsTable = ({ rows, editRow, deleteRow }) => {
   return (
     <div className="space-y-4">
       <div className="overflow-x-auto">
+        <div className="text-center mb-8">
+          <h2 className="text-3xl font-bold text-white bg-blue-500 rounded-md p-2">
+            Liste Nationale des Bureaux de Vote
+          </h2>
+        </div>
         <table className="mx-auto w-full md:w-3/4 lg:w-1/2 table-auto shadow-lg rounded-lg dark:bg-gray-800">
           <thead className="bg-gray-300 dark:bg-gray-600 text-black dark:text-white">
             <tr>

@@ -1,10 +1,11 @@
 "use client";
 import { useState, useEffect } from "react";
-import apiClient from "../../../utils/axiosConfig"; // Importer l'instance d'axios configurée
-import "./CentreVote.css";
-import { Table } from "../../../Components/Details/DetailsCentreVote/Table";
-import { Modal } from "../../../Components/Details/DetailsCentreVote/Modal";
+import apiClient from "../utils/axiosConfig"; // Importer l'instance d'axios configurée
+import { Modal } from "../Components/Details/DetailsCentreVote/Modal";
 import CentreDeVoteTable from "@/app/Components/CentreDeVoteTable";
+import SideBar from "../Components/Sidebar1/SideBar";
+import Footer from "../Components/Footer/footer";
+
 function CentreVote() {
   const [modalOpen, setModalOpen] = useState(false);
   const [rows, setRows] = useState([]); // Liste des centres de vote
@@ -18,7 +19,10 @@ function CentreVote() {
         const response = await apiClient.get("/centres-de-vote/all"); // Utiliser apiClient
         setRows(response.data);
       } catch (error) {
-        console.error("Erreur lors de la récupération des centres de vote", error);
+        console.error(
+          "Erreur lors de la récupération des centres de vote",
+          error
+        );
       }
     };
 
@@ -27,7 +31,10 @@ function CentreVote() {
         const response = await apiClient.get("/arrondissements/all"); // Utiliser apiClient
         setArrondissements(response.data);
       } catch (error) {
-        console.error("Erreur lors de la récupération des arrondissements", error);
+        console.error(
+          "Erreur lors de la récupération des arrondissements",
+          error
+        );
       }
     };
 
@@ -39,7 +46,9 @@ function CentreVote() {
   const handleDeleteRow = async (targetIndex) => {
     const centreToDelete = rows[targetIndex];
     try {
-      await apiClient.delete(`/centres-de-vote/deleteCentreDeVote/${centreToDelete.id_centre_vote}`); // Utiliser apiClient
+      await apiClient.delete(
+        `/centres-de-vote/deleteCentreDeVote/${centreToDelete.id_centre_vote}`
+      ); // Utiliser apiClient
       setRows(rows.filter((_, idx) => idx !== targetIndex)); // Supprimer le centre de vote de l'état
     } catch (error) {
       console.error("Erreur lors de la suppression du centre de vote", error);
@@ -69,7 +78,11 @@ function CentreVote() {
       });
 
       if (isEditing) {
-        setRows(rows.map((currRow, idx) => (idx === rowToEdit ? response.data : currRow))); // Mettre à jour un centre de vote
+        setRows(
+          rows.map((currRow, idx) =>
+            idx === rowToEdit ? response.data : currRow
+          )
+        ); // Mettre à jour un centre de vote
       } else {
         setRows([...rows, response.data]); // Ajouter un nouveau centre de vote
       }
@@ -82,32 +95,35 @@ function CentreVote() {
     }
   };
 
-  return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-800">
-      <CentreDeVoteTable
-        rows={rows}
-        editRow={handleEditRow}
-        deleteRow={handleDeleteRow}
-      />
-      <button
-        onClick={() => setModalOpen(true)}
-        className="btn mt-4 bg-blue-600 text-white px-4 py-2 rounded-lg shadow"
-      >
-        Ajouter
-      </button>
-      {modalOpen && (
-        <Modal
-          closeModal={() => {
-            setModalOpen(false);
-            setRowToEdit(null);
-          }}
-          onSubmit={handleSubmit}
-          defaultValue={rowToEdit !== null && rows[rowToEdit]} // Passer la ligne à éditer
-          arrondissements={arrondissements} // Passer les arrondissements pour le menu déroulant
-        />
-      )}
-    </div>
-  );
+    return (
+      <SideBar>
+        <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-800">
+          <CentreDeVoteTable
+            rows={rows}
+            editRow={handleEditRow}
+            deleteRow={handleDeleteRow}
+          />
+          <button
+            onClick={() => setModalOpen(true)}
+            className="btn mt-4 bg-blue-600 text-white px-4 py-2 rounded-lg shadow"
+          >
+            Ajouter
+          </button>
+          {modalOpen && (
+            <Modal
+              closeModal={() => {
+                setModalOpen(false);
+                setRowToEdit(null);
+              }}
+              onSubmit={handleSubmit}
+              defaultValue={rowToEdit !== null && rows[rowToEdit]} // Passer la ligne à éditer
+              arrondissements={arrondissements} // Passer les arrondissements pour le menu déroulant
+            />
+          )}
+        </div>
+        <Footer/>
+      </SideBar>
+    );
 }
 
 export default CentreVote;

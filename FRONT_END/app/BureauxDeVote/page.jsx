@@ -1,11 +1,10 @@
 "use client";
 import { useState, useEffect } from "react";
-import apiClient from "../../../utils/axiosConfig"; // Importer l'instance d'axios configurée
-import "./BureauVote.css";
-import { Table } from "../../../Components/Details/DetailsBureauVote/Table";
-import { Modal } from "../../../Components/Details/DetailsBureauVote/Modal";
+import apiClient from "../utils/axiosConfig"; // Importer l'instance d'axios configurée
+import { Modal } from "../Components/Details/DetailsBureauVote/Modal";
 import PollingStationsTable from "@/app/Components/PollingStationsTable ";
-
+import SideBar from "../Components/Sidebar1/SideBar";
+import Footer from "../Components/Footer/footer";
 function BureauVote() {
   const [modalOpen, setModalOpen] = useState(false);
   const [rows, setRows] = useState([]); // Liste des bureaux de vote
@@ -19,7 +18,10 @@ function BureauVote() {
         const response = await apiClient.get("/bureaux-de-vote/all"); // Utiliser apiClient
         setRows(response.data);
       } catch (error) {
-        console.error("Erreur lors de la récupération des bureaux de vote", error);
+        console.error(
+          "Erreur lors de la récupération des bureaux de vote",
+          error
+        );
       }
     };
 
@@ -28,7 +30,10 @@ function BureauVote() {
         const response = await apiClient.get("/centres-de-vote/all"); // Utiliser apiClient
         setCentres(response.data);
       } catch (error) {
-        console.error("Erreur lors de la récupération des centres de vote", error);
+        console.error(
+          "Erreur lors de la récupération des centres de vote",
+          error
+        );
       }
     };
 
@@ -40,7 +45,9 @@ function BureauVote() {
   const handleDeleteRow = async (targetIndex) => {
     const bureauToDelete = rows[targetIndex];
     try {
-      await apiClient.delete(`/bureaux-de-vote/deleteBureauDeVote/${bureauToDelete.id_bureau_vote}`); // Utiliser apiClient
+      await apiClient.delete(
+        `/bureaux-de-vote/deleteBureauDeVote/${bureauToDelete.id_bureau_vote}`
+      ); // Utiliser apiClient
       setRows(rows.filter((_, idx) => idx !== targetIndex)); // Supprimer le bureau de vote de l'état
     } catch (error) {
       console.error("Erreur lors de la suppression du bureau de vote", error);
@@ -70,7 +77,11 @@ function BureauVote() {
       });
 
       if (isEditing) {
-        setRows(rows.map((currRow, idx) => (idx === rowToEdit ? response.data : currRow))); // Mettre à jour un bureau de vote
+        setRows(
+          rows.map((currRow, idx) =>
+            idx === rowToEdit ? response.data : currRow
+          )
+        ); // Mettre à jour un bureau de vote
       } else {
         setRows([...rows, response.data]); // Ajouter un nouveau bureau de vote
       }
@@ -83,7 +94,8 @@ function BureauVote() {
     }
   };
 
-  return (
+    return (
+      <SideBar>
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-800">
       <PollingStationsTable
         rows={rows}
@@ -107,7 +119,9 @@ function BureauVote() {
           centres={centres} // Passer les centres de vote pour le menu déroulant
         />
       )}
-    </div>
+        </div>
+        <Footer/>
+        </SideBar>
   );
 }
 

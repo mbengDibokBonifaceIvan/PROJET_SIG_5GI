@@ -140,47 +140,47 @@ const Card = () => {
       <ProductCard
         value={totalRegions} // Utilisez la valeur récupérée ici
         name="Total Region"
-        url="/region"
+        url="/Regions"
       />
       <ProductCard
         value={totalCandidat}
         name="Total Candidat"
-        url="/candidats"
+        url="/Candidats"
       />
       <ProductCard
         name="Total Arrondissement"
         value={totalArrondissements}
-        url="/arrondissement"
+        url="/Arrondissements"
       />
       <ProductCard
         name="Total Departement"
         value={totalDepartements}
-        url="/departement"
+        url="/Departements"
       />
       <ProductCard
         name="Total Bureau De Vote"
         value={totalBureauVote}
-        url="/bureauvote"
+        url="/BureauxDeVote"
       />
       <ProductCard
         name="Total Centre De Vote"
         value={totalCentreVote}
-        url="/centrevote"
+        url="/CentreDeVote"
       />
       <ProductCard
         name="Total Electeur"
         value={totalElecteurs}
-        url="/electeur"
+        url="/Electeurs"
       />
       <ProductCard
         name="Total Scrutateur"
         value={totalStrutateurs}
-        url="/scrutateurs"
+        url="/ScrutateurTable"
       />
       <ProductCard
         name="Total Administrateur"
         value={totalAdministrateurs}
-        url="/superAdministrateur"
+        url="/SuperAdminTable"
       />
     </div>
   );
