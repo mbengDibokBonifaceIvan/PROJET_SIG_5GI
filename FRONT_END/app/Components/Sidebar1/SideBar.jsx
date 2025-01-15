@@ -92,7 +92,7 @@ const SideBar = ({ children }) => {
                 className="overflow-hidden"
               >
                 <p
-                  className={`${lusitana.className} text-2xl text-white whitespace-nowrap`}
+                  className={`${lusitana.className} text-2xl text-black dark:text-white text-wrap`}
                 >
                   ELECAM-RESULTS.COM
                 </p>
@@ -100,7 +100,7 @@ const SideBar = ({ children }) => {
             )}
           </AnimatePresence>
 
-          <div className="cursor-pointer text-xl">
+          <div className="cursor-pointer text-xl text-black dark:text-white">
             <FaBars onClick={toggle} />
           </div>
         </div>
@@ -113,8 +113,8 @@ const SideBar = ({ children }) => {
               className={`flex items-center px-4 py-3 text-sm transition-colors duration-200 
                 ${
                   pathname === route.path
-                    ? "bg-blue-600 text-white"
-                    : "text-gray-300 hover:bg-gray-700"
+                    ? "bg-blue-600 dark:text-gray-800 text-white"
+                    : "dark:text-white text-gray-600 hover:bg-gray-800"
                 }
               `}
             >

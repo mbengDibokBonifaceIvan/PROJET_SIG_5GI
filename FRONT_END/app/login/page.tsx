@@ -70,7 +70,7 @@ const Login = () => {
             );
             // Rediriger en fonction du rôle
             if (userData.role === "SuperAdmin") {
-              window.location.href = "/AdminUI";
+              window.location.href = "/Administrateur";
             } else if (userData.role === "Scrutateur") {
               window.location.href = "/scrutateur";
             } else {

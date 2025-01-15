@@ -80,7 +80,7 @@ export const Table = ({ rows, deleteRow, editRow }) => {
 
       <div className="mb-4"></div> {/* Espacement entre le titre et la table */}
 
-      <table className="mx-auto w-full md:w-3/4 lg:w-1/2 table-auto shadow-lg rounded-lg dark:bg-gray-800">
+      <table className="mx-auto w-full md:w-3/4 lg:w-1/2 table-auto shadow-lg rounded-lg  dark:bg-gray-800">
         <thead className="bg-gray-300 dark:bg-gray-600 text-black dark:text-white">
           <tr>
             <th>Nom de la Région</th>
@@ -90,9 +90,9 @@ export const Table = ({ rows, deleteRow, editRow }) => {
         <tbody>
           {rows.map((row, idx) => {
             return (
-              <tr key={row.id_région || idx} className="hover:bg-gray-200 dark:hover:bg-gray-500">
-                <td >{row.nom_région}</td> {/* Utilisation de "nom_région" */}
-                <td className="flex items-center justify-center">
+              <tr key={row.id_région || idx} className="hover:bg-gray-500 dark:hover:bg-gray-500">
+                <td className="text-center" >{row.nom_région}</td> {/* Utilisation de "nom_région" */}
+                <td className="flex  justify-center ">
                   <BsFillPencilFill
                     className="edit-btn cursor-pointer"
                     title="Modifier"

@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import { PlusCircle, Pencil, Trash2, User } from "lucide-react";
 import SideBar from "../Components/Sidebar1/SideBar";
 import Footer from "../Components/Footer/footer";
+import { Button } from "@/components/ui/button";
 
 const CandidatModal = ({ isOpen, onClose, onSubmit, candidat }) => {
   const [formData, setFormData] = useState({
@@ -31,7 +32,7 @@ const CandidatModal = ({ isOpen, onClose, onSubmit, candidat }) => {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-md w-full p-6">
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-md p-6">
         <h2 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white">
           {candidat ? "Modifier" : "Ajouter"} un candidat
         </h2>
@@ -111,24 +112,24 @@ const CandidatModal = ({ isOpen, onClose, onSubmit, candidat }) => {
           </div>
 
           <div className="flex justify-end space-x-3 pt-4">
-            <button
-              type="button"
+            <Button
+              type="Button"
               onClick={onClose}
-              className="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-200
+              className="px-4 py-2 text-sm font-medium text-gray-700 dark:text-black
                 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600
                 rounded-md shadow-sm hover:bg-gray-50 dark:hover:bg-gray-600
                 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
             >
               Annuler
-            </button>
-            <button
+            </Button>
+            <Button
               type="submit"
               className="px-4 py-2 text-sm font-medium text-white bg-blue-600
                 border border-transparent rounded-md shadow-sm hover:bg-blue-700
                 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
             >
               {candidat ? "Modifier" : "Ajouter"}
-            </button>
+            </Button>
           </div>
         </form>
       </div>
@@ -140,7 +141,7 @@ const CandidatRow = ({ candidat, onEdit, onDelete }) => {
   return (
     <tr className="hover:bg-gray-50 dark:hover:bg-gray-700">
       <td className="px-6 py-4 whitespace-nowrap">
-        <div className="flex items-center">
+        <div className="flex items-center ">
           <div className="w-10 h-10 flex-shrink-0">
             {candidat.photo ? (
               <img
@@ -154,7 +155,7 @@ const CandidatRow = ({ candidat, onEdit, onDelete }) => {
               </div>
             )}
           </div>
-          <div className="ml-4">
+          <div className="ml-4 px-4">
             <div className="text-sm font-medium text-gray-900 dark:text-white">
               {candidat.nom_candidat}
             </div>
@@ -162,23 +163,23 @@ const CandidatRow = ({ candidat, onEdit, onDelete }) => {
         </div>
       </td>
       <td className="px-6 py-4 whitespace-nowrap">
-        <div className="text-sm text-gray-900 dark:text-white">
+        <div className="text-sm px-4 text-gray-900 dark:text-white">
           {candidat.parti_politique}
         </div>
       </td>
       <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-        <button
+        <Button
           onClick={() => onEdit(candidat)}
-          className="text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300 mr-4"
+          className="text-blue-600 mx-4 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300 mr-4"
         >
-          <Pencil className="w-5 h-5" />
-        </button>
-        <button
+          <Pencil className="w-5 h-5 text-white dark:text-black" />
+        </Button>
+        <Button
           onClick={() => onDelete(candidat.id_candidat)}
           className="text-red-600 hover:text-red-900 dark:text-red-400 dark:hover:text-red-300"
         >
-          <Trash2 className="w-5 h-5" />
-        </button>
+          <Trash2 className="w-5 h-5 text-white dark:text-black" />
+        </Button>
       </td>
     </tr>
   );
@@ -239,65 +240,66 @@ export default function Candidats() {
 
     return (
       <SideBar>
-        <div className="min-h-screen bg-gray-100 dark:bg-gray-900 py-8 px-4 sm:px-6 lg:px-8">
+        <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-12 px-4 sm:px-6 lg:px-8 transition-colors duration-300">
           <div className="max-w-7xl mx-auto">
-            <div className="sm:flex sm:items-center">
+            <div className="sm:flex sm:items-center sm:justify-between bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg mb-8">
               <div className="sm:flex-auto">
-                <h1 className="text-3xl font-semibold text-gray-900 dark:text-white">
+                <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
                   Candidats
                 </h1>
+                <p className="mt-2 text-sm text-gray-600 dark:text-gray-300">
+                  Gérez la liste des candidats et leurs informations
+                </p>
               </div>
+             
               <div className="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
-                <button
+                <Button
                   onClick={() => {
                     setSelectedCandidat(null);
                     setIsModalOpen(true);
                   }}
-                  className="inline-flex items-center px-4 py-2 border border-transparent
-                text-sm font-medium rounded-md shadow-sm text-white bg-blue-600
-                hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2
-                focus:ring-blue-500"
+                  className="inline-flex items-center px-6 py-3 border border-transparent
+                  text-base font-medium rounded-lg shadow-sm text-white bg-blue-600
+                  hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2
+                  focus:ring-blue-500 transition-colors duration-200"
                 >
                   <PlusCircle className="w-5 h-5 mr-2" />
                   Ajouter un candidat
-                </button>
+                </Button>
               </div>
+              
             </div>
 
-            <div className="mt-8 flex flex-col">
-              <div className="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8">
-                <div className="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
-                  <div className="overflow-hidden shadow ring-1 ring-black ring-opacity-5 rounded-lg">
-                    <table className="min-w-full divide-y divide-gray-300 dark:divide-gray-600">
-                      <thead className="bg-gray-50 dark:bg-gray-800">
-                        <tr>
-                          <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900 dark:text-white">
-                            Candidat
-                          </th>
-                          <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900 dark:text-white">
-                            Parti politique
-                          </th>
-                          <th className="relative px-6 py-3">
-                            <span className="sr-only">Actions</span>
-                          </th>
-                        </tr>
-                      </thead>
-                      <tbody className="divide-y divide-gray-200 dark:divide-gray-700 bg-white dark:bg-gray-800">
-                        {candidats.map((candidat) => (
-                          <CandidatRow
-                            key={candidat.id_candidat}
-                            candidat={candidat}
-                            onEdit={() => {
-                              setSelectedCandidat(candidat);
-                              setIsModalOpen(true);
-                            }}
-                            onDelete={handleDelete}
-                          />
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
+            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden transition-colors  duration-300">
+              <div className="min-w-full ">
+                <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                  <thead>
+                    <tr className="bg-gray-50 dark:bg-gray-700/50">
+                      <th className="px-6 py-4 text-center text-sm font-semibold text-gray-900 dark:text-white">
+                        Candidat
+                      </th>
+                      <th className="px-6 py-4 text-center text-sm font-semibold text-gray-900 dark:text-white">
+                        Parti politique
+                      </th>
+                      <th className="relative text-center px-6 py-4">
+                        <span >Actions</span>
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
+                    {candidats.map((candidat) => (
+                      <CandidatRow
+                        key={candidat.id_candidat}
+                        candidat={candidat}
+                        onEdit={() => {
+                          setSelectedCandidat(candidat);
+                          setIsModalOpen(true);
+                        }}
+                        onDelete={handleDelete}
+                      />
+                    ))}
+                  </tbody>
+                </table>
               </div>
             </div>
           </div>
@@ -312,7 +314,7 @@ export default function Candidats() {
             candidat={selectedCandidat}
           />
         </div>
-        <Footer/>
+        <Footer />
       </SideBar>
     );
 }

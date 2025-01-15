@@ -15,6 +15,7 @@ import CandidatesTablePv from "../Components/CandidatesTablePv";
 import PvDetailsModal from "../Components/PvDetailsModal";
 import SideBar from "../Components/Sidebar1/SideBar";
 
+
 const API_URL = "http://localhost:8080/pvs/all";
 
 // Composant d'alerte personnalisé
@@ -245,7 +246,7 @@ const ProcesVerbaux = () => {
             <main className="flex-1 p-8">
               <div className="max-w-7xl mx-auto">
                 <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-8 text-center">
-                  PROCES VERBAUX DES ELECTIONS
+                  PROCES VERBAL DES ELECTIONS
                 </h1>
 
                 <div className="flex justify-between items-center mb-6 gap-4">
@@ -268,7 +269,7 @@ const ProcesVerbaux = () => {
                   </Button>
 
                   <div className="flex items-center gap-4">
-                    <label className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 cursor-pointer dark:bg-green-500 dark:hover:bg-green-600">
+                    <label className="flex items-center gap-2 px-4 py-2 bg-green-600 text-black dark:text-white rounded-md hover:bg-green-700 cursor-pointer dark:bg-green-500 dark:hover:bg-green-600">
                       {BiUploadIcon}
                       <span>Importer CSV</span>
                       <input
