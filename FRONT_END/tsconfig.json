@@ -33,6 +33,6 @@
     "app/Components/Map/Mapss.js",
     "app/Components/revenue-chart.tsx",
     "app/Components/Navbar.tsx"
-, "app/Components/VotingStationsList.jsx"  ],
+, "app/Components/VotingStationsList.jsx", "app/profile/UserProfile.jsx"  ],
   "exclude": ["node_modules"]
 }

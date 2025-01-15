@@ -1,13 +1,14 @@
 "use client";
-import "./App.css";
+
 import { useState, useEffect } from "react";
-import { Button } from "@/components/ui/button";
-import { BiPlusIcon,eye } from "../utils/Icons";
+import { BiPlusIcon, eye } from "../utils/Icons";
 import Footer from "../Components/Footer/footer";
 import Sidebar from "../Components/Sidebar/SideBar";
 import ThemeDropdown from "../Components/ThemeDropdown/ThemeDropdown";
 import CandidatesTable from "../Components/CandidatesTable";
 import PvDetailsModal from "../Components/PvDetailsModal";
+import { Button } from "@/components/ui/button";
+
 
 const API_URL = "http://localhost:8080/resultats/all";
 
@@ -16,6 +17,8 @@ const Scrutateur = () => {
   const [candidatsList, setCandidatsList] = useState([]);
   const [bureauxOptions, setBureauxOptions] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [feedback, setFeedback] = useState({ type: "", message: "" });
+  const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
     bureau: "",
     candidat: "",
@@ -25,7 +28,6 @@ const Scrutateur = () => {
   });
   const [editId, setEditId] = useState(null);
   const [selectedPv, setSelectedPv] = useState(null);
-
 
   useEffect(() => {
     fetchVotes();
@@ -40,10 +42,16 @@ const Scrutateur = () => {
         const data = await response.json();
         setCandidats(data);
       } else {
-        console.error("Erreur de récupération des votes");
+        setFeedback({
+          type: "error",
+          message: "Erreur lors de la récupération des votes",
+        });
       }
     } catch (error) {
-      console.error("Erreur réseau :", error);
+      setFeedback({
+        type: "error",
+        message: "Erreur réseau lors de la récupération des votes",
+      });
     }
   };
 
@@ -54,10 +62,16 @@ const Scrutateur = () => {
         const data = await response.json();
         setBureauxOptions(data);
       } else {
-        console.error("Erreur lors de la récupération des bureaux de vote.");
+        setFeedback({
+          type: "error",
+          message: "Erreur lors de la récupération des bureaux de vote",
+        });
       }
     } catch (error) {
-      console.error("Erreur réseau :", error);
+      setFeedback({
+        type: "error",
+        message: "Erreur réseau lors de la récupération des bureaux de vote",
+      });
     }
   };
 
@@ -68,34 +82,63 @@ const Scrutateur = () => {
         const data = await response.json();
         setCandidatsList(data);
       } else {
-        console.error("Erreur lors de la récupération des candidats");
+        setFeedback({
+          type: "error",
+          message: "Erreur lors de la récupération des candidats",
+        });
       }
     } catch (error) {
-      console.error("Erreur réseau :", error);
+      setFeedback({
+        type: "error",
+        message: "Erreur réseau lors de la récupération des candidats",
+      });
     }
   };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
+    setFeedback({ type: "", message: "" });
+  };
+
+  const validateForm = () => {
+    if (
+      !formData.bureau ||
+      !formData.candidat ||
+      !formData.date ||
+      !formData.voix
+    ) {
+      setFeedback({
+        type: "error",
+        message: "Veuillez remplir tous les champs obligatoires",
+      });
+      return false;
+    }
+    return true;
   };
 
   const handleSave = async () => {
+    if (!validateForm()) return;
+
+    setIsLoading(true);
     const bureau = bureauxOptions.find(
       (b) => b.nom_bureau.toLowerCase() === formData.bureau.toLowerCase()
     );
 
     if (!bureau) {
-      alert(
-        "Bureau de vote introuvable. Veuillez saisir un nom de bureau de vote valide."
-      );
+      setFeedback({
+        type: "error",
+        message:
+          "Bureau de vote introuvable. Veuillez saisir un nom de bureau de vote valide.",
+      });
+      setIsLoading(false);
       return;
     }
 
     const voteData = {
       bureauVote: { id_bureau_vote: bureau.id_bureau_vote },
       candidat: { id_candidat: formData.candidat },
-      nombre_voix: formData.voix,
+      nombre_voix: parseInt(formData.voix),
       date_saisie: formData.date,
       annee_election: formData.annee,
     };
@@ -107,35 +150,81 @@ const Scrutateur = () => {
     const method = editId ? "PUT" : "POST";
 
     try {
-      await fetch(url, {
+      const response = await fetch(url, {
         method,
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(voteData),
       });
 
-      fetchVotes();
-      setIsModalOpen(false);
-      setEditId(null);
-      setFormData({
-        bureau: "",
-        candidat: "",
-        date: "",
-        voix: "",
-        annee: new Date().getFullYear(),
-      });
+      const data = await response.json();
+
+      if (response.ok) {
+        setFeedback({
+          type: "success",
+          message: editId
+            ? "Résultat modifié avec succès"
+            : "Résultat validé et enregistré avec succès",
+        });
+        fetchVotes();
+        setTimeout(() => {
+          setIsModalOpen(false);
+          setEditId(null);
+          setFormData({
+            bureau: "",
+            candidat: "",
+            date: "",
+            voix: "",
+            annee: new Date().getFullYear(),
+          });
+        }, 1500);
+      } else {
+        setFeedback({
+          type: "error",
+          message: data.message || "Erreur lors de la sauvegarde",
+        });
+      }
     } catch (error) {
-      console.error("Erreur lors de la sauvegarde :", error);
+      setFeedback({
+        type: "error",
+        message: "Erreur réseau lors de la sauvegarde",
+      });
+    } finally {
+      setIsLoading(false);
     }
   };
 
-  const handleDelete = async (id) => {
+ {
+   /**
+   const handleDelete = async (id) => {
+    if (!window.confirm("Êtes-vous sûr de vouloir supprimer ce résultat ?")) {
+      return;
+    }
+
     try {
-      await fetch(`http://localhost:8080/resultats/deleteResultat/${id}`, {
-        method: "DELETE",
-      });
-      fetchVotes();
+      const response = await fetch(
+        `http://localhost:8080/resultats/deleteResultat/${id}`,
+        {
+          method: "DELETE",
+        }
+      );
+
+      if (response.ok) {
+        setFeedback({
+          type: "success",
+          message: "Résultat supprimé avec succès",
+        });
+        fetchVotes();
+      } else {
+        setFeedback({
+          type: "error",
+          message: "Erreur lors de la suppression",
+        });
+      }
     } catch (error) {
-      console.error("Erreur lors de la suppression :", error);
+      setFeedback({
+        type: "error",
+        message: "Erreur réseau lors de la suppression",
+      });
     }
   };
 
@@ -146,14 +235,16 @@ const Scrutateur = () => {
       candidat: item.candidat?.id_candidat || "",
       date: item.date_saisie ? item.date_saisie.split("T")[0] : "",
       voix: item.nombre_voix || "",
-      annee: new Date().getFullYear(),
+      annee: item.annee_election || new Date().getFullYear(),
     });
     setIsModalOpen(true);
-  };
+    setFeedback({ type: "", message: "" });
+  }; */
+ }
 
-    const handleViewPv = (pv) => {
-      setSelectedPv(pv);
-    };
+  const handleViewPv = (pv) => {
+    setSelectedPv(pv);
+  };
 
   return (
     <div className="flex h-screen">
@@ -169,7 +260,18 @@ const Scrutateur = () => {
             ENREGISTREMENT DES VOTES POUR CHAQUE CANDIDAT
           </h1>
 
-          {/* Add button */}
+          {feedback.message && (
+            <div
+              className={`mb-4 p-4 rounded-md ${
+                feedback.type === "success"
+                  ? "bg-green-900 text-green-800 dark:bg-green-800 dark:text-green-100"
+                  : "bg-red-100 text-red-800 dark:bg-red-800 dark:text-red-100"
+              }`}
+            >
+              {feedback.message}
+            </div>
+          )}
+
           <Button
             className="source-code-btn flex items-center gap-2 mb-4 dark:text-black text-2xl font-bold "
             onClick={() => {
@@ -187,26 +289,26 @@ const Scrutateur = () => {
             {BiPlusIcon} Ajouter un resultat
           </Button>
 
-          {/* Table */}
           <CandidatesTable
             candidats={candidats}
             handleViewCandidate={handleViewPv}
             Eye={eye}
           />
 
-          {/* Modal */}
           {isModalOpen && (
             <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 dark:bg-opacity-50">
-              <div className="bg-white dark:bg-dark-grey dark:text-white text-center p-6 rounded shadow-md w-1/3">
+              <div className="bg-white dark:bg-dark-grey dark:text-white text-center p-6 rounded-lg shadow-md w-96">
                 <h2 className="text-xl font-bold mb-4">
                   {editId !== null ? "Modifier" : "Ajouter"} un resultat
                 </h2>
+
                 <div className="flex flex-col gap-4">
                   <select
                     name="bureau"
                     value={formData.bureau}
                     onChange={handleChange}
-                    className="border p-2 rounded"
+                    className="w-full px-3 py-2 border rounded-md dark:bg-gray-800 dark:border-gray-600"
+                    required
                   >
                     <option value="" disabled>
                       Selectionnez un bureau de vote
@@ -225,7 +327,8 @@ const Scrutateur = () => {
                     name="candidat"
                     value={formData.candidat}
                     onChange={handleChange}
-                    className="border p-2 rounded"
+                    className="w-full px-3 py-2 border rounded-md dark:bg-gray-800 dark:border-gray-600"
+                    required
                   >
                     <option value="" disabled>
                       Selectionner un candidat
@@ -245,7 +348,8 @@ const Scrutateur = () => {
                     name="date"
                     value={formData.date}
                     onChange={handleChange}
-                    className="border p-2 rounded dark:bg-gray-800 dark:text-white"
+                    className="w-full px-3 py-2 border rounded-md dark:bg-gray-800 dark:border-gray-600"
+                    required
                   />
 
                   <input
@@ -254,7 +358,9 @@ const Scrutateur = () => {
                     placeholder="Nombre de voix"
                     value={formData.voix}
                     onChange={handleChange}
-                    className="border p-2 rounded dark:bg-gray-800 dark:text-white"
+                    className="w-full px-3 py-2 border rounded-md dark:bg-gray-800 dark:border-gray-600"
+                    required
+                    min="0"
                   />
 
                   <input
@@ -263,22 +369,30 @@ const Scrutateur = () => {
                     placeholder="Année"
                     value={formData.annee}
                     readOnly
-                    className="border p-2 rounded bg-gray-100 dark:bg-gray-800 dark:text-white"
+                    className="w-full px-3 py-2 border rounded-md bg-gray-100 dark:bg-gray-800 dark:border-gray-600"
                   />
 
                   <div className="flex justify-end gap-2 mt-4">
                     <Button
-                      variant="outline"
-                      onClick={() => setIsModalOpen(false)}
-                      className="dark:bg-gray-800 dark:text-white"
+                      onClick={() => {
+                        setIsModalOpen(false);
+                        setFeedback({ type: "", message: "" });
+                      }}
+                      className="px-4 py-2 border rounded-md dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700"
+                      disabled={isLoading}
                     >
                       Annuler
                     </Button>
                     <Button
                       onClick={handleSave}
-                      className="dark:bg-gray-800 dark:text-white"
+                      className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 dark:bg-blue-700 dark:hover:bg-blue-800 disabled:opacity-50"
+                      disabled={isLoading}
                     >
-                      {editId !== null ? "Modifier" : "Enregistrer"}
+                      {isLoading
+                        ? "Chargement..."
+                        : editId !== null
+                        ? "Modifier"
+                        : "Enregistrer"}
                     </Button>
                   </div>
                 </div>
@@ -286,7 +400,6 @@ const Scrutateur = () => {
             </div>
           )}
 
-          {/* Nouveau modal de détails */}
           {selectedPv && (
             <PvDetailsModal
               pv={selectedPv}

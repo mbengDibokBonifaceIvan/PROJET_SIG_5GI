@@ -31,13 +31,13 @@ const CandidatesTable = ({
         <table className="min-w-full mx-auto w-full bg-white dark:bg-dark-grey text-center border rounded-lg cursor-pointer shadow-sm dark:shadow-none">
           <thead className="dark:bg-gray-800">
             <tr className="bg-gray-100 text-left">
-              <th className="py-2 px-4 border-b dark:text-black">
+              <th className="py-2 px-4 border-b dark:text-white">
                 Nom du Candidat
               </th>
-              <th className="py-2 px-4 border-b dark:text-black">
+              <th className="py-2 px-4 border-b dark:text-white">
                 Nombre de voix
               </th>
-              <th className="py-2 px-4 border-b dark:text-black">Actions</th>
+              <th className="py-2 px-4 border-b dark:text-white">Actions</th>
             </tr>
           </thead>
           <tbody>
