@@ -1,48 +1,16 @@
-import {
-  Command,
-  Github,
-  Search,
-  CloudDrizzle,
-  CloudRain,
-  Snowflake,
-  CloudSun,
-  Cloudy,
-  Navigation,
-  ThermometerSun,
-  Sunset,
-  Wind,
-  Gauge,
-  Droplets,
-  Thermometer,
-  Eye,
-  UsersRound,
-  CalendarDays,
-  SunDim,
-  
-  Vote,
-} from "lucide-react";
+import { BiPlus, BiTrash, BiEdit, BiUpload } from "react-icons/bi";
+import { Command, Github, Search, CloudDrizzle, CloudRain, Snowflake, CloudSun, Cloudy, Navigation, ThermometerSun, Sunset, Wind, Gauge, Droplets, Thermometer, Eye, UsersRound, CalendarDays, SunDim, Vote } from "lucide-react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faLock } from '@fortawesome/free-solid-svg-icons';
-import {
-  faPoll,
-  faChartBar,
-  faFlag,
-  faVoteYea,
-  faPollH,
-  faChartPie,
-  faUserCheck,
-  faDownload,
-} from "@fortawesome/free-solid-svg-icons";
-import { BiPlus, BiTrash, BiEdit } from "react-icons/bi";
-
+import { faLock, faPoll, faChartBar, faFlag, faVoteYea, faPollH, faChartPie, faUserCheck, faDownload } from "@fortawesome/free-solid-svg-icons";
 
 export const BiPlusIcon = <BiPlus size={24} />;
 export const BiTrashIcon = <BiTrash size={24} />;
 export const BiEditIcon = <BiEdit size={24} />;
+export const BiUploadIcon = <BiUpload size={24} />;
 export const voteIcon = <Vote size={20} />;
 export const downloadIcon = <FontAwesomeIcon icon={faDownload} />;
 export const flagIcon = <FontAwesomeIcon icon={faFlag} />;
-export const voteYesIcon = <FontAwesomeIcon icon={faVoteYea} />;;
+export const voteYesIcon = <FontAwesomeIcon icon={faVoteYea}/> ;
 export const pollHIcon = <FontAwesomeIcon icon={faPollH} />;
 export const chartPieIcon = <FontAwesomeIcon icon={faChartPie} />;
 export const userCheckIcon = <FontAwesomeIcon icon={faUserCheck} />;

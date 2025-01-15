@@ -3,7 +3,8 @@
 import { useState, useEffect } from "react";
 import { FiUser, FiEdit2, FiMapPin, FiLock, FiSave, FiX } from "react-icons/fi";
 
-const UserProfile = () => {
+
+const AdminProfile = () => {
   const [user, setUser] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
   const [editedUser, setEditedUser] = useState(null);
@@ -284,4 +285,4 @@ const UserProfile = () => {
   );
 };
 
-export default UserProfile;
+export default AdminProfile;

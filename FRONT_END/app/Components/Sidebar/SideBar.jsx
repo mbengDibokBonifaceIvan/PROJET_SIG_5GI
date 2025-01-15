@@ -33,6 +33,7 @@ const SideBar = ({ children }) => {
   const handleLogout = () => {
     if (window.confirm("Êtes-vous sûr de vouloir vous déconnecter ?")) {
       // Si l'utilisateur confirme, on redirige vers la page d'accueil
+      localStorage.removeItem("userData");
       window.location.href = "http://localhost:3000"; // Redirection vers la page d'accueil
     }
   };

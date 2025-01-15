@@ -12,9 +12,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import org.springframework.web.bind.annotation.CrossOrigin;
-
-
 import java.util.List;
 
 
@@ -44,40 +41,34 @@ public class UtilisateursController {
 
     }
 
-    @GetMapping("/verify")
-    public ResponseEntity<?> verifyUser(@RequestParam String nomUtilisateur, @RequestParam String motDePasse ,@RequestParam String role) {
-       // boolean isValidUser = utilisateursService.verifyUser1(nomUtilisateur, motDePasse ,role);
-        Utilisateurs utilisateur = utilisateursService.verifyUser1(nomUtilisateur, motDePasse, role);
+   @GetMapping("/verify")
+public ResponseEntity<?> verifyUser(@RequestParam String nomUtilisateur, @RequestParam String motDePasse, @RequestParam String role) {
+    Utilisateurs utilisateur = utilisateursService.verifyUser1(nomUtilisateur, motDePasse, role);
 
-        if (utilisateur != null) {
-            // Return a JSON object containing the message and the user's role
-            return ResponseEntity.ok(new UserResponse("User is valid", utilisateur.getRole()));
-        } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponse("Invalid credentials"));
-        }
-//        if (isValidUser) {
-//            // Renvoie un objet JSON contenant le message et le rôle
-//            return ResponseEntity.ok(new UserResponse("User is valid", "admin")); // Exemple de rôle
-//        } else {
-//            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponse("Invalid credentials"));
-//        }
+    if (utilisateur != null) {
+        return ResponseEntity.ok(new UserResponse("User is valid", utilisateur.getRole(), utilisateur.getId_utilisateur()));
+    } else {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponse("Invalid credentials"));
+    }
+}
+
+// Classe modifiée pour inclure l'ID
+public class UserResponse {
+    private String message;
+    private String role;
+    private Long userId;
+
+    public UserResponse(String message, String role, Long userId) {
+        this.message = message;
+        this.role = role;
+        this.userId = userId;
     }
 
-    // Classe pour représenter la réponse de l'utilisateur
-    public class UserResponse {
-        private String message;
-        private String role;
-
-        public UserResponse(String message, String role) {
-            this.message = message;
-            this.role = role;
-        }
-
-        // Getters
-        public String getMessage() { return message; }
-        public String getRole() { return role; }
-    }
-
+    // Getters
+    public String getMessage() { return message; }
+    public String getRole() { return role; }
+    public Long getUserId() { return userId; }
+}
     // Classe pour représenter les erreurs
     public class ErrorResponse {
         private String message;

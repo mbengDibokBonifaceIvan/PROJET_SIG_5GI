@@ -1,21 +1,20 @@
-'use client';
-import { faEye, faEyeSlash, faHome } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React, { useContext, useEffect, useState } from 'react';
-import styles from '@/styles/Login.module.css';
-import SignInBtn from '@/components/SignInBtn';
-import AuthLayout from '@/layouts/AuthLayout';
-import { useTheme  } from 'next-themes';
-
+"use client";
+import { faEye, faEyeSlash, faHome } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import React, { useContext, useEffect, useState } from "react";
+import styles from "@/styles/Login.module.css";
+import SignInBtn from "@/components/SignInBtn";
+import AuthLayout from "@/layouts/AuthLayout";
+import { useTheme } from "next-themes";
 
 const Login = () => {
-  const [name, setName] = useState(''); // Champ pour le nom
-  const [role, setRole] = useState('SuperAdmin'); // État pour le rôle de l'utilisateur
-  const [password, setPassword] = useState('');
+  const [name, setName] = useState(""); // Champ pour le nom
+  const [role, setRole] = useState("SuperAdmin"); // État pour le rôle de l'utilisateur
+  const [password, setPassword] = useState("");
   const [error, setError] = useState(false);
-  const [nameError, setNameError] = useState(''); // État pour les erreurs de nom
-  const [emailRole, setRoleError] = useState('');
-  const [passwordError, setPasswordError] = useState('');
+  const [nameError, setNameError] = useState(""); // État pour les erreurs de nom
+  const [emailRole, setRoleError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
   const [passwordIsVisible, setPasswordIsVisible] = useState(false);
 
   const login = async () => {
@@ -23,63 +22,77 @@ const Login = () => {
 
     if (name.length === 0) {
       setError(true);
-      setNameError('Le nom est requis');
+      setNameError("Le nom est requis");
     }
     if (password.length === 0) {
       setError(true);
-      setPasswordError('Password is required');
+      setPasswordError("Le mot de passe est requis");
     }
 
-    if (name && password && role) { 
+    if (name && password && role) {
+      console.log(name);
+      console.log(password);
+      console.log(role);
 
-      console.log(name)
-      console.log(password)
-      console.log(role)
+      if (password.length < 8) {
+        setError(true);
+        setPasswordError("Mot de passe trop court");
+      } else {
+        try {
+          const res = await fetch(
+            `http://localhost:8080/utilisateurs/verify?nomUtilisateur=${encodeURIComponent(
+              name
+            )}&motDePasse=${encodeURIComponent(
+              password
+            )}&role=${encodeURIComponent(role)}`,
+            {
+              method: "GET",
+              headers: {
+                "Content-Type": "application/json",
+              },
+            }
+          );
 
-        if (password.length < 8) {
-          setError(true);
-          setPasswordError('Password is too short');
-        } else {
-          try {
-          const res = await fetch(`http://localhost:8080/utilisateurs/verify?nomUtilisateur=${encodeURIComponent(name)}&motDePasse=${encodeURIComponent(password)}&role=${encodeURIComponent(role)}`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        });
+          // Logger la réponse du backend
+          console.log("Response Status:", res.status);
 
-        // Logger la réponse du backend
-        console.log("Response Status:", res.status);
-
-        if (res.ok) {
+          if (res.ok) {
             const userData = await res.json(); // Cela sera maintenant un objet JSON
             console.log("User Data:", userData); // Logger les données utilisateur
-
+            
+            localStorage.setItem(
+              "userData",
+              JSON.stringify({
+                userId: userData.userId,
+                role: userData.role,
+                // autres données pertinentes...
+              })
+            );
             // Rediriger en fonction du rôle
-            if (userData.role === 'SuperAdmin') {
-                window.location.href = '/AdminUI';
-            } else if (userData.role === 'Scrutateur') {
-                window.location.href = '/scrutateur';
+            if (userData.role === "SuperAdmin") {
+              window.location.href = "/AdminUI";
+            } else if (userData.role === "Scrutateur") {
+              window.location.href = "/scrutateur";
             } else {
-                console.log("Unknown role:", userData.role);
+              console.log("Unknown role:", userData.role);
             }
-        }else {
-              setError(true);
-              setPasswordError('Nom ou mot de passe incorrect');
-            }
-          } catch (error) {
+          } else {
             setError(true);
-            setPasswordError('Essayez encore');
-            console.log(error);
+            setPasswordError("Nom ou mot de passe incorrect");
           }
-         }
+        } catch (error) {
+          setError(true);
+          setPasswordError("Essayez encore");
+          console.log(error);
+        }
+      }
     }
   };
 
   const resetError = () => {
     setError(false);
-    setNameError('');
-    setPasswordError('');
+    setNameError("");
+    setPasswordError("");
   };
 
   useEffect(() => {
@@ -183,4 +196,3 @@ const Login = () => {
 };
 
 export default Login;
-

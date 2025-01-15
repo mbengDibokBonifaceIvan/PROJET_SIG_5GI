@@ -5,12 +5,14 @@ import { FaBars, FaHome, FaLock, FaMapMarkedAlt, FaMoneyBill, FaSignOutAlt, FaUs
 import { MdMessage } from "react-icons/md";
 import { BiAnalyse, BiSearch } from "react-icons/bi";
 import { BiCog } from "react-icons/bi";
-import { AiFillHeart, AiTwotoneFileExclamation } from "react-icons/ai";
+import { AiFillHeart } from "react-icons/ai";
 import { BsCartCheck } from "react-icons/bs";
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import SidebarMenu from "./SidebarMenu";
 import { lusitana } from "../lib/fonts";
+
+
 const routes = [
   {
     path: "/AdminUI",
@@ -20,22 +22,23 @@ const routes = [
   {
     path: "/candidats",
     name: "Candidats",
-    icon: <FaUser />,
+    icon: <AiFillHeart />,
   },
-
   {
     path: "/utilisateurs",
     name: "Utilisateurs",
     icon: <FaUser />,
   },
-
   {
     path: "/pv",
-    name: "Proces  Verbaux",
-    icon: <FaMapMarkedAlt />,
+    name: "Procès Verbaux",
+    icon: <BiSearch />,
   },
-
-
+  {
+    path: "/ProfileAdmin",
+    name: "Profil",
+    icon: <BiCog />,
+  },
 ];
 
 const SideBar = ({ children }) => {
@@ -78,6 +81,7 @@ const SideBar = ({ children }) => {
   const handleLogout = () => {
     if (window.confirm("Êtes-vous sûr de vouloir vous déconnecter ?")) {
       // Si l'utilisateur confirme, on redirige vers la page d'accueil
+       localStorage.removeItem("userData");
       window.location.href = "http://localhost:3000"; // Redirection vers la page d'accueil
     }
   };
