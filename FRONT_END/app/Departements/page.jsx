@@ -6,6 +6,8 @@ import { Modal } from "../Components/Details/DetailsDepartement/Modal";
 import DepartementTable from "../Components/DepartementTable"; 
 import SideBar from "../Components/Sidebar1/SideBar";
 import Footer from "../Components/Footer/footer";
+import ThemeDropdown from "../Components/ThemeDropdown/ThemeDropdown";
+import { Button } from "@/components/ui/button";
 
 
 
@@ -88,28 +90,38 @@ function Departement() {
 
     return (
       <SideBar>
-        <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-800">
-          <DepartementTable
-            rows={rows}
-            editRow={handleEditRow}
-            deleteRow={handleDeleteRow}
-          />
-          <button onClick={() => setModalOpen(true)} className="btn">
-            Ajouter
-          </button>
-          {modalOpen && (
-            <Modal
-              closeModal={() => {
-                setModalOpen(false);
-                setRowToEdit(null);
-              }}
-              onSubmit={handleSubmit}
-              defaultValue={rowToEdit !== null && rows[rowToEdit]}
-              regions={regions} // Passer les régions pour le menu déroulant
+        <div className="flex-1 p-8 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-950 min-h-screen">
+          <div className="max-w-7xl mx-auto">
+            <div className="mb-8 flex justify-between items-center">
+              <ThemeDropdown />
+              <Button
+                onClick={() => setModalOpen(true)}
+                className="px-6 py-3 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white rounded-lg shadow-lg transition-all duration-200 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900"
+              >
+                Ajouter un département
+              </Button>
+            </div>
+
+            <DepartementTable
+              rows={rows}
+              editRow={handleEditRow}
+              deleteRow={handleDeleteRow}
             />
-          )}
+
+            {modalOpen && (
+              <Modal
+                closeModal={() => {
+                  setModalOpen(false);
+                  setRowToEdit(null);
+                }}
+                onSubmit={handleSubmit}
+                defaultValue={rowToEdit !== null && rows[rowToEdit]}
+                regions={regions}
+              />
+            )}
+          </div>
         </div>
-        <Footer/>
+        <Footer />
       </SideBar>
     );
 }

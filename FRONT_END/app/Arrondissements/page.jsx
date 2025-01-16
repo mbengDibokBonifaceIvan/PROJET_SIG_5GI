@@ -5,6 +5,8 @@ import { Modal } from "../Components/Details/DetailsArrondissement/Modal";
 import ArrondissementTable from "../Components/ArrondissementTable";
 import SideBar from "../Components/Sidebar1/SideBar";
 import Footer from "../Components/Footer/footer";
+import ThemeDropdown from "../Components/ThemeDropdown/ThemeDropdown";
+import { Button } from "@/components/ui/button";
 function Arrondissement() {
   const [modalOpen, setModalOpen] = useState(false);
   const [rows, setRows] = useState([]); // Liste des arrondissements
@@ -93,16 +95,23 @@ function Arrondissement() {
 
     return (
       <SideBar>
-        <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-800">
+        <div className="flex-1 p-8 bg-gray-50 dark:bg-gray-900 min-h-screen">
+          <div className="mb-6 flex justify-between items-center">
+            <ThemeDropdown />
+            <Button
+              onClick={() => setModalOpen(true)}
+              className="px-2 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg shadow-md transition-colors duration-150 dark:bg-blue-700 dark:hover:bg-blue-800"
+            >
+              Ajouter
+            </Button>
+          </div>
+
           <ArrondissementTable
             rows={rows}
             editRow={handleEditRow}
             deleteRow={handleDeleteRow}
           />
 
-          <button onClick={() => setModalOpen(true)} className="btn">
-            Ajouter
-          </button>
           {modalOpen && (
             <Modal
               closeModal={() => {
@@ -111,11 +120,11 @@ function Arrondissement() {
               }}
               onSubmit={handleSubmit}
               defaultValue={rowToEdit !== null && rows[rowToEdit]}
-              departements={departements} // Passer les départements pour le menu déroulant
+              departements={departements}
             />
           )}
         </div>
-        <Footer/>
+        <Footer />
       </SideBar>
     );
 }
