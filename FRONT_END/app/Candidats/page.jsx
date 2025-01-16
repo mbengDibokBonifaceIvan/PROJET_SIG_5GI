@@ -1,4 +1,5 @@
-"use client";
+'use client';
+
 import React, { useState, useEffect } from "react";
 import { PlusCircle, Pencil, Trash2, User } from "lucide-react";
 import SideBar from "../Components/Sidebar1/SideBar";
@@ -30,19 +31,19 @@ const CandidatModal = ({ isOpen, onClose, onSubmit, candidat }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl w-full max-w-lg p-6">
-        <h2 className="text-2xl font-bold mb-6 text-gray-900 dark:text-white">
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-md p-6">
+        <h2 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white">
           {candidat ? "Modifier" : "Ajouter"} un candidat
         </h2>
 
-        <form onSubmit={handleSubmit} className="space-y-6">
-          <div className="space-y-2">
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-200">
               Photo
             </label>
-            <div className="flex items-center space-x-6">
-              <div className="w-32 h-32 rounded-full overflow-hidden bg-gray-100 dark:bg-gray-700 flex items-center justify-center">
+            <div className="mt-1 flex items-center space-x-4">
+              <div className="w-24 h-24 rounded-full overflow-hidden bg-gray-100 dark:bg-gray-700 flex items-center justify-center">
                 {imagePreview ? (
                   <img
                     src={imagePreview}
@@ -50,7 +51,7 @@ const CandidatModal = ({ isOpen, onClose, onSubmit, candidat }) => {
                     className="w-full h-full object-cover"
                   />
                 ) : (
-                  <User className="w-16 h-16 text-gray-400" />
+                  <User className="w-12 h-12 text-gray-400" />
                 )}
               </div>
               <input
@@ -63,7 +64,7 @@ const CandidatModal = ({ isOpen, onClose, onSubmit, candidat }) => {
                     setImagePreview(URL.createObjectURL(file));
                   }
                 }}
-                className="flex-1 block text-sm text-gray-500 dark:text-gray-300
+                className="block w-full text-sm text-gray-500 dark:text-gray-300
                   file:mr-4 file:py-2 file:px-4
                   file:rounded-full file:border-0
                   file:text-sm file:font-semibold
@@ -74,7 +75,7 @@ const CandidatModal = ({ isOpen, onClose, onSubmit, candidat }) => {
             </div>
           </div>
 
-          <div className="space-y-2">
+          <div>
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-200">
               Nom du candidat
             </label>
@@ -85,14 +86,14 @@ const CandidatModal = ({ isOpen, onClose, onSubmit, candidat }) => {
               onChange={(e) =>
                 setFormData({ ...formData, nom_candidat: e.target.value })
               }
-              className="w-full rounded-lg border-gray-300 dark:border-gray-600
+              className="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600
                 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-700
-                dark:text-white text-sm p-3"
+                dark:text-white sm:text-sm"
               required
             />
           </div>
 
-          <div className="space-y-2">
+          <div>
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-200">
               Parti politique
             </label>
@@ -103,25 +104,29 @@ const CandidatModal = ({ isOpen, onClose, onSubmit, candidat }) => {
               onChange={(e) =>
                 setFormData({ ...formData, parti_politique: e.target.value })
               }
-              className="w-full rounded-lg border-gray-300 dark:border-gray-600
+              className="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600
                 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-700
-                dark:text-white text-sm p-3"
+                dark:text-white sm:text-sm"
               required
             />
           </div>
 
-          <div className="flex justify-end space-x-4 pt-6">
+          <div className="flex justify-end space-x-3 pt-4">
             <Button
-              type="button"
+              type="Button"
               onClick={onClose}
-              variant="outline"
-              className="px-6 py-2 text-sm font-medium"
+              className="px-4 py-2 text-sm font-medium text-gray-700 dark:text-black
+                bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600
+                rounded-md shadow-sm hover:bg-gray-50 dark:hover:bg-gray-600
+                focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
             >
               Annuler
             </Button>
             <Button
               type="submit"
-              className="px-6 py-2 text-sm font-medium bg-blue-600 hover:bg-blue-700"
+              className="px-4 py-2 text-sm font-medium text-white bg-blue-600
+                border border-transparent rounded-md shadow-sm hover:bg-blue-700
+                focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
             >
               {candidat ? "Modifier" : "Ajouter"}
             </Button>
@@ -132,57 +137,53 @@ const CandidatModal = ({ isOpen, onClose, onSubmit, candidat }) => {
   );
 };
 
-const CandidatRow = ({ candidat, onEdit, onDelete }) => (
-  <tr className="hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-150">
-    <td className="px-6 py-4 whitespace-nowrap">
-      <div className="flex items-center">
-        <div className="h-12 w-12 flex-shrink-0">
-          {candidat.photo ? (
-            <img
-              src={`http://localhost:8080/candidats/photo/${candidat.id_candidat}`}
-              alt={candidat.nom_candidat}
-              className="h-12 w-12 rounded-full object-cover"
-            />
-          ) : (
-            <div className="h-12 w-12 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
-              <User className="h-6 w-6 text-gray-400" />
+const CandidatRow = ({ candidat, onEdit, onDelete }) => {
+  return (
+    <tr className="hover:bg-gray-50 dark:hover:bg-gray-700">
+      <td className="px-6 py-4 whitespace-nowrap">
+        <div className="flex items-center ">
+          <div className="w-10 h-10 flex-shrink-0">
+            {candidat.photo ? (
+              <img
+                src={`http://localhost:8080/candidats/photo/${candidat.id_candidat}`}
+                alt={candidat.nom_candidat}
+                className="w-10 h-10 rounded-full object-cover"
+              />
+            ) : (
+              <div className="w-10 h-10 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
+                <User className="w-6 h-6 text-gray-400" />
+              </div>
+            )}
+          </div>
+          <div className="ml-4 px-4">
+            <div className="text-sm font-medium text-gray-900 dark:text-white">
+              {candidat.nom_candidat}
             </div>
-          )}
-        </div>
-        <div className="ml-4">
-          <div className="text-sm font-medium text-gray-900 dark:text-white">
-            {candidat.nom_candidat}
           </div>
         </div>
-      </div>
-    </td>
-    <td className="px-6 py-4">
-      <div className="text-sm text-gray-900 dark:text-white">
-        {candidat.parti_politique}
-      </div>
-    </td>
-    <td className="px-6 py-4 whitespace-nowrap text-right">
-      <div className="flex justify-end space-x-3">
+      </td>
+      <td className="px-6 py-4 whitespace-nowrap">
+        <div className="text-sm px-4 text-gray-900 dark:text-white">
+          {candidat.parti_politique}
+        </div>
+      </td>
+      <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
         <Button
           onClick={() => onEdit(candidat)}
-          variant="outline"
-          size="sm"
-          className="text-blue-600 hover:text-blue-700 dark:text-blue-400"
+          className="text-blue-600 mx-4 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300 mr-4"
         >
-          <Pencil className="h-4 w-4" />
+          <Pencil className="w-5 h-5 text-white dark:text-black" />
         </Button>
         <Button
           onClick={() => onDelete(candidat.id_candidat)}
-          variant="outline"
-          size="sm"
-          className="text-red-600 hover:text-red-700 dark:text-red-400"
+          className="text-red-600 hover:text-red-900 dark:text-red-400 dark:hover:text-red-300"
         >
-          <Trash2 className="h-4 w-4" />
+          <Trash2 className="w-5 h-5 text-white dark:text-black" />
         </Button>
-      </div>
-    </td>
-  </tr>
-);
+      </td>
+    </tr>
+  );
+};
 
 export default function Candidats() {
   const [candidats, setCandidats] = useState([]);
@@ -196,14 +197,10 @@ export default function Candidats() {
   const fetchCandidats = async () => {
     try {
       const response = await fetch("http://localhost:8080/candidats/all");
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
       const data = await response.json();
       setCandidats(data);
     } catch (error) {
       console.error("Erreur lors du chargement des candidats:", error);
-      // You might want to add error state handling here
     }
   };
 
@@ -218,100 +215,86 @@ export default function Candidats() {
         body: formData,
       });
 
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
+      if (response.ok) {
+        await fetchCandidats();
+        setIsModalOpen(false);
+        setSelectedCandidat(null);
       }
-
-      await fetchCandidats();
-      setIsModalOpen(false);
-      setSelectedCandidat(null);
     } catch (error) {
       console.error("Erreur lors de la soumission:", error);
-      // You might want to add error state handling here
     }
   };
 
   const handleDelete = async (id) => {
     if (window.confirm("Êtes-vous sûr de vouloir supprimer ce candidat ?")) {
       try {
-        const response = await fetch(
-          `http://localhost:8080/candidats/deleteCandidat/${id}`,
-          {
-            method: "DELETE",
-          }
-        );
-
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-
+        await fetch(`http://localhost:8080/candidats/deleteCandidat/${id}`, {
+          method: "DELETE",
+        });
         await fetchCandidats();
       } catch (error) {
         console.error("Erreur lors de la suppression:", error);
-        // You might want to add error state handling here
       }
     }
   };
 
-  const handleEdit = (candidat) => {
-    setSelectedCandidat(candidat);
-    setIsModalOpen(true);
-  };
-
-  return (
-    <SideBar>
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-8">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="mb-8 bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden">
-            <div className="p-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-              <div>
-                <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+    return (
+      <SideBar>
+        <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-12 px-4 sm:px-6 lg:px-8 transition-colors duration-300">
+          <div className="max-w-7xl mx-auto">
+            <div className="sm:flex sm:items-center sm:justify-between bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg mb-8">
+              <div className="sm:flex-auto">
+                <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
                   Candidats
                 </h1>
                 <p className="mt-2 text-sm text-gray-600 dark:text-gray-300">
                   Gérez la liste des candidats et leurs informations
                 </p>
               </div>
-              <Button
-                onClick={() => {
-                  setSelectedCandidat(null);
-                  setIsModalOpen(true);
-                }}
-                className="inline-flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700"
-              >
-                <PlusCircle className="h-5 w-5" />
-                <span>Ajouter un candidat</span>
-              </Button>
+             
+              <div className="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
+                <Button
+                  onClick={() => {
+                    setSelectedCandidat(null);
+                    setIsModalOpen(true);
+                  }}
+                  className="inline-flex items-center px-6 py-3 border border-transparent
+                  text-base font-medium rounded-lg shadow-sm text-white bg-blue-600
+                  hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2
+                  focus:ring-blue-500 transition-colors duration-200"
+                >
+                  <PlusCircle className="w-5 h-5 mr-2" />
+                  Ajouter un candidat
+                </Button>
+              </div>
+              
             </div>
 
-            <div className="border-t border-gray-200 dark:border-gray-700">
-              <div className="overflow-x-auto">
+            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden transition-colors  duration-300">
+              <div className="min-w-full ">
                 <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
                   <thead>
                     <tr className="bg-gray-50 dark:bg-gray-700/50">
-                      <th
-                        scope="col"
-                        className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider"
-                      >
+                      <th className="px-6 py-4 text-center text-sm font-semibold text-gray-900 dark:text-white">
                         Candidat
                       </th>
-                      <th
-                        scope="col"
-                        className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider"
-                      >
+                      <th className="px-6 py-4 text-center text-sm font-semibold text-gray-900 dark:text-white">
                         Parti politique
                       </th>
-                      <th scope="col" className="relative px-6 py-3">
-                        <span className="sr-only">Actions</span>
+                      <th className="relative text-center px-6 py-4">
+                        <span >Actions</span>
                       </th>
                     </tr>
                   </thead>
-                  <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+                  <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
                     {candidats.map((candidat) => (
                       <CandidatRow
                         key={candidat.id_candidat}
                         candidat={candidat}
-                        onEdit={() => handleEdit(candidat)}
+                        onEdit={() => {
+                          setSelectedCandidat(candidat);
+                          setIsModalOpen(true);
+                        }}
                         onDelete={handleDelete}
                       />
                     ))}
@@ -320,19 +303,18 @@ export default function Candidats() {
               </div>
             </div>
           </div>
-        </div>
 
-        <CandidatModal
-          isOpen={isModalOpen}
-          onClose={() => {
-            setIsModalOpen(false);
-            setSelectedCandidat(null);
-          }}
-          onSubmit={handleSubmit}
-          candidat={selectedCandidat}
-        />
+          <CandidatModal
+            isOpen={isModalOpen}
+            onClose={() => {
+              setIsModalOpen(false);
+              setSelectedCandidat(null);
+            }}
+            onSubmit={handleSubmit}
+            candidat={selectedCandidat}
+          />
+        </div>
         <Footer />
-      </div>
-    </SideBar>
-  );
+      </SideBar>
+    );
 }
