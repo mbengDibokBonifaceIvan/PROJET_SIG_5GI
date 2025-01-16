@@ -68,7 +68,7 @@ const CandidatsGrid = ({ candidats, resultats }) => {
                     <img
                       src={`http://localhost:8080/candidats/photo/${candidat.id_candidat}`}
                       alt={candidat.nom_candidat}
-                      className="w-full h-full rounded-2xl object-cover shadow-lg
+                      className="w-11 h-11 rounded-full object-cover shadow-lg
                                group-hover:scale-105 transition-transform duration-300"
                     />
                     <div className="absolute inset-0 rounded-2xl ring-1 ring-inset ring-black/10 dark:ring-white/10" />

@@ -1,20 +1,17 @@
 import React, { useState } from "react";
 import { BsFillTrashFill, BsFillPencilFill } from "react-icons/bs";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 const PollingStationsTable = ({ rows, editRow, deleteRow }) => {
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 5;
+  const itemsPerPage = 8;
 
-  // Calculer le nombre total de pages
   const totalPages = Math.ceil(rows.length / itemsPerPage);
-
-  // Obtenir les éléments de la page courante
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = rows.slice(indexOfFirstItem, indexOfLastItem);
 
-  // Changer de page
   const paginate = (pageNumber) => {
     if (pageNumber > 0 && pageNumber <= totalPages) {
       setCurrentPage(pageNumber);
@@ -22,49 +19,63 @@ const PollingStationsTable = ({ rows, editRow, deleteRow }) => {
   };
 
   return (
-    <div className="space-y-4">
-      <div className="overflow-x-auto">
-        <div className="text-center mb-8">
-          <h2 className="text-3xl font-bold text-white bg-blue-500 rounded-md p-2">
-            Liste Nationale des Bureaux de Vote
-          </h2>
+    <div className="w-full px-4 space-y-4">
+      <div className="flex justify-between items-center mb-6">
+        <h2 className="text-2xl font-bold text-white  bg-blue-500 rounded-md px-6 py-3 shadow-md">
+          Liste Nationale des Bureaux de Vote
+        </h2>
+        <div className="text-sm text-gray-600 dark:text-gray-400 bg-white dark:bg-gray-700 px-4 py-2 rounded-md shadow">
+          Total: {rows.length} bureaux
         </div>
-        <table className="mx-auto w-full md:w-3/4 lg:w-1/2 table-auto shadow-lg rounded-lg dark:bg-gray-800">
+      </div>
+
+      <div className="relative overflow-x-auto shadow-xl rounded-lg bg-white dark:bg-gray-800">
+        <table className="w-full">
           <thead className="bg-gray-300 dark:bg-gray-600 text-black dark:text-white">
             <tr>
-              <th className="px-4 py-2">Nom</th>
-              <th className="px-4 py-2">Latitude</th>
-              <th className="px-4 py-2">Longitude</th>
-              <th className="px-4 py-2">Centre de Vote</th>
-              <th className="px-4 py-2">Actions</th>
+              <th className="px-6 py-4 text-left font-semibold">Nom</th>
+              <th className="px-6 py-4 text-left font-semibold">Latitude</th>
+              <th className="px-6 py-4 text-left font-semibold">Longitude</th>
+              <th className="px-6 py-4 text-left font-semibold">
+                Centre de Vote
+              </th>
+              <th className="px-6 py-4 text-center font-semibold w-32">
+                Actions
+              </th>
             </tr>
           </thead>
-          <tbody>
+          <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
             {currentItems.map((row, idx) => (
               <tr
                 key={row.id_bureau_vote || idx}
-                className="hover:bg-gray-200 dark:hover:bg-gray-500"
+                className="hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
               >
-                <td className="px-4 py-2">{row.nom_bureau}</td>
-                <td className="px-4 py-2 text-center">
+                <td className="px-6 py-4 whitespace-nowrap text-center">
+                  {row.nom_bureau}
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-center">
                   {row.coordonnees?.latitude || "Non défini"}
                 </td>
-                <td className="px-4 py-2 text-center">
+                <td className="px-6 py-4 whitespace-nowrap text-center">
                   {row.coordonnees?.longitude || "Non défini"}
                 </td>
-                <td className="px-4 py-2">
+                <td className="px-6 py-4 whitespace-nowrap text-center">
                   {row.centreVote?.nom_centre || "Centre inconnu"}
                 </td>
-                <td className="px-4 py-2">
+                <td className="px-6 py-4">
                   <div className="flex items-center justify-center gap-3">
-                    <BsFillPencilFill
-                      className="edit-btn cursor-pointer text-blue-500 hover:text-blue-700"
+                    <Button
                       onClick={() => editRow(indexOfFirstItem + idx)}
-                    />
-                    <BsFillTrashFill
-                      className="delete-btn cursor-pointer text-red-500 hover:text-red-700"
+                      className="text-blue-500 dark:text-black hover:text-blue-700 transition-colors"
+                    >
+                      <BsFillPencilFill className="w-5 h-5" />
+                    </Button>
+                    <Button
                       onClick={() => deleteRow(indexOfFirstItem + idx)}
-                    />
+                      className="text-white  dark:text-black hover:text-red-700 transition-colors"
+                    >
+                      <BsFillTrashFill className="w-5 h-5 " />
+                    </Button>
                   </div>
                 </td>
               </tr>
@@ -73,23 +84,21 @@ const PollingStationsTable = ({ rows, editRow, deleteRow }) => {
         </table>
       </div>
 
-      {/* Pagination Controls */}
-      <div className="flex flex-col items-center gap-4 mt-4">
+      <div className="flex items-center justify-between mt-4 bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
         <div className="flex items-center gap-2">
-          <button
+          <Button
             onClick={() => paginate(currentPage - 1)}
             disabled={currentPage === 1}
             className="p-2 rounded-lg border hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed dark:border-gray-600 dark:hover:bg-gray-700"
           >
             <ChevronLeft className="h-5 w-5" />
-          </button>
+          </Button>
 
           <div className="flex items-center gap-1">
-            {totalPages <= 7 ? (
-              // Afficher toutes les pages si totalPages <= 7
+            {totalPages <= 5 ? (
               Array.from({ length: totalPages }, (_, i) => i + 1).map(
                 (number) => (
-                  <button
+                  <Button
                     key={number}
                     onClick={() => paginate(number)}
                     className={`px-3 py-1 rounded-lg border ${
@@ -99,53 +108,56 @@ const PollingStationsTable = ({ rows, editRow, deleteRow }) => {
                     }`}
                   >
                     {number}
-                  </button>
+                  </Button>
                 )
               )
             ) : (
-              // Afficher les pages avec ellipsis si totalPages > 7
               <>
-                {[1, 2, 3].map((number) => (
-                  <button
-                    key={number}
-                    onClick={() => paginate(number)}
-                    className={`px-3 py-1 rounded-lg border ${
-                      currentPage === number
-                        ? "bg-blue-500 text-white border-blue-500"
-                        : "hover:bg-gray-100 dark:border-gray-600 dark:hover:bg-gray-700"
-                    }`}
+                <Button
+                  onClick={() => paginate(1)}
+                  className={`px-3 py-1 rounded-lg border ${
+                    currentPage === 1
+                      ? "bg-blue-500 text-white border-blue-500"
+                      : "hover:bg-gray-100 dark:border-gray-600 dark:hover:bg-gray-700"
+                  }`}
+                >
+                  1
+                </Button>
+                {currentPage > 3 && <span className="px-2">...</span>}
+                {currentPage > 2 && currentPage < totalPages - 1 && (
+                  <Button
+                    onClick={() => paginate(currentPage)}
+                    className="px-3 py-1 rounded-lg border bg-blue-500 text-white border-blue-500"
                   >
-                    {number}
-                  </button>
-                ))}
-                <span className="px-2">...</span>
-                {[totalPages - 2, totalPages - 1, totalPages].map((number) => (
-                  <button
-                    key={number}
-                    onClick={() => paginate(number)}
-                    className={`px-3 py-1 rounded-lg border ${
-                      currentPage === number
-                        ? "bg-blue-500 text-white border-blue-500"
-                        : "hover:bg-gray-100 dark:border-gray-600 dark:hover:bg-gray-700"
-                    }`}
-                  >
-                    {number}
-                  </button>
-                ))}
+                    {currentPage}
+                  </Button>
+                )}
+                {currentPage < totalPages - 2 && (
+                  <span className="px-2">...</span>
+                )}
+                <Button
+                  onClick={() => paginate(totalPages)}
+                  className={`px-3 py-1 rounded-lg border ${
+                    currentPage === totalPages
+                      ? "bg-blue-500 text-white border-blue-500"
+                      : "hover:bg-gray-100 dark:border-gray-600 dark:hover:bg-gray-700"
+                  }`}
+                >
+                  {totalPages}
+                </Button>
               </>
             )}
           </div>
 
-          <button
+          <Button
             onClick={() => paginate(currentPage + 1)}
             disabled={currentPage === totalPages}
             className="p-2 rounded-lg border hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed dark:border-gray-600 dark:hover:bg-gray-700"
           >
             <ChevronRight className="h-5 w-5" />
-          </button>
+          </Button>
         </div>
 
-        {/* Informations sur la pagination */}
         <div className="text-sm text-gray-600 dark:text-gray-400">
           Affichage de {indexOfFirstItem + 1} à{" "}
           {Math.min(indexOfLastItem, rows.length)} sur {rows.length} bureaux de

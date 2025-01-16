@@ -147,7 +147,7 @@ const DepartementTable = ({ rows, editRow, deleteRow }) => {
                     {row.région?.nom_région || "Non spécifiée"}
                   </td>
                   <td className="px-6 py-4">
-                    <div className="flex items-center  justify-center space-x-6">
+                    <div className="flex items-center  justify-center gap-3">
                       <Button
                         onClick={() => editRow(idx)}
                         className="p-2 text-indigo-600 bg-white dark:bg-black hover:text-indigo-800 dark:text-indigo-400 dark:hover:text-indigo-300 transition-colors duration-150"

@@ -1,189 +1,108 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import ProductCard from './ProductCard';
+"use client";
+
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import ProductCard from "./ProductCard";
 
 const Card = () => {
-  const [totalRegions, setTotalRegions] = useState(0);
-  const [totalDepartements, setTotalDepartements] = useState(0);
-  const [totalArrondissements, setTotalArrondissements] = useState(0);
-  const [totalStrutateurs, setTotalStrutateurs] = useState(0);
-  const [totalAdministrateurs, setTotalAdministrateurs] = useState(0);
-  const [totalElecteurs, setTotalElecteurs] = useState(0);
-  const [totalCentreVote, setTotalCentreVote] = useState(0);
-  const [totalBureauVote, setTotalBureauVote] = useState(0);
-  const [totalCandidat, setTotalCandidat] = useState(0);
-
-
-
-
-
-
-
-  
-
-
+  const [stats, setStats] = useState({
+    regions: 0,
+    departements: 0,
+    arrondissements: 0,
+    scrutateurs: 0,
+    administrateurs: 0,
+    electeurs: 0,
+    centresVote: 0,
+    bureauxVote: 0,
+    candidats: 0,
+  });
 
   useEffect(() => {
-    const fetchTotalRegions = async () => {
+    const fetchStats = async () => {
       try {
-        const response = await axios.get('http://localhost:8080/regions/countAll'); // Assurez-vous que l'URL correspond à votre API
-        setTotalRegions(response.data);
+        const endpoints = {
+          regions: "regions/countAll",
+          departements: "departements/count",
+          arrondissements: "arrondissements/count",
+          scrutateurs: "utilisateurs/nombreScrutateurs",
+          administrateurs: "utilisateurs/nombreSuperAdministrateur",
+          electeurs: "electeurs/count",
+          centresVote: "centres-de-vote/count",
+          bureauxVote: "bureaux-de-vote/count",
+          candidats: "candidats/count",
+        };
+
+        const baseURL = "http://localhost:8080";
+
+        const requests = Object.entries(endpoints).map(([key, endpoint]) =>
+          axios
+            .get(`${baseURL}/${endpoint}`)
+            .then((response) => ({ [key]: response.data }))
+            .catch((error) => {
+              console.error(`Error fetching ${key}:`, error);
+              return { [key]: 0 };
+            })
+        );
+
+        const results = await Promise.all(requests);
+        const newStats = Object.assign({}, ...results);
+        setStats(newStats);
       } catch (error) {
-        console.error('Erreur lors de la récupération des régions:', error);
+        console.error("Error fetching statistics:", error);
       }
     };
 
-
-    const fetchtotalDepartements = async () => {
-      try {
-        const response = await axios.get('http://localhost:8080/departements/count'); 
-        setTotalDepartements(response.data);
-      } catch (error) {
-        console.error('Erreur lors de la récupération des departements:', error);
-      }
-    };
-
-
-    const fetchtotalArrondissements = async () => {
-      try {
-        const response = await axios.get('http://localhost:8080/arrondissements/count'); 
-        setTotalArrondissements(response.data);
-      } catch (error) {
-        console.error('Erreur lors de la récupération des Arrondissements:', error);
-      }
-    };
-
-
-
-    const fetchtotalStrutateurs = async () => {
-      try {
-        const response = await axios.get('http://localhost:8080/utilisateurs/nombreScrutateurs'); 
-        setTotalStrutateurs(response.data);
-      } catch (error) {
-        console.error('Erreur lors de la récupération des Strutateurs:', error);
-      }
-    };
-
-
-
-
-    const fetchtotalAdministrateurs = async () => {
-      try {
-        const response = await axios.get('http://localhost:8080/utilisateurs/nombreSuperAdministrateur'); 
-        setTotalAdministrateurs(response.data);
-      } catch (error) {
-        console.error('Erreur lors de la récupération des Administrateurs:', error);
-      }
-    };
-
-
-
-
-    const fetchtotalElecteurs = async () => {
-      try {
-        const response = await axios.get('http://localhost:8080/electeurs/count'); 
-        setTotalElecteurs(response.data);
-      } catch (error) {
-        console.error('Erreur lors de la récupération des Electeurs:', error);
-      }
-    };
-
-
-
-    const fetchtotalCentreVote = async () => {
-      try {
-        const response = await axios.get('http://localhost:8080/centres-de-vote/count'); 
-        setTotalCentreVote(response.data);
-      } catch (error) {
-        console.error('Erreur lors de la récupération des Centres De Vote:', error);
-      }
-    };
-
-
-
-
-    const fetchtotalBureauVote = async () => {
-      try {
-        const response = await axios.get('http://localhost:8080/bureaux-de-vote/count'); 
-        setTotalBureauVote(response.data);
-      } catch (error) {
-        console.error('Erreur lors de la récupération des bureaux De Vote:', error);
-      }
-    };
-
-
-    const fetchtotalCandidat = async () => {
-      try {
-        const response = await axios.get('http://localhost:8080/candidats/count'); 
-        setTotalCandidat(response.data);
-      } catch (error) {
-        console.error('Erreur lors de la récupération des candidats:', error);
-      }
-    };
-
-
-
-    fetchtotalCandidat();
-    fetchtotalBureauVote();
-    fetchtotalCentreVote();
-    fetchtotalElecteurs();
-    fetchtotalAdministrateurs();
-    fetchtotalStrutateurs();
-    fetchTotalRegions();
-    fetchtotalDepartements();
-    fetchtotalArrondissements();
+    fetchStats();
   }, []);
 
+  const cards = [
+    { name: "Total Region", value: stats.regions, url: "/Regions" },
+    { name: "Total Candidat", value: stats.candidats, url: "/Candidats" },
+    {
+      name: "Total Arrondissement",
+      value: stats.arrondissements,
+      url: "/Arrondissements",
+    },
+    {
+      name: "Total Departement",
+      value: stats.departements,
+      url: "/Departements",
+    },
+    {
+      name: "Total Bureau De Vote",
+      value: stats.bureauxVote,
+      url: "/BureauxDeVote",
+    },
+    {
+      name: "Total Centre De Vote",
+      value: stats.centresVote,
+      url: "/CentreDeVote",
+    },
+    { name: "Total Electeur", value: stats.electeurs, url: "/Electeurs" },
+    {
+      name: "Total Scrutateur",
+      value: stats.scrutateurs,
+      url: "/ScrutateurTable",
+    },
+    {
+      name: "Total Administrateur",
+      value: stats.administrateurs,
+      url: "/SuperAdminTable",
+    },
+  ];
+
   return (
-    // <div className="product">
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4">
-      <ProductCard
-        value={totalRegions} // Utilisez la valeur récupérée ici
-        name="Total Region"
-        url="/Regions"
-      />
-      <ProductCard
-        value={totalCandidat}
-        name="Total Candidat"
-        url="/Candidats"
-      />
-      <ProductCard
-        name="Total Arrondissement"
-        value={totalArrondissements}
-        url="/Arrondissements"
-      />
-      <ProductCard
-        name="Total Departement"
-        value={totalDepartements}
-        url="/Departements"
-      />
-      <ProductCard
-        name="Total Bureau De Vote"
-        value={totalBureauVote}
-        url="/BureauxDeVote"
-      />
-      <ProductCard
-        name="Total Centre De Vote"
-        value={totalCentreVote}
-        url="/CentreDeVote"
-      />
-      <ProductCard
-        name="Total Electeur"
-        value={totalElecteurs}
-        url="/Electeurs"
-      />
-      <ProductCard
-        name="Total Scrutateur"
-        value={totalStrutateurs}
-        url="/ScrutateurTable"
-      />
-      <ProductCard
-        name="Total Administrateur"
-        value={totalAdministrateurs}
-        url="/SuperAdminTable"
-      />
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+      {cards.map((card, index) => (
+        <ProductCard
+          key={index}
+          name={card.name}
+          value={card.value}
+          url={card.url}
+        />
+      ))}
     </div>
   );
-}
+};
 
 export default Card;

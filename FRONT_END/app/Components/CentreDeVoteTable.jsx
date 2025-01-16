@@ -53,7 +53,7 @@ const CentreDeVoteTable = ({ rows, editRow, deleteRow }) => {
                       "Arrondissement inconnu"}
                   </td>
                   <td className="px-6 py-4 ">
-                    <div className="flex items-center justify-center space-x-4">
+                    <div className="flex items-center justify-center gap-3">
                       <button
                         onClick={() => editRow(idx)}
                         className="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300"

@@ -6,7 +6,7 @@ import { ThemeProvider } from "./Providers/ThemeProvider";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Wwweather",
+  title: "ELECAM_RESULTS",
   description: "A weather app built with Next.js and TailwindCSS",
 };
 

@@ -92,7 +92,7 @@ export const Table = ({ rows, deleteRow, editRow }) => {
             return (
               <tr key={row.id_région || idx} className="hover:bg-gray-500 dark:hover:bg-gray-500">
                 <td className="text-center" >{row.nom_région}</td> {/* Utilisation de "nom_région" */}
-                <td className="flex  justify-center ">
+                <td className="flex gap-2 justify-center ">
                   <BsFillPencilFill
                     className="edit-btn cursor-pointer"
                     title="Modifier"
