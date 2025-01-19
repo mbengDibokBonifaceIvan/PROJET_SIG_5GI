@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le : mer. 15 jan. 2025 à 08:13
+-- Généré le : dim. 19 jan. 2025 à 15:24
 -- Version du serveur : 10.4.32-MariaDB
 -- Version de PHP : 8.2.12
 
@@ -261,7 +261,15 @@ INSERT INTO `process_verbaux` (`id_pv`, `annee_election`, `date_saisie`, `nombre
 (35, 2025, '2025-01-15 01:00:00.000000', 42, 7, 3),
 (36, 2025, '2025-01-15 01:00:00.000000', 37, 7, 4),
 (37, 2025, '2025-01-15 01:00:00.000000', 121, 7, 5),
-(38, 2025, '2025-01-15 01:00:00.000000', 400, 12, 7);
+(38, 2025, '2025-01-15 01:00:00.000000', 400, 12, 7),
+(39, 2025, '2025-01-15 01:00:00.000000', 148, 4, 5),
+(40, 2025, '2025-01-15 01:00:00.000000', 45, 10, 3),
+(42, 2025, '2025-01-15 01:00:00.000000', 95, 16, 4),
+(43, 2025, '2025-01-15 01:00:00.000000', 150, 1, 2),
+(44, 2025, '2025-01-15 01:00:00.000000', 200, 2, 1),
+(45, 2025, '2025-01-15 01:00:00.000000', 180, 3, 1),
+(46, 2025, '2025-01-15 01:00:00.000000', 220, 4, 2),
+(47, 2025, '2025-01-15 01:00:00.000000', 100, 5, 3);
 
 -- --------------------------------------------------------
 
@@ -333,7 +341,10 @@ INSERT INTO `resultats` (`id_résultat`, `annee_election`, `date_saisie`, `nombr
 (48, 2025, '2025-01-15 01:00:00.000000', 42, 7, 3),
 (49, 2025, '2025-01-15 01:00:00.000000', 37, 7, 4),
 (50, 2025, '2025-01-15 01:00:00.000000', 121, 7, 5),
-(51, 2025, '2025-01-15 01:00:00.000000', 400, 12, 7);
+(51, 2025, '2025-01-15 01:00:00.000000', 400, 12, 7),
+(52, 2025, '2025-01-15 01:00:00.000000', 148, 4, 5),
+(54, 2025, '2025-01-15 01:00:00.000000', 45, 10, 3),
+(55, 2025, '2025-01-15 01:00:00.000000', 95, 16, 4);
 
 -- --------------------------------------------------------
 
@@ -355,7 +366,7 @@ CREATE TABLE `utilisateurs` (
 
 INSERT INTO `utilisateurs` (`id_utilisateur`, `mot_de_passe`, `nom_utilisateur`, `role`, `id_bureau_vote`) VALUES
 (1, '12345678', 'Mbeng', 'SuperAdmin', 1),
-(2, '87654321', 'Mfangam', 'SuperAdmin', 2),
+(2, '87654321', 'Yasmine', 'SuperAdmin', 2),
 (3, '123456789', 'Mbong', 'Scrutateur', 2),
 (4, '987654321', 'Keumouo', 'SuperAdmin', 3),
 (6, 'tiomela18', 'Tiomela', 'Scrutateur', 1),
@@ -481,7 +492,7 @@ ALTER TABLE `electeurs`
 -- AUTO_INCREMENT pour la table `process_verbaux`
 --
 ALTER TABLE `process_verbaux`
-  MODIFY `id_pv` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
+  MODIFY `id_pv` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=48;
 
 --
 -- AUTO_INCREMENT pour la table `regions`
@@ -493,7 +504,7 @@ ALTER TABLE `regions`
 -- AUTO_INCREMENT pour la table `resultats`
 --
 ALTER TABLE `resultats`
-  MODIFY `id_résultat` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=52;
+  MODIFY `id_résultat` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=56;
 
 --
 -- AUTO_INCREMENT pour la table `utilisateurs`

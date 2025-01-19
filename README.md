@@ -2,6 +2,7 @@
 
 ## Configuration initiale
 1. Lancez XAMPP pour démarrer les services nécessaires(Apache et Mysql).
+* NB: On suppose que vous venez de dezipper le fichier zippe SIG.zip et que vous avez tape cd SIG dans le terminal pour acceder au projet de l'application
 
 ## Démarrage du backend
 1. Exécutez le fichier `BACK_END\SIG\src\main\java\com\example\SIG\SigApplication.java` pour lancer le backend de l'application.
