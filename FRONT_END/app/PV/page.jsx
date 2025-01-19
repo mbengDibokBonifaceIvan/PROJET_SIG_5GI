@@ -265,7 +265,7 @@ const ProcesVerbaux = () => {
                     className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white dark:bg-blue-500 dark:hover:bg-blue-600"
                   >
                     {BiPlusIcon}
-                    <span>Ajouter un résultat</span>
+                    <span>Ajouter</span>
                   </Button>
 
                   <div className="flex items-center gap-4">

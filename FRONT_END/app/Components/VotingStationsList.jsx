@@ -9,7 +9,7 @@ const VotingStationsList = ({
   lusitana,
 }) => {
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 9;
+  const itemsPerPage = 6;
 
   // Calculate total pages
   const totalPages = Math.ceil(BureauDeVote.length / itemsPerPage);
